@@ -59,6 +59,7 @@ class FunctionInfo : public FunctionPass {
             case Instruction::SDiv:
             case Instruction::FDiv:
                 ++I.numDiv;
+                break;
             case Instruction::Br:
             case Instruction::IndirectBr:
                 ++I.numBranch;
