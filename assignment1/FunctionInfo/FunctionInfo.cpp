@@ -6,13 +6,16 @@
 #include "llvm/IR/InstIterator.h"
 #include "llvm/IR/InstVisitor.h"
 #include "llvm/Pass.h"
+#include "llvm/Support/Debug.h"
 #include "llvm/Support/raw_ostream.h"
 
 #include <iostream>
 
+#define DEBUG_TYPE "func_info"
+
 using namespace llvm;
 namespace {
-class FunctionInfo : public FunctionPass {
+class FunctionInfo : public FunctionPass, public InstVisitor<FunctionInfo> {
   private:
     struct InstructionInfo {
         uint64_t numAdds;
@@ -21,11 +24,15 @@ class FunctionInfo : public FunctionPass {
         uint64_t numDiv;
         uint64_t numBranch;
     };
+    Module *m_module;
+    Function *m_functionPtr;
+    int m_numCallsToFunc;
 
   public:
     static char ID;
-    FunctionInfo() : FunctionPass(ID) {}
+    FunctionInfo() : FunctionPass(ID), m_numCallsToFunc(0) {}
     ~FunctionInfo() {}
+
     // We don't modify the program, so we preserve all analyses
     void getAnalysisUsage(AnalysisUsage &AU) const override {
         AU.setPreservesAll();
@@ -36,7 +43,7 @@ class FunctionInfo : public FunctionPass {
         errs() << "5984 Function Information Pass\n"; // TODO: remove this.
         // outs() <<
         // "Name,\tArgs,\tCalls,\tBlocks,\tInsns\n,\tAdd/Sub,\tMul/Div,\tBr(Cond),\tBr(UnCond)";
-
+        m_module = &M;
         return false;
     }
 
@@ -69,6 +76,14 @@ class FunctionInfo : public FunctionPass {
         return;
     }
 
+    void visitCallInst(CallInst &I) {
+        // Check if call references us
+        if (I.getCalledFunction() == m_functionPtr) {
+            // We are the call target
+            DEBUG(dbgs() << "call inst:" << I << "\n");
+            ++m_numCallsToFunc;
+        }
+    }
     // Print output for each function
     bool runOnFunction(Function &F) override {
         // outs() << "name" << ",\t" << "args" << ",\t" << "calls" <<
@@ -79,10 +94,16 @@ class FunctionInfo : public FunctionPass {
         F.isVarArg() ? outs() << "*"
                               << "\n"
                      : outs() << F.arg_size() << "\n";
-        // Number of direct call sites
+        // Number of direct call sites if we have the information
         if (F.hasProfileData()) {
             outs() << "Number of calls to function: "
                    << F.getEntryCount().getValueOr(0) << "\n";
+        } else {
+            // We are an instruction visitor, visit the module's instructions
+            m_functionPtr = &F;
+            visit(*m_module);
+            outs() << "Number of calls to function: " << m_numCallsToFunc
+                   << "\n";
         }
         // Number of basic blocks
         outs() << "Number of basic blocks: " << F.getBasicBlockList().size()
