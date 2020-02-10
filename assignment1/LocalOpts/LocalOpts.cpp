@@ -22,21 +22,18 @@ class LocalOpts : public BasicBlockPass, public InstVisitor<LocalOpts> {
     int m_numConstsFolded;
     int m_numStrengthReduced;
 
-    // class OperandChecker : public InstVisitor<OperandChecker> {
-    //} m_operandChecker;
-
-    // int foldConstants(Instruction &ins, BasicBlock &BB) {
-    //    for (User::op_iterator iterator = ins.op_begin(), end = ins.op_end();
-    //         iterator != end; ++iterator) {
-    //        m_operandChecker.visit(BB);
-    //    }
-    //    return 0;
-    //}
+    struct ValueNumber {
+        ValueNumber() : val(0), isConst(false){};
+        ~ValueNumber() {}
+        int val;
+        bool isConst;
+    } m_valueNumber;
 
   public:
     static char ID;
     LocalOpts()
-        : BasicBlockPass(ID), m_numConstsFolded(0), m_numStrengthReduced(0) {}
+        : BasicBlockPass(ID), m_numConstsFolded(0), m_numStrengthReduced(0),
+          m_valueNumber() {}
     ~LocalOpts() {}
 
     // We don't modify the program, so we preserve all analyses
@@ -47,15 +44,17 @@ class LocalOpts : public BasicBlockPass, public InstVisitor<LocalOpts> {
     void visitBinaryOperator(BinaryOperator &I) {
         // Operator visit
         dbgs() << I << "\n";
+        int numConstOperands = I.getNumOperands();
         for (User::op_iterator iterator = I.op_begin(), end = I.op_end();
              iterator != end; ++iterator) {
-            if (ConstantInt *val = dyn_cast<llvm::ConstantInt>(iterator)) {
-                outs() << I << " has constant: " << val->getValue() << "\n";
-            }
+            if (isa<Constant>(*iterator))
+                --numConstOperands;
+            outs() << I << " has operand: " << *iterator << "\n";
         }
-        // ReplaceInstWithInst(&I, );
-        return;
+        if (numConstOperands > 0) {
+        }
     }
+    // ReplaceInstWithInst(&I, );
 
     // Do some initialization
     bool doInitialization(Function &F) override { return false; }
@@ -65,7 +64,7 @@ class LocalOpts : public BasicBlockPass, public InstVisitor<LocalOpts> {
         visit(B);
         return false;
     }
-};
+}; // namespace
 } // namespace
 
 // LLVM uses the address of this static member to identify the pass, so the

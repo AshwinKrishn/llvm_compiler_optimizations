@@ -11,7 +11,6 @@
 #include <iostream>
 
 using namespace llvm;
-
 namespace {
 class FunctionInfo : public FunctionPass {
   private:
@@ -27,7 +26,6 @@ class FunctionInfo : public FunctionPass {
     static char ID;
     FunctionInfo() : FunctionPass(ID) {}
     ~FunctionInfo() {}
-
     // We don't modify the program, so we preserve all analyses
     void getAnalysisUsage(AnalysisUsage &AU) const override {
         AU.setPreservesAll();
@@ -81,8 +79,10 @@ class FunctionInfo : public FunctionPass {
                               << "\n"
                      : outs() << F.arg_size() << "\n";
         // Number of direct call sites
-        outs() << "Number of calls to function: "
-               << F.getEntryCount().getValueOr(0) << "\n";
+        if (F.hasProfileData()) {
+            outs() << "Number of calls to function: "
+                   << F.getEntryCount().getValueOr(0) << "\n";
+        }
         // Number of basic blocks
         outs() << "Number of basic blocks: " << F.getBasicBlockList().size()
                << "\n";
@@ -93,6 +93,7 @@ class FunctionInfo : public FunctionPass {
         outs() << "Number of mults: " << ii.numMult << "\n";
         outs() << "Number of divs: " << ii.numDiv << "\n";
         outs() << "Number of branches: " << ii.numBranch << "\n";
+
         return false;
     }
 };
