@@ -24,8 +24,8 @@ class FunctionInfo : public FunctionPass, public InstVisitor<FunctionInfo> {
         uint64_t numDiv;
         uint64_t numBranch;
     };
-    Module *m_module;
-    Function *m_functionPtr;
+    Module *m_pmodule;
+    Function *m_pfunction;
     int m_numCallsToFunc;
 
   public:
@@ -43,7 +43,7 @@ class FunctionInfo : public FunctionPass, public InstVisitor<FunctionInfo> {
         errs() << "5984 Function Information Pass\n"; // TODO: remove this.
         // outs() <<
         // "Name,\tArgs,\tCalls,\tBlocks,\tInsns\n,\tAdd/Sub,\tMul/Div,\tBr(Cond),\tBr(UnCond)";
-        m_module = &M;
+        m_pmodule = &M;
         return false;
     }
 
@@ -78,7 +78,7 @@ class FunctionInfo : public FunctionPass, public InstVisitor<FunctionInfo> {
 
     void visitCallInst(CallInst &I) {
         // Check if call references us
-        if (I.getCalledFunction() == m_functionPtr) {
+        if (I.getCalledFunction() == m_pfunction) {
             // We are the call target
             DEBUG(dbgs() << "call inst:" << I << "\n");
             ++m_numCallsToFunc;
@@ -100,8 +100,8 @@ class FunctionInfo : public FunctionPass, public InstVisitor<FunctionInfo> {
                    << F.getEntryCount().getValueOr(0) << "\n";
         } else {
             // We are an instruction visitor, visit the module's instructions
-            m_functionPtr = &F;
-            visit(*m_module);
+            m_pfunction = &F;
+            visit(*m_pmodule);
             outs() << "Number of calls to function: " << m_numCallsToFunc
                    << "\n";
         }
