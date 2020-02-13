@@ -13,6 +13,7 @@
 #include "llvm/Transforms/Instrumentation.h"
 #include "llvm/Transforms/Utils/BasicBlockUtils.h"
 
+// Libc Includes
 #include <tgmath.h>
 
 #define DEBUG_TYPE "local_opts"
@@ -39,19 +40,117 @@ class LocalOpts : public BasicBlockPass {
 
       public:
         ConstantFold(LocalOpts &parent) : m_localOpts(parent){};
+        void foldIntAddInstruction(Instruction &I) {
+            APInt OP0 = dyn_cast<ConstantInt>(I.getOperand(0))->getValue();
+            APInt OP1 = dyn_cast<ConstantInt>(I.getOperand(1))->getValue();
+
+            ConstantInt *replacement = ConstantInt::get(
+                dyn_cast<IntegerType>(I.getOperand(0)->getType()),
+                OP0.getZExtValue() + OP1.getZExtValue());
+            I.replaceAllUsesWith(replacement);
+            I.eraseFromParent();
+        }
+        void foldFpAddInstruction(Instruction &I) {
+            APFloat OP0 = dyn_cast<ConstantFP>(I.getOperand(0))->getValueAPF();
+            APFloat OP1 = dyn_cast<ConstantFP>(I.getOperand(1))->getValueAPF();
+            Constant *replacement =
+                ConstantFP::get(I.getOperand(0)->getType(),
+                                OP0.convertToDouble() + OP1.convertToDouble());
+            I.replaceAllUsesWith(replacement);
+            I.eraseFromParent();
+        }
+        void foldIntSubInstruction(Instruction &I) {
+            APInt OP0 = dyn_cast<ConstantInt>(I.getOperand(0))->getValue();
+            APInt OP1 = dyn_cast<ConstantInt>(I.getOperand(1))->getValue();
+
+            ConstantInt *replacement = ConstantInt::get(
+                dyn_cast<IntegerType>(I.getOperand(0)->getType()),
+                OP0.getZExtValue() - OP1.getZExtValue());
+            I.replaceAllUsesWith(replacement);
+            I.eraseFromParent();
+        }
+        void foldFpSubInstruction(Instruction &I) {
+            APFloat OP0 = dyn_cast<ConstantFP>(I.getOperand(0))->getValueAPF();
+            APFloat OP1 = dyn_cast<ConstantFP>(I.getOperand(1))->getValueAPF();
+            Constant *replacement =
+                ConstantFP::get(I.getOperand(0)->getType(),
+                                OP0.convertToDouble() - OP1.convertToDouble());
+            I.replaceAllUsesWith(replacement);
+            I.eraseFromParent();
+        }
+        void foldIntMulInstruction(Instruction &I) {
+            APInt OP0 = dyn_cast<ConstantInt>(I.getOperand(0))->getValue();
+            APInt OP1 = dyn_cast<ConstantInt>(I.getOperand(1))->getValue();
+
+            ConstantInt *replacement = ConstantInt::get(
+                dyn_cast<IntegerType>(I.getOperand(0)->getType()),
+                OP0.getZExtValue() * OP1.getZExtValue());
+            I.replaceAllUsesWith(replacement);
+            I.eraseFromParent();
+        }
+        void foldFpMulInstruction(Instruction &I) {
+            APFloat OP0 = dyn_cast<ConstantFP>(I.getOperand(0))->getValueAPF();
+            APFloat OP1 = dyn_cast<ConstantFP>(I.getOperand(1))->getValueAPF();
+            Constant *replacement =
+                ConstantFP::get(I.getOperand(0)->getType(),
+                                OP0.convertToDouble() * OP1.convertToDouble());
+            I.replaceAllUsesWith(replacement);
+            I.eraseFromParent();
+        }
+        void foldIntDivInstruction(Instruction &I) {
+            APInt OP0 = dyn_cast<ConstantInt>(I.getOperand(0))->getValue();
+            APInt OP1 = dyn_cast<ConstantInt>(I.getOperand(1))->getValue();
+
+            ConstantInt *replacement = ConstantInt::get(
+                dyn_cast<IntegerType>(I.getOperand(0)->getType()),
+                OP0.getZExtValue() / OP1.getZExtValue());
+            I.replaceAllUsesWith(replacement);
+            I.eraseFromParent();
+        }
+        void foldFpDivInstruction(Instruction &I) {
+            APFloat OP0 = dyn_cast<ConstantFP>(I.getOperand(0))->getValueAPF();
+            APFloat OP1 = dyn_cast<ConstantFP>(I.getOperand(1))->getValueAPF();
+            Constant *replacement =
+                ConstantFP::get(I.getOperand(0)->getType(),
+                                OP0.convertToDouble() / OP1.convertToDouble());
+            I.replaceAllUsesWith(replacement);
+            I.eraseFromParent();
+        }
         void visitBinaryOperator(BinaryOperator &I) {
             // Operator visit
             DEBUG(dbgs() << I << "\n");
-            int numConstOperands = I.getNumOperands();
-            for (User::op_iterator iterator = I.op_begin(), end = I.op_end();
-                 iterator != end; ++iterator) {
-                if (isa<Constant>(*iterator))
-                    --numConstOperands;
-                outs() << I << " has operand: " << *iterator << "\n";
-            }
-            if (numConstOperands <= 0) {
-                outs() << "All operands are constant"
-                       << "\n";
+            // Constant expression is also constant so we can simply do this
+            if (isa<Constant>(I.getOperand(0)) &&
+                isa<Constant>(I.getOperand(1))) {
+                switch (I.getOpcode()) {
+                case Instruction::Add:
+                    foldIntAddInstruction(I);
+                    break;
+                case Instruction::FAdd:
+                    foldFpAddInstruction(I);
+                    break;
+                case Instruction::Sub:
+                    foldIntSubInstruction(I);
+                    break;
+                case Instruction::FSub:
+                    foldFpSubInstruction(I);
+                    break;
+                case Instruction::Mul:
+                    foldIntMulInstruction(I);
+                    break;
+                case Instruction::FMul:
+                    foldFpMulInstruction(I);
+                    break;
+                case Instruction::UDiv:
+                case Instruction::SDiv:
+                    foldIntDivInstruction(I);
+                    break;
+                case Instruction::FDiv:
+                    foldFpDivInstruction(I);
+                    break;
+                default:
+                    break;
+                }
             }
         }
     } m_constantFolder;
@@ -400,9 +499,9 @@ class LocalOpts : public BasicBlockPass {
 
     bool runOnBasicBlock(BasicBlock &B) override {
         // We perform optimization on the function local basic blocks
-        // m_identityRemover.visit(B);
+        m_identityRemover.visit(B);
+        m_constantFolder.visit(B);
         m_strengthReducer.visit(B);
-        // m_constantFolder.visit(B);
         return true;
     }
 }; // namespace
