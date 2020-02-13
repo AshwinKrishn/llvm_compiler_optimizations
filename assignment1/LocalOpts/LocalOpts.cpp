@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "llvm/ADT/DenseMap.h"
+#include "llvm/IR/Constants.h"
 #include "llvm/IR/Function.h"
 #include "llvm/IR/InstIterator.h"
 #include "llvm/IR/InstVisitor.h"
@@ -11,6 +12,8 @@
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Transforms/Instrumentation.h"
 #include "llvm/Transforms/Utils/BasicBlockUtils.h"
+
+#include <tgmath.h>
 
 #define DEBUG_TYPE "local_opts"
 
@@ -61,14 +64,140 @@ class LocalOpts : public BasicBlockPass {
     class StrengthReduction : public InstVisitor<StrengthReduction> {
       protected:
         LocalOpts &m_localOpts;
+        /**
+         * @brief Int multiplciation
+         *
+         * @param I
+         */
+        void handleIntMultiplication(Instruction &I) {
+            for (User::op_iterator op = I.op_begin(), end = I.op_end();
+                 op != end; ++op) {
+                ConstantInt *constMul;
+                unsigned int currentOpNumber = op->getOperandNo();
+                if ((constMul = dyn_cast<ConstantInt>(op))) {
+                    double power = std::log2(
+                        static_cast<double>(constMul->getSExtValue()));
+                    // Statement below will be true if it is a factor of 2^N
+                    if (power == std::floor(power)) {
+                        // Construct leftshift instruction of with operands of
+                        // same type and replace
+                        ReplaceInstWithInst(
+                            &I, BinaryOperator::CreateShl(
+                                    I.getOperand(1 - currentOpNumber),
+                                    ConstantInt::get(I.getOperand(0)->getType(),
+                                                     power)));
+                    }
+                }
+            }
+        }
+        /**
+         * @brief Tried to do using a template but doesn't work because
+         * ConstantInt and ConstantFP have different ways of getting the actual
+         * value from them. Take the instruction and convert to arithmetic right
+         * shift to preserved sign bit
+         *
+         * @param I
+         */
+        void handleIntDivision(Instruction &I) {
+            Value *op = I.getOperand(1);
+            ConstantInt *constDiv;
+            if ((constDiv = dyn_cast<ConstantInt>(op))) {
+                double power =
+                    std::log2(static_cast<double>(constDiv->getSExtValue()));
+                // Statement below will be true if it is a factor of 2^N
+                if (power == std::floor(power)) {
+                    // Construct leftshift instruction of with operands of
+                    // same type and replace
+                    ReplaceInstWithInst(
+                        &I, BinaryOperator::CreateAShr(
+                                I.getOperand(0),
+                                ConstantInt::get(I.getOperand(0)->getType(),
+                                                 power)));
+                }
+            }
+            /**
+             * @brief Same as Int multiplication
+             *
+             * @param I
+             *
+             * @return
+             */
+        }
+        void handleFloatMultiplication(Instruction &I) {
+            for (User::op_iterator op = I.op_begin(), end = I.op_end();
+                 op != end; ++op) {
+                ConstantFP *constMul;
+                unsigned int currentOpNumber = op->getOperandNo();
+                if ((constMul = dyn_cast<ConstantFP>(op))) {
+                    double power = std::log2(static_cast<double>(
+                        constMul->getValueAPF().convertToDouble()));
+                    // Statement below will be true if it is a factor of 2^N
+                    if (power == std::floor(power)) {
+                        // Construct leftshift instruction of with operands of
+                        // same type and replace
+                        // I.getOpereand(0)->getType() because we don't care
+                        // which operand's type we're taking, because it is
+                        // guaranteed that both sides must have the same type
+                        ReplaceInstWithInst(
+                            &I, BinaryOperator::CreateShl(
+                                    I.getOperand(1 - currentOpNumber),
+                                    ConstantFP::get(I.getOperand(0)->getType(),
+                                                    power)));
+                    }
+                }
+            }
+        }
+        /**
+         * @brief Tried to do using a template but doesn't work because
+         * ConstantInt and ConstantFP have different ways of getting the actual
+         * value from them. Take the instruction and convert to arithmetic right
+         * shift to preserved sign bit
+         *
+         * @param I
+         */
+        void handleFloatDivision(Instruction &I) {
+            Value *op = I.getOperand(1);
+            ConstantFP *constDiv;
+            if ((constDiv = dyn_cast<ConstantFP>(op))) {
+                double power = std::log2(static_cast<double>(
+                    constDiv->getValueAPF().convertToDouble()));
+                // Statement below will be true if it is a factor of 2^N
+                if (power == std::floor(power)) {
+                    // Construct leftshift instruction of with operands of
+                    // same type and replace
+                    ReplaceInstWithInst(
+                        &I, BinaryOperator::CreateAShr(
+                                I.getOperand(0),
+                                ConstantFP::get(I.getOperand(0)->getType(),
+                                                power)));
+                }
+            }
+        }
 
       public:
         StrengthReduction(LocalOpts &parent) : m_localOpts(parent){};
         void visitBinaryOperator(BinaryOperator &I) {
-            // Operator visit
+            // Check if multiplication of division, then check if constant value
+            // of log_2(constant) = N is whole number
             DEBUG(dbgs() << I << "\n");
-            for (User::op_iterator op = I.op_begin(), end = I.op_end();
-                 op != end; ++op) {
+            switch (I.getOpcode()) {
+            case Instruction::Mul:
+                // Since multiplication is commutative we don't care about
+                // ordering
+                handleIntMultiplication(I);
+                break;
+            case Instruction::FMul:
+                handleFloatMultiplication(I);
+                break;
+            case Instruction::UDiv:
+            case Instruction::SDiv:
+                handleIntDivision(I);
+                break;
+            case Instruction::FDiv:
+                handleFloatDivision(I);
+                break;
+            default:
+                break;
             }
         }
     } m_strengthReducer;
@@ -271,8 +400,8 @@ class LocalOpts : public BasicBlockPass {
 
     bool runOnBasicBlock(BasicBlock &B) override {
         // We perform optimization on the function local basic blocks
-        m_identityRemover.visit(B);
-        // m_strengthReducer.visit(B);
+        // m_identityRemover.visit(B);
+        m_strengthReducer.visit(B);
         // m_constantFolder.visit(B);
         return true;
     }
