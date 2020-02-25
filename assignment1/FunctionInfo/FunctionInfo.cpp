@@ -22,7 +22,9 @@ class FunctionInfo : public FunctionPass, public InstVisitor<FunctionInfo> {
         uint64_t numSubs;
         uint64_t numMult;
         uint64_t numDiv;
-        uint64_t numBranch;
+        uint64_t numConditionalBr;
+        uint64_t numUncondBr;
+        uint64_t totalInsts;
     };
     Module *m_pmodule;
     Function *m_pfunction;
@@ -41,16 +43,18 @@ class FunctionInfo : public FunctionPass, public InstVisitor<FunctionInfo> {
     // Do some initialization
     bool doInitialization(Module &M) override {
         errs() << "5984 Function Information Pass\n"; // TODO: remove this.
-        // outs() <<
-        // "Name,\tArgs,\tCalls,\tBlocks,\tInsns\n,\tAdd/Sub,\tMul/Div,\tBr(Cond),\tBr(UnCond)";
+        outs() << "Name,\tArgs,\tCalls,\tBlocks,\tInsns,\tAdd/Sub,\tMul/"
+                  "Div,\tBr(Cond),\tBr(UnCond)"
+               << "\n";
         m_pmodule = &M;
         return false;
     }
 
     // Helper function to dump instruction information
     void dumpInstructionInfo(struct InstructionInfo &I, Function &F) {
+        I.totalInsts = 0;
         for (inst_iterator it = inst_begin(F), end = inst_end(F); it != end;
-             ++it) {
+             ++it, ++I.totalInsts) {
             switch ((*it).getOpcode()) {
             case Instruction::Add:
                 ++I.numAdds;
@@ -69,7 +73,13 @@ class FunctionInfo : public FunctionPass, public InstVisitor<FunctionInfo> {
                 break;
             case Instruction::Br:
             case Instruction::IndirectBr:
-                ++I.numBranch;
+                BranchInst *brinst;
+                if ((brinst = dyn_cast<BranchInst>(&*it))) {
+                    if (brinst->isConditional())
+                        ++I.numConditionalBr;
+                    else
+                        ++I.numUncondBr;
+                }
                 break;
             }
         }
@@ -86,35 +96,30 @@ class FunctionInfo : public FunctionPass, public InstVisitor<FunctionInfo> {
     }
     // Print output for each function
     bool runOnFunction(Function &F) override {
-        // outs() << "name" << ",\t" << "args" << ",\t" << "calls" <<
-        // ",\t" << "bbs" << ",\t" << "insts ...." << "\n";
-        outs() << "Inside Function: " << F.getName() << "\n";
+        outs() << F.getName() << ",   ";
         // Number of arguments
-        outs() << "Number of Arguments: ";
-        F.isVarArg() ? outs() << "*"
-                              << "\n"
-                     : outs() << F.arg_size() << "\n";
+        if (F.isVarArg())
+            outs() << "*, \t";
+        else
+            outs() << F.arg_size() << ",\t";
         // Number of direct call sites if we have the information
         if (F.hasProfileData()) {
-            outs() << "Number of calls to function: "
-                   << F.getEntryCount().getValueOr(0) << "\n";
+            outs() << F.getEntryCount().getValueOr(0) << ",\t";
         } else {
             // We are an instruction visitor, visit the module's instructions
             m_pfunction = &F;
             visit(*m_pmodule);
-            outs() << "Number of calls to function: " << m_numCallsToFunc
-                   << "\n";
+            outs() << m_numCallsToFunc << ",\t";
         }
         // Number of basic blocks
-        outs() << "Number of basic blocks: " << F.getBasicBlockList().size()
-               << "\n";
+        outs() << F.getBasicBlockList().size() << ",\t";
         struct InstructionInfo ii = {0};
         dumpInstructionInfo(ii, F);
-        outs() << "Number of adds: " << ii.numAdds << "\n";
-        outs() << "Number of subs: " << ii.numSubs << "\n";
-        outs() << "Number of mults: " << ii.numMult << "\n";
-        outs() << "Number of divs: " << ii.numDiv << "\n";
-        outs() << "Number of branches: " << ii.numBranch << "\n";
+        outs() << ii.totalInsts << ",\t";
+        outs() << ii.numAdds + ii.numSubs << ",\t";
+        outs() << ii.numMult + ii.numDiv << ",\t";
+        outs() << ii.numConditionalBr << ",\t";
+        outs() << ii.numUncondBr << "\n";
 
         return false;
     }

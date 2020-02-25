@@ -27,6 +27,7 @@ class LocalOpts : public BasicBlockPass {
   protected:
     int m_numConstsFolded;
     int m_numStrengthReduced;
+    int m_numAlgebraic;
 
     // Member Optimization classes
     /**
@@ -125,28 +126,36 @@ class LocalOpts : public BasicBlockPass {
                 switch (I.getOpcode()) {
                 case Instruction::Add:
                     foldIntAddInstruction(I);
+                    ++m_localOpts.m_numConstsFolded;
                     break;
                 case Instruction::FAdd:
                     foldFpAddInstruction(I);
+                    ++m_localOpts.m_numConstsFolded;
                     break;
                 case Instruction::Sub:
                     foldIntSubInstruction(I);
+                    ++m_localOpts.m_numConstsFolded;
                     break;
                 case Instruction::FSub:
                     foldFpSubInstruction(I);
+                    ++m_localOpts.m_numConstsFolded;
                     break;
                 case Instruction::Mul:
                     foldIntMulInstruction(I);
+                    ++m_localOpts.m_numConstsFolded;
                     break;
                 case Instruction::FMul:
                     foldFpMulInstruction(I);
+                    ++m_localOpts.m_numConstsFolded;
                     break;
                 case Instruction::UDiv:
                 case Instruction::SDiv:
                     foldIntDivInstruction(I);
+                    ++m_localOpts.m_numConstsFolded;
                     break;
                 case Instruction::FDiv:
                     foldFpDivInstruction(I);
+                    ++m_localOpts.m_numConstsFolded;
                     break;
                 default:
                     break;
@@ -284,16 +293,20 @@ class LocalOpts : public BasicBlockPass {
                 // Since multiplication is commutative we don't care about
                 // ordering
                 handleIntMultiplication(I);
+                ++m_localOpts.m_numStrengthReduced;
                 break;
             case Instruction::FMul:
                 handleFloatMultiplication(I);
+                ++m_localOpts.m_numStrengthReduced;
                 break;
             case Instruction::UDiv:
             case Instruction::SDiv:
                 handleIntDivision(I);
+                ++m_localOpts.m_numStrengthReduced;
                 break;
             case Instruction::FDiv:
                 handleFloatDivision(I);
+                ++m_localOpts.m_numStrengthReduced;
                 break;
             default:
                 break;
@@ -329,7 +342,7 @@ class LocalOpts : public BasicBlockPass {
                 DEBUG(dbgs()
                       << "Replaced 0 mults for Instruction: " << I << "\n");
                 I.replaceAllUsesWith(I.getOperand(operandNumber));
-                // I.eraseFromParent();
+                ++m_localOpts.m_numAlgebraic;
                 retVal = true;
                 break;
             case Instruction::Add:
@@ -339,7 +352,7 @@ class LocalOpts : public BasicBlockPass {
                 DEBUG(dbgs()
                       << "Replaced 0 adds for Instruction: " << I << "\n");
                 I.replaceAllUsesWith(I.getOperand(1 - operandNumber));
-                // I.eraseFromParent();
+                ++m_localOpts.m_numAlgebraic;
                 retVal = true;
                 break;
             case Instruction::Sub:
@@ -350,6 +363,7 @@ class LocalOpts : public BasicBlockPass {
                       << "Replaced 0 subs for Instruction: " << I << "\n");
                 if (operandNumber == 1) {
                     I.replaceAllUsesWith(I.getOperand(1 - operandNumber));
+                    ++m_localOpts.m_numAlgebraic;
                     // I.eraseFromParent();
                     retVal = true;
                     // For now we ignore the negative case since that identity
@@ -376,7 +390,7 @@ class LocalOpts : public BasicBlockPass {
                 DEBUG(dbgs()
                       << "Replaced 1 mults for Instruction: " << I << "\n");
                 I.replaceAllUsesWith(I.getOperand(1 - operandNumber));
-                // I.eraseFromParent();
+                ++m_localOpts.m_numAlgebraic;
                 retVal = true;
                 break;
             case Instruction::UDiv:
@@ -388,7 +402,7 @@ class LocalOpts : public BasicBlockPass {
                 // operand, for the case of x/1
                 if (operandNumber == 1) {
                     I.replaceAllUsesWith(I.getOperand(1 - operandNumber));
-                    // I.eraseFromParent();
+                    ++m_localOpts.m_numAlgebraic;
                     retVal = true;
                 }
                 break;
@@ -411,7 +425,7 @@ class LocalOpts : public BasicBlockPass {
                 DEBUG(dbgs()
                       << "Replaced eq subs for Instruction: " << I << "\n");
                 I.replaceAllUsesWith(ConstantInt::get(I.getType(), 0));
-                // I.eraseFromParent();
+                ++m_localOpts.m_numAlgebraic;
                 retVal = true;
                 break;
             case Instruction::FSub:
@@ -420,7 +434,7 @@ class LocalOpts : public BasicBlockPass {
                 DEBUG(dbgs()
                       << "Replaced eq fsubs for Instruction: " << I << "\n");
                 I.replaceAllUsesWith(ConstantFP::get(I.getType(), 0.0));
-                // I.eraseFromParent();
+                ++m_localOpts.m_numAlgebraic;
                 retVal = true;
                 break;
             case Instruction::UDiv:
@@ -430,7 +444,7 @@ class LocalOpts : public BasicBlockPass {
                 DEBUG(dbgs()
                       << "Replaced eq divs for Instruction: " << I << "\n");
                 I.replaceAllUsesWith(ConstantInt::get(I.getType(), 1));
-                // I.eraseFromParent();
+                ++m_localOpts.m_numAlgebraic;
                 retVal = true;
                 break;
             case Instruction::FDiv:
@@ -439,7 +453,7 @@ class LocalOpts : public BasicBlockPass {
                 DEBUG(dbgs()
                       << "Replaced eq fdivs for Instruction: " << I << "\n");
                 I.replaceAllUsesWith(ConstantFP::get(I.getType(), 1.0));
-                // I.eraseFromParent();
+                ++m_localOpts.m_numAlgebraic;
                 retVal = true;
                 break;
             case Instruction::Add:
@@ -449,6 +463,7 @@ class LocalOpts : public BasicBlockPass {
                     (right_op = dyn_cast<Constant>(I.getOperand(1)))) {
                     if (left_op->isZeroValue() && right_op->isZeroValue()) {
                         I.replaceAllUsesWith(I.getOperand(0));
+                        ++m_localOpts.m_numAlgebraic;
                         retVal = true;
                     }
                 }
@@ -487,7 +502,7 @@ class LocalOpts : public BasicBlockPass {
     static char ID;
     LocalOpts()
         : BasicBlockPass(ID), m_numConstsFolded(0), m_numStrengthReduced(0),
-          m_constantFolder(*this), m_strengthReducer(*this),
+          m_numAlgebraic(0), m_constantFolder(*this), m_strengthReducer(*this),
           m_identityRemover(*this) {}
     ~LocalOpts() {}
 
@@ -496,6 +511,15 @@ class LocalOpts : public BasicBlockPass {
 
     // Do some initialization
     bool doInitialization(Function &F) override { return false; }
+
+    bool doFinalization(Function &F) override {
+        outs() << "Transformations Applied:"
+               << "\n";
+        outs() << "Algebraic Identities: " << m_numAlgebraic << "\n";
+        outs() << "Constant Folding: " << m_numConstsFolded << "\n";
+        outs() << "Strength Reductions: " << m_numStrengthReduced << "\n";
+        return false;
+    }
 
     bool runOnBasicBlock(BasicBlock &B) override {
         // We perform optimization on the function local basic blocks
