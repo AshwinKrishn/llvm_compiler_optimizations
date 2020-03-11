@@ -13,25 +13,25 @@ using namespace llvm;
 
 namespace {
 
-  class Liveness : public FunctionPass {
+class Liveness : public FunctionPass {
   public:
     static char ID;
 
-    Liveness() : FunctionPass(ID) { }
+    Liveness() : FunctionPass(ID) {}
 
-    virtual bool runOnFunction(Function& F) {
+    virtual bool runOnFunction(Function &F) {
 
-      // Did not modify the incoming Function.
-      return false;
+        // Did not modify the incoming Function.
+        return false;
     }
 
-    virtual void getAnalysisUsage(AnalysisUsage& AU) const {
-      AU.setPreservesAll();
+    virtual void getAnalysisUsage(AnalysisUsage &AU) const {
+        AU.setPreservesAll();
     }
 
   private:
-  };
+};
 
-  char Liveness::ID = 0;
-  RegisterPass<Liveness> X("liveness", "ECE 5984 Liveness");
-}
+char Liveness::ID = 0;
+RegisterPass<Liveness> X("liveness", "ECE 5984 Liveness");
+} // namespace

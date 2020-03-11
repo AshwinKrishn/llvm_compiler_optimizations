@@ -1,13 +1,13 @@
-INC=-I/usr/local/include/
+INC=-I/usr/local/include/ -I ./DataflowFramework/include/
 all: liveness.so available.so
 
 CXXFLAGS = -rdynamic $(shell llvm-config --cxxflags) $(INC) -g -O0 -fPIC
 
-dataflow.o: dataflow.cpp dataflow.h
+DataflowFramework/%.o: DataflowFramework/%.cpp
 
 available-support.o: available-support.cpp available-support.h	
 
-%.so: %.o dataflow.o available-support.o
+%.so: %.o DataflowFramework/dataflow.o available-support.o
 	$(CXX) -dylib -shared $^ -o $@
 
 clean:
