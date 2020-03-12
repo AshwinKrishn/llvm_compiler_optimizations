@@ -6,7 +6,7 @@
 /*
  *intersection operator inheriting pure virtual MeetOp
  */
-class IntersectionMeet : public MeetOp {
+class IntersectionMeet : public IMeetOp {
 
     std::bitset<MAX_BITS_SIZE> result;
     void intersection_op(std::bitset<MAX_BITS_SIZE> B);

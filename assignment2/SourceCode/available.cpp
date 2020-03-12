@@ -10,6 +10,7 @@
 
 #include "available-support.h"
 #include "dataflow.h"
+#include <IntersectionMeet.h>
 
 using namespace llvm;
 using namespace std;
@@ -45,6 +46,14 @@ class AvailableExpressions : public FunctionPass {
         // Print out the expressions used in the function
         outs() << "Expressions used by this function:\n";
         printSet(&expressions);
+
+        // Start of our modifications
+
+        // Instantiate requirements
+        IntersectionMeet intersect;
+
+        DataflowFramework DF(intersect, FORWARD, F);
+        DF.run();
 
         // Did not modify the incoming Function.
         return false;

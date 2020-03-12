@@ -12,7 +12,7 @@
  * Interface for meet operator
  *
  */
-class MeetOp {
+class IMeetOp {
     virtual std::bitset<MAX_BITS_SIZE>
     meet(std::vector<std::bitset<MAX_BITS_SIZE>> input) = 0;
 };

@@ -6,7 +6,7 @@
 /*
  *union operator inheriting pure virtual MeetOp
  */
-class UnionMeet : public MeetOp {
+class UnionMeet : public IMeetOp {
   public:
     std::bitset<MAX_BITS_SIZE> result;
     void union_op(std::bitset<MAX_BITS_SIZE> B);
