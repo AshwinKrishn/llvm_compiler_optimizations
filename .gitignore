@@ -33,3 +33,8 @@
 
 # Vim Files
 *.swp
+
+#Taglist
+tags
+cscope.out
+*.clangd
