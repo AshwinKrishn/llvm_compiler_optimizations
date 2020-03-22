@@ -52,7 +52,7 @@ class AvailableExpressions : public FunctionPass {
         // Instantiate requirements
         IntersectionMeet intersect;
 
-        DataflowFramework DF(intersect, FORWARD, F);
+        DataflowFramework<Expression> DF(intersect, FORWARD, F, expressions);
         DF.run();
 
         // Did not modify the incoming Function.
