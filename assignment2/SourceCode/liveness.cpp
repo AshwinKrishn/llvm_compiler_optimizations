@@ -2,34 +2,49 @@
 // Group:
 
 ////////////////////////////////////////////////////////////////////////////////
-
+#include "KillGen.h"
+#include "MeetOpInterface.h"
+#include "dataflow.h"
 #include "llvm/IR/Function.h"
 #include "llvm/Pass.h"
 #include "llvm/Support/raw_ostream.h"
-
-#include "dataflow.h"
 
 using namespace llvm;
 
 namespace {
 
-class Liveness : public FunctionPass {
-  public:
-    static char ID;
+class KillGenLive : public KillGen {
+      public:
+	std::bitset<MAX_BITS_SIZE>
+	KillEval(llvm::BasicBlock *BB,
+		 std::map<std::string, unsigned int> list) {
+		for (Instruction &I : *BB) {
+		}
+	}
+	std::bitset<MAX_BITS_SIZE>
+	GenEval(llvm::BasicBlock *BB,
+		std::map<std::string, unsigned int> list) {
+		for (Instruction &I : *BB) {
+		}
+	}
+};
+class Liveness : public FunctionPass, public KillGenLive {
+      public:
+	static char ID;
 
-    Liveness() : FunctionPass(ID) {}
+	Liveness() : FunctionPass(ID) {}
 
-    virtual bool runOnFunction(Function &F) {
+	virtual bool runOnFunction(Function &F) {
 
-        // Did not modify the incoming Function.
-        return false;
-    }
+		// Did not modify the incoming Function.
+		return false;
+	}
 
-    virtual void getAnalysisUsage(AnalysisUsage &AU) const {
-        AU.setPreservesAll();
-    }
+	virtual void getAnalysisUsage(AnalysisUsage &AU) const {
+		AU.setPreservesAll();
+	}
 
-  private:
+      private:
 };
 
 char Liveness::ID = 0;

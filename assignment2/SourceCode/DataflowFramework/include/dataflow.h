@@ -1,3 +1,4 @@
+// ECE5984 S18 Assignment 2: available-support.cpp
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -16,6 +17,7 @@
 #include <vector>
 
 // Local includes:
+#include "KillGen.h"
 #include <MeetOpInterface.h>
 
 enum MeetOperator { UNION, INTERSECTION };
@@ -26,72 +28,75 @@ namespace llvm {
 // Add definitions (and code, depending on your strategy) for your dataflow
 // abstraction here.
 template <typename D> class DataflowFramework {
-  protected:
-    IMeetOp &m_meetOp;
-    Function &m_func;
-    FlowDirection m_dir;
-    std::vector<D> &m_domainSet;
+      protected:
+	IMeetOp &m_meetOp;
+	Function &m_func;
+	FlowDirection m_dir;
+	std::vector<D> &m_domainSet;
+	void doForwardTraversal();
+	void doBackwardTraversal();
+	KillGen &KG;
 
-    void doForwardTraversal();
-    void doBackwardTraversal();
-
-  public:
-    // Dataflow Framework needs these items:
-    // 1) The basic block tree
-    // 2) Direction of analysis
-    // 3) Meet Operator
-    // 4) Transfer Function
-    // 5) IN or OUT Initialization
-    // 6) Boundary Condition
-    // 7) Sets of Expressions/Variables
-    DataflowFramework(IMeetOp &meetOp, FlowDirection direction,
-                      Function &function, std::vector<D> &domainset);
-
-    // Placeholder function for entire computation, we may use template later,
-    // depending on how we want to return the results and what results to
-    // return. Eg: vector<Expression>? or vector<Variable>? We might use
-    // vector<T> to template it.
-    std::vector<D> &run();
+      public:
+	// Dataflow Framework needs these items:
+	// 1) The basic block tree
+	// 2) Direction of analysis
+	// 3) Meet Operator
+	// 4) Transfer Function
+	// 5) IN or OUT Initialization
+	// 6) Boundary Condition
+	// 7) Sets of Expressions/Variables
+	DataflowFramework(IMeetOp &meetOp, FlowDirection direction,
+			  Function &function, std::vector<D> &domainset,
+			  KillGen &KillGenImp);
+	// Placeholder function for entire computation, we may use template
+	// later, depending on how we want to return the results and what
+	// results to return. Eg: vector<Expression>? or vector<Variable>? We
+	// might use vector<T> to template it.
+	std::vector<D> &run();
 };
 
 template <typename D>
 DataflowFramework<D>::DataflowFramework(IMeetOp &meetOp,
-                                        FlowDirection direction,
-                                        Function &function,
-                                        std::vector<D> &domainset)
+					FlowDirection direction,
+					Function &function,
+					std::vector<D> &domainset,
+					KillGen &KillGenImp)
     : m_meetOp(meetOp), m_func(function), m_dir(direction),
-      m_domainSet(domainset) {}
+      m_domainSet(domainset), KG(KillGenImp) {}
 
 template <typename D> std::vector<D> &DataflowFramework<D>::run() {
-    if (m_dir == FORWARD) {
-        doForwardTraversal();
-    } else {
-        doBackwardTraversal();
-    }
-    return m_domainSet;
+	if (m_dir == FORWARD) {
+		doForwardTraversal();
+	} else {
+		doBackwardTraversal();
+	}
+	return m_domainSet;
 }
 
 template <typename D> void DataflowFramework<D>::doForwardTraversal() {
-    // For now this will suffice, but we need to be wary of multiple return
-    // statements, if that is present in the program. In LLVM there can be
-    // multiple terminator instructions that are returns in a basic block. There
-    // is no 'EXIT' block for the procedure. This means our ipo_begin
-    // instantiation might not be 100% accurate. This also applies for
-    // post_order.
-    for (ipo_iterator<BasicBlock *> I =
-             ipo_begin(&m_func.getBasicBlockList().back());
-         I != ipo_end(&m_func.getEntryBlock()); ++I) {
-        if (BasicBlock *BB = dyn_cast<BasicBlock>(*I))
-            outs() << *BB << "\n";
-    }
+	// For now this will suffice, but we need to be wary of multiple return
+	// statements, if that is present in the program. In LLVM there can be
+	// multiple terminator instructions that are returns in a basic block.
+	// There is no 'EXIT' block for the procedure. This means our ipo_begin
+	// instantiation might not be 100% accurate. This also applies for
+	// post_order.
+	BasicBlock *BB;
+	for (ipo_iterator<BasicBlock *> I =
+		 ipo_begin(&m_func.getBasicBlockList().back());
+	     I != ipo_end(&m_func.getEntryBlock()); ++I) {
+		if (BB = dyn_cast<BasicBlock>(*I))
+			outs() << *BB << "\n";
+		KG.GenEval(BB, &m_domainSet);
+	}
 }
 
 template <typename D> void DataflowFramework<D>::doBackwardTraversal() {
-    for (po_iterator<BasicBlock *> I = po_begin(&m_func.getEntryBlock());
-         I != po_end(&m_func.getBasicBlockList().back()); ++I) {
-        if (BasicBlock *BB = dyn_cast<BasicBlock>(*I))
-            outs() << *BB << "\n";
-    }
+	for (po_iterator<BasicBlock *> I = po_begin(&m_func.getEntryBlock());
+	     I != po_end(&m_func.getBasicBlockList().back()); ++I) {
+		if (BasicBlock *BB = dyn_cast<BasicBlock>(*I))
+			outs() << *BB << "\n";
+	}
 }
 
 } // namespace llvm
