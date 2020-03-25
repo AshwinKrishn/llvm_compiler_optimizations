@@ -18,14 +18,14 @@ namespace llvm {
 std::string getShortValueName(Value *v);
 
 class Expression {
-      public:
-	Value *v1;
-	Value *v2;
-	Instruction::BinaryOps op;
-	Expression(Instruction *I);
-	bool operator==(const Expression &e2) const;
-	bool operator<(const Expression &e2) const;
-	std::string toString() const;
+  public:
+    Value *v1;
+    Value *v2;
+    Instruction::BinaryOps op;
+    Expression(Instruction *I);
+    bool operator==(const Expression &e2) const;
+    bool operator<(const Expression &e2) const;
+    std::string toString() const;
 };
 
 void printSet(std::vector<Expression> *x);
