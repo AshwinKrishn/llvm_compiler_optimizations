@@ -12,18 +12,16 @@
 #include <string>
 namespace llvm {
 
-class KillGen {
-      public:
-	virtual std::bitset<MAX_BITS_SIZE>
-	//	KillEval(llvm::BasicBlock *BB, std::vector<llvm::Expression>
-	// list) { clean up
-	KillEval(llvm::BasicBlock *BB, void *list) {
-		outs() << "Needs overriding. Do not use default implementation";
-	}
-	virtual std::bitset<MAX_BITS_SIZE> GenEval(llvm::BasicBlock *BB,
-						   void *list) {
-		outs() << "Needs overriding Do not use default implementation";
-	}
+template <typename D> class KillGen {
+  public:
+    virtual std::bitset<MAX_BITS_SIZE>
+    //	KillEval(llvm::BasicBlock *BB, std::vector<llvm::Expression>
+    // list) { clean up
+    killEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &list,
+             std::bitset<MAX_BITS_SIZE> &depset, std::vector<D> &domainset) = 0;
+    virtual std::bitset<MAX_BITS_SIZE>
+    genEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &list,
+            std::bitset<MAX_BITS_SIZE> &depset, std::vector<D> &domainset) = 0;
 };
 
 } // namespace llvm
