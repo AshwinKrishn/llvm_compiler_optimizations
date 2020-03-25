@@ -3,26 +3,50 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
+#include "available-support.h"
+#include "dataflow.h"
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/Function.h"
 #include "llvm/Pass.h"
 #include "llvm/Support/raw_ostream.h"
-
-#include "available-support.h"
-#include "dataflow.h"
 #include <IntersectionMeet.h>
+#include <KillGen.h>
 
 using namespace llvm;
 using namespace std;
 
 namespace {
-class AvailableExpressions : public FunctionPass {
 
+class KillGenEval : public KillGen<Expression> {
+  public:
+    KillGenEval() : KillGen() {}
+    std::bitset<MAX_BITS_SIZE>
+    killEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &list,
+             std::bitset<MAX_BITS_SIZE> &depset,
+             std::vector<Expression> &domainset) override {
+        for (Instruction &I : *BB) {
+            // null for Available expression
+        }
+        return list;
+    }
+    std::bitset<MAX_BITS_SIZE>
+    genEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &list,
+            std::bitset<MAX_BITS_SIZE> &depset,
+            std::vector<Expression> &domainset) override {
+        for (Instruction &I : *BB) {
+
+            //			set the bit for corresponding
+            // expression;
+            //			ret = in.find(Expression);
+            //			list[ret] = 1;
+        }
+        return list;
+    }
+};
+class AvailableExpressions : public FunctionPass {
   public:
     static char ID;
-
     AvailableExpressions() : FunctionPass(ID) {}
-
     virtual bool runOnFunction(Function &F) {
 
         // Here's some code to familarize you with the Expression
@@ -35,7 +59,8 @@ class AvailableExpressions : public FunctionPass {
                  i != e; ++i) {
 
                 Instruction *I = &*i;
-                // We only care about available expressions for BinaryOperators
+                // We only care about available expressions for
+                // BinaryOperators
                 if (BinaryOperator *BI = dyn_cast<BinaryOperator>(I)) {
 
                     expressions.push_back(Expression(BI));
@@ -51,8 +76,9 @@ class AvailableExpressions : public FunctionPass {
 
         // Instantiate requirements
         IntersectionMeet intersect;
-
-        DataflowFramework<Expression> DF(intersect, FORWARD, F, expressions);
+        KillGenEval KillGenAE;
+        DataflowFramework<Expression> DF(intersect, FORWARD, F, expressions,
+                                         KillGenAE);
         DF.run();
 
         // Did not modify the incoming Function.
@@ -62,8 +88,6 @@ class AvailableExpressions : public FunctionPass {
     virtual void getAnalysisUsage(AnalysisUsage &AU) const {
         AU.setPreservesAll();
     }
-
-  private:
 };
 
 char AvailableExpressions::ID = 0;

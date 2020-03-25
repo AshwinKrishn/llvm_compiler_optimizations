@@ -1,4 +1,4 @@
-INC=-I/usr/local/include/ -I ./DataflowFramework/include/
+INC=-I/usr/local/include/ -I ./DataflowFramework/include/ -I ./
 SOURCES:= $(shell find ./DataflowFramework -type f -name '*.cpp')
 OBJECTS:= $(SOURCES:.cpp=.o)
 all: liveness.so available.so
