@@ -8,10 +8,13 @@
  */
 class IntersectionMeet : public IMeetOp {
 
-        std::bitset<MAX_BITS_SIZE> result;
-        void intersection_op(std::bitset<MAX_BITS_SIZE> B);
-        std::bitset<MAX_BITS_SIZE>
-        meet(std::vector<std::bitset<MAX_BITS_SIZE>> input) override;
+	std::bitset<MAX_BITS_SIZE> result;
+	std::bitset<MAX_BITS_SIZE>
+	intersection_op(std::bitset<MAX_BITS_SIZE> ip1,
+			std::bitset<MAX_BITS_SIZE> ip2);
+	std::bitset<MAX_BITS_SIZE>
+	meet(std::bitset<MAX_BITS_SIZE> input1,
+	     std::bitset<MAX_BITS_SIZE> input2) override;
 };
 
 #endif
