@@ -11,6 +11,8 @@
 #include "llvm/IR/Instructions.h"
 #include "llvm/IR/ValueMap.h"
 #include <llvm/ADT/PostOrderIterator.h>
+#include <llvm/Support/Errc.h>
+#include <llvm/Support/Error.h>
 #include <llvm/Support/raw_ostream.h>
 
 // std
@@ -24,6 +26,7 @@
 enum MeetOperator { UNION, INTERSECTION };
 enum FlowDirection { FORWARD, BACKWARD };
 enum BitsVal { ZEROS, ONES };
+enum BoundaryCondition { EMPTY, UNIVERSAL };
 
 namespace llvm {
 
@@ -51,8 +54,10 @@ template <typename D> class DataflowFramework {
         IMeetOp &m_meetOp;
         Function &m_func;
         FlowDirection m_dir;
+        BoundaryCondition m_boundary;
         std::vector<D> &m_domainSet;
         KillGen<D> &m_KG;
+
         void doForwardTraversal(
             llvm::DenseMap<BasicBlock *, BBInOutBits *> &currentInOutMap,
             llvm::DenseMap<BasicBlock *, BBInOutBits *> &previousInOutMap);
@@ -62,6 +67,9 @@ template <typename D> class DataflowFramework {
         void initializeBbBitMaps(
             Function &F,
             llvm::DenseMap<BasicBlock *, BBInOutBits *> &currentMap);
+        bool
+        hasOutChanged(llvm::DenseMap<BasicBlock *, BBInOutBits *> &currentMap,
+                      llvm::DenseMap<BasicBlock *, BBInOutBits *> &previousMap);
 
       public:
         // Dataflow Framework needs these items:
@@ -73,8 +81,8 @@ template <typename D> class DataflowFramework {
         // 6) Boundary Condition
         // 7) Sets of Expressions/Variables
         DataflowFramework(IMeetOp &meetOp, FlowDirection direction,
-                          Function &function, std::vector<D> &domainset,
-                          KillGen<D> &KillGenImp);
+                          BoundaryCondition boundary, Function &function,
+                          std::vector<D> &domainset, KillGen<D> &KillGenImp);
         // Placeholder function for entire computation, we may use template
         // later, depending on how we want to return the results and what
         // results to return. Eg: vector<Expression>? or vector<Variable>? We
@@ -83,13 +91,11 @@ template <typename D> class DataflowFramework {
 };
 
 template <typename D>
-DataflowFramework<D>::DataflowFramework(IMeetOp &meetOp,
-                                        FlowDirection direction,
-                                        Function &function,
-                                        std::vector<D> &domainset,
-                                        KillGen<D> &KillGenImp)
+DataflowFramework<D>::DataflowFramework(
+    IMeetOp &meetOp, FlowDirection direction, BoundaryCondition boundary,
+    Function &function, std::vector<D> &domainset, KillGen<D> &KillGenImp)
     : m_meetOp(meetOp), m_func(function), m_dir(direction),
-      m_domainSet(domainset), m_KG(KillGenImp) {}
+      m_boundary(boundary), m_domainSet(domainset), m_KG(KillGenImp) {}
 
 template <typename D> std::vector<D> &DataflowFramework<D>::run() {
         llvm::DenseMap<BasicBlock *, BBInOutBits *> currentInOutMap;
@@ -113,8 +119,9 @@ template <typename D> std::vector<D> &DataflowFramework<D>::run() {
  * bit vectors and associating them with the basic blocks.
  *
  * @tparam D Domain we operate on
- * @param F Function reference
- * @param currentMap reference of map
+ * @param F Function reference we're operating on
+ * @param currentMap Map reference for basic block pointer to IN OUT bitmap
+ * mapping
  */
 template <typename D>
 void DataflowFramework<D>::initializeBbBitMaps(
@@ -136,8 +143,16 @@ void DataflowFramework<D>::initializeBbBitMaps(
                         p_pair.second = p_inOut;
                         currentMap.insert(p_pair);
                 }
-                // Explicitly clear the entry block's OUT:
-                currentMap.find(&entry)->second->m_OUT.reset();
+                // Explicitly clear or set the entry block's IN, while the
+                // algorithm requires we clear/set an entry block's OUT, there
+                // is no empty entry block, in the conventional sense in LLVM.
+                // This is the first block, which is effectively the first block
+                // after entry:
+                if (m_boundary == UNIVERSAL) {
+                        currentMap.find(&entry)->second->m_IN.set();
+                } else if (m_boundary == EMPTY) {
+                        currentMap.find(&entry)->second->m_IN.reset();
+                }
         } else {
                 for (BasicBlock &BB : F) {
                         BBInOutBits *p_inOut = new BBInOutBits(ONES, ZEROS);
@@ -146,9 +161,56 @@ void DataflowFramework<D>::initializeBbBitMaps(
                         p_pair.second = p_inOut;
                         currentMap.insert(p_pair);
                 }
-                // Explicitly set the exit block's IN:
-                currentMap.find(&exit)->second->m_IN.set();
+                // Explicitly set the exit block's OUT, again, this doesn't
+                // cover multiple exit points and assumes a single return in the
+                // function, we can add a sentinel "exit" node later on if
+                // required for our analysis. Again, while the algorithm
+                // requires we set the "exit" block's IN, we don't have an empty
+                // "exit" block, the "exit" block currently is just the last
+                // block of the function, containing the return instruction,
+                // thus, we set the OUT of the "exit" block:
+                if (m_boundary == UNIVERSAL) {
+                        currentMap.find(&exit)->second->m_OUT.set();
+                } else if (m_boundary == EMPTY) {
+                        currentMap.find(&exit)->second->m_OUT.reset();
+                }
         }
+}
+
+/**
+ * @brief
+ * Checks if any of the OUT's of any basic blocks has changed, if it has, return
+ * true, else return false
+ *
+ * @tparam D Domain we operate on
+ * @param currentMap Current bitmap reference
+ * @param previousMap Previous bitmap reference from previous iteration
+ *
+ * @return
+ */
+template <typename D>
+bool DataflowFramework<D>::hasOutChanged(
+    llvm::DenseMap<BasicBlock *, BBInOutBits *> &currentMap,
+    llvm::DenseMap<BasicBlock *, BBInOutBits *> &previousMap) {
+        bool retval = false;
+        // Iterate over both maps and check if OUT is the same
+        for (auto it = currentMap.begin(); it != currentMap.end(); ++it) {
+                auto currentOut = it->second->m_OUT;
+                // Get previous mapping
+                auto previous = previousMap.find(it->first);
+                if (previous != previousMap.end()) {
+                        auto previousOut = previous->second->m_OUT;
+                        if (currentOut != previousOut) {
+                                retval = true;
+                        }
+                } else {
+                        // Error, BB entry in current not found in previous,
+                        // should be impossible
+                        llvm_unreachable(
+                            "BB Entry in Current not found in Previous");
+                }
+        }
+        return retval;
 }
 
 template <typename D>
@@ -163,29 +225,29 @@ void DataflowFramework<D>::doForwardTraversal(
         // post_order.
         BasicBlock *BB;
         std::bitset<MAX_BITS_SIZE> meet_res;
-        // Placeholders, remove later:
-        // std::bitset<MAX_BITS_SIZE> domainbits;
-        // std::bitset<MAX_BITS_SIZE> depkillset;
 
-        // while (NO_CHANGES_TO_OUT)
-        for (ipo_iterator<BasicBlock *> I =
-                 ipo_begin(&m_func.getBasicBlockList().back());
-             I != ipo_end(&m_func.getEntryBlock()); ++I) {
-                if (BB = dyn_cast<BasicBlock>(*I))
-                        outs() << *BB << "\n";
-                // MEET OF ALL PREDECESSORS
-                for (BasicBlock *Pred : predecessors(BB)) {
-                        //	struct temp =  previous.find(BB);
-                        //	meet_res = m_meetOp.meet(temp.output);
-                        ////meet_res will be used for input in transffer
-                        // function
+        do {
+                previousInOutMap = currentInOutMap;
+                for (ipo_iterator<BasicBlock *> I =
+                         ipo_begin(&m_func.getBasicBlockList().back());
+                     I != ipo_end(&m_func.getEntryBlock()); ++I) {
+                        if (BB = dyn_cast<BasicBlock>(*I))
+                                outs() << *BB << "\n";
+                        // MEET OF ALL PREDECESSORS
+                        for (BasicBlock *Pred : predecessors(BB)) {
+                                //	struct temp =  previous.find(BB);
+                                //	meet_res = m_meetOp.meet(temp.output);
+                                ////meet_res will be used for input in transffer
+                                // function
+                        }
+                        // genset = m_KG.genEval(BB, domainbits, depkillset,
+                        // m_domainSet); // OUTPUT = BITS GENERATED in this
+                        // basic block killset = killEval(); // OUTPUT =
+                        // DEFINITIONS THAT GET KILLED BY BASIC BLOCK
+                        // transferFunction(genset, killset, m_meetOp); general
+                        // implementation, OUTPUT = CURRENT_BITVECTOR
                 }
-                // genset = m_KG.genEval(BB, domainbits, depkillset,
-                // m_domainSet); // OUTPUT = BITS GENERATED in this basic block
-                // killset = killEval(); // OUTPUT = DEFINITIONS THAT GET KILLED
-                // BY BASIC BLOCK transferFunction(genset, killset, m_meetOp);
-                // general implementation, OUTPUT = CURRENT_BITVECTOR
-        }
+        } while (hasOutChanged(currentInOutMap, previousInOutMap));
 }
 
 template <typename D>
