@@ -4,45 +4,47 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "available-support.h"
-#include "dataflow.h"
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/Function.h"
 #include "llvm/Pass.h"
 #include "llvm/Support/raw_ostream.h"
 #include <IntersectionMeet.h>
 #include <KillGen.h>
+#include <dataflow.h>
 
 using namespace llvm;
 using namespace std;
+
+#define DEBUG_TYPE "dataflow_framework"
 
 namespace {
 
 class KillGenEval : public KillGen<Expression> {
       public:
-	KillGenEval() : KillGen() {}
-	std::bitset<MAX_BITS_SIZE> BBgen;
-	std::bitset<MAX_BITS_SIZE>
-	killEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &meet_res,
-		 std::vector<Expression> &domainset) override {
-		for (Instruction &I : *BB) {
-			// null for Available expression long live SSA
-		}
-		BBgen.reset();
-		return BBgen;
-	}
-	std::bitset<MAX_BITS_SIZE>
-	genEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &meet_res,
-		std::vector<Expression> &domainset) override {
-		BBgen.reset();
-		for (Instruction &I : *BB) {
+        KillGenEval() : KillGen() {}
+        std::bitset<MAX_BITS_SIZE> BBgen;
+        std::bitset<MAX_BITS_SIZE>
+        killEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &meet_res,
+                 std::vector<Expression> &domainset) override {
+                for (Instruction &I : *BB) {
+                        // null for Available expression long live SSA
+                }
+                BBgen.reset();
+                return BBgen;
+        }
+        std::bitset<MAX_BITS_SIZE>
+        genEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &meet_res,
+                std::vector<Expression> &domainset) override {
+                BBgen.reset();
+                for (Instruction &I : *BB) {
 
-			Expression Ins = Expression(&I);
-			std::vector<Expression>::iterator it =
-			    std::find(domainset.begin(), domainset.end(), Ins);
-			BBgen.set(it - domainset.begin(), true);
-		}
-		return BBgen;
-	}
+                        Expression Ins = Expression(&I);
+                        std::vector<Expression>::iterator it =
+                            std::find(domainset.begin(), domainset.end(), Ins);
+                        BBgen.set(it - domainset.begin(), true);
+                }
+                return BBgen;
+        }
 };
 class AvailableExpressions : public FunctionPass {
       public:
