@@ -224,7 +224,7 @@ void DataflowFramework<D>::doForwardTraversal(
 	// instantiation might not be 100% accurate. This also applies for
 	// post_order.
 	BasicBlock *BB;
-	std::bitset<MAX_BITS_SIZE> meet_res;
+	std::bitset<MAX_BITS_SIZE> meet_res, BB_killset, BB_genset;
 	if (m_boundary == UNIVERSAL) {
 		meet_res.reset();
 	} else {
@@ -242,10 +242,9 @@ void DataflowFramework<D>::doForwardTraversal(
 				BBInOutBits *ip1 = previousInOutMap[Pred];
 				meet_res = m_meetOp.meet(ip1->m_OUT, meet_res);
 			}
-			currentInOutMap[BB]->m_OUT = m_KG.genEval(
-			    BB, meet_res); // OUTPUT = BITS GENERATED in this
-			// basic block killset = killEval(); // OUTPUT =
-			// DEFINITIONS THAT GET KILLED BY BASIC BLOCK
+			BB_genset = m_KG.genEval(BB, meet_res, m_domainSet);
+			BB_killset = m_KG.killEval(BB, meet_res, m_domainSet);
+			// OUTPUT = DEFINITIONS THAT GET KILLED BY BASIC BLOCK
 			// transferFunction(genset, killset, m_meetOp); general
 			// implementation, OUTPUT = CURRENT_BITVECTOR
 		}
