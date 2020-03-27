@@ -19,30 +19,30 @@ namespace {
 
 class KillGenEval : public KillGen<Expression> {
       public:
-        KillGenEval() : KillGen() {}
-        std::bitset<MAX_BITS_SIZE> BBgen;
-        std::bitset<MAX_BITS_SIZE>
-        killEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &list,
-                 std::bitset<MAX_BITS_SIZE> &depset,
-                 std::vector<Expression> &domainset) override {
-                for (Instruction &I : *BB) {
-                        // null for Available expression
-                }
-                return list;
-        }
-        std::bitset<MAX_BITS_SIZE>
-        genEval(llvm::BasicBlock *BB,
-                std::bitset<MAX_BITS_SIZE> meet_res) override {
-                for (Instruction &I : *BB) {
+	KillGenEval() : KillGen() {}
+	std::bitset<MAX_BITS_SIZE> BBgen;
+	std::bitset<MAX_BITS_SIZE>
+	killEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &list,
+		 std::bitset<MAX_BITS_SIZE> &depset,
+		 std::vector<Expression> &domainset) override {
+		for (Instruction &I : *BB) {
+			// null for Available expression
+		}
+		return list;
+	}
+	std::bitset<MAX_BITS_SIZE>
+	genEval(llvm::BasicBlock *BB,
+		std::bitset<MAX_BITS_SIZE> meet_res) override {
+		for (Instruction &I : *BB) {
 
-                        //			set the bit for corresponding
-                        //	Expression
-                        // expression;
-                        //			ret = in.find(Expression);
-                        //			list[ret] = 1;
-                }
-                return BBgen;
-        }
+			//			set the bit for corresponding
+			//	Expression
+			// expression;
+			//			ret = in.find(Expression);
+			//			list[ret] = 1;
+		}
+		return BBgen;
+	}
 };
 class AvailableExpressions : public FunctionPass {
       public:

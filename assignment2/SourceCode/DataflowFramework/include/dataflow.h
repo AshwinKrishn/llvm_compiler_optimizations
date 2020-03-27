@@ -96,11 +96,9 @@ template <typename D> class DataflowFramework {
 template <typename D>
 DataflowFramework<D>::DataflowFramework(
     IMeetOp &meetOp, FlowDirection direction, BoundaryCondition boundary,
-    Function &function, std::vector<D> &domainset, KillGen<D> &KillGenImp,
-    BaseTransferFunction &transfer)
+    Function &function, std::vector<D> &domainset, KillGen<D> &KillGenImp)
     : m_meetOp(meetOp), m_func(function), m_dir(direction),
-      m_boundary(boundary), m_domainSet(domainset), m_KG(KillGenImp),
-      m_transferFunc(transfer) {}
+      m_boundary(boundary), m_domainSet(domainset), m_KG(KillGenImp) {}
 
 template <typename D> std::vector<D> &DataflowFramework<D>::run() {
         llvm::DenseMap<BasicBlock *, BBInOutBits *> currentInOutMap;
