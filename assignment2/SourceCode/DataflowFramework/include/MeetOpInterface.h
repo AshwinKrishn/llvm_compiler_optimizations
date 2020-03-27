@@ -14,9 +14,9 @@
  */
 class IMeetOp {
       public:
-	virtual std::bitset<MAX_BITS_SIZE>
-	meet(std::bitset<MAX_BITS_SIZE> input1,
-	     std::bitset<MAX_BITS_SIZE> input2) = 0;
+        virtual std::bitset<MAX_BITS_SIZE>
+        meet(std::bitset<MAX_BITS_SIZE> input1,
+             std::bitset<MAX_BITS_SIZE> input2) = 0;
 };
 
 #endif
