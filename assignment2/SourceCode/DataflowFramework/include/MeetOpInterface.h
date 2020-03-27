@@ -8,6 +8,7 @@
 #include <vector>
 
 #define MAX_BITS_SIZE 4096
+#define MAX_PRINT_SIZE 64
 /*
  * Interface for meet operator
  *
