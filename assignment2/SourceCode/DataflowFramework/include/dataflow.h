@@ -96,9 +96,11 @@ template <typename D> class DataflowFramework {
 template <typename D>
 DataflowFramework<D>::DataflowFramework(
     IMeetOp &meetOp, FlowDirection direction, BoundaryCondition boundary,
-    Function &function, std::vector<D> &domainset, KillGen<D> &KillGenImp)
+    Function &function, std::vector<D> &domainset, KillGen<D> &KillGenImp,
+    BaseTransferFunction &transfer)
     : m_meetOp(meetOp), m_func(function), m_dir(direction),
-      m_boundary(boundary), m_domainSet(domainset), m_KG(KillGenImp) {}
+      m_boundary(boundary), m_domainSet(domainset), m_KG(KillGenImp),
+      m_transferFunc(transfer) {}
 
 template <typename D> std::vector<D> &DataflowFramework<D>::run() {
         llvm::DenseMap<BasicBlock *, BBInOutBits *> currentInOutMap;
@@ -227,7 +229,7 @@ void DataflowFramework<D>::doForwardTraversal(
         // instantiation might not be 100% accurate. This also applies for
         // post_order.
         BasicBlock *BB;
-        std::bitset<MAX_BITS_SIZE> meet_res;
+        std::bitset<MAX_BITS_SIZE> meet_res, BB_killset, BB_genset;
         if (m_boundary == UNIVERSAL) {
                 meet_res.reset();
         } else {
@@ -238,10 +240,6 @@ void DataflowFramework<D>::doForwardTraversal(
                 for (ipo_iterator<BasicBlock *> I =
                          ipo_begin(&m_func.getBasicBlockList().back());
                      I != ipo_end(&m_func.getEntryBlock()); ++I) {
-                        // Pre-define for convenience so we don't have to keep
-                        // looking it up
-                        BBInOutBits *currentInOutBits = currentInOutMap[BB];
-
                         if (BB = dyn_cast<BasicBlock>(*I))
                                 outs() << *BB << "\n";
                         // MEET OF ALL PREDECESSORS
@@ -249,12 +247,19 @@ void DataflowFramework<D>::doForwardTraversal(
                                 BBInOutBits *ip1 = currentInOutMap[Pred];
                                 meet_res = m_meetOp.meet(ip1->m_OUT, meet_res);
                         }
-                        currentInOutBits->m_OUT = m_KG.genEval(
-                            BB, meet_res); // OUTPUT = BITS GENERATED in this
-                        // basic block killset = killEval(); // OUTPUT =
-                        // DEFINITIONS THAT GET KILLED BY BASIC BLOCK
-                        // transferFunction(genset, killset, m_meetOp); general
-                        // implementation, OUTPUT = CURRENT_BITVECTOR
+                        // Pre-define for convenience so we don't have to keep
+                        // looking it up
+                        BBInOutBits *currentInOutBits = currentInOutMap[BB];
+                        // Store for future use if needed, no harm storing
+                        currentInOutBits->m_IN = meet_res;
+
+                        // Create genset and killset
+                        BB_genset = m_KG.genEval(BB, meet_res, m_domainSet);
+                        BB_killset = m_KG.killEval(BB, meet_res, m_domainSet);
+
+                        // Run transfer function on our sets, store the bits:
+                        currentInOutBits->m_OUT =
+                            m_transferFunc.run(meet_res, BB_genset, BB_killset);
                 }
         } while (hasOutChanged(currentInOutMap, previousInOutMap));
 }

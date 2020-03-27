@@ -22,24 +22,24 @@ class KillGenEval : public KillGen<Expression> {
 	KillGenEval() : KillGen() {}
 	std::bitset<MAX_BITS_SIZE> BBgen;
 	std::bitset<MAX_BITS_SIZE>
-	killEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &list,
-		 std::bitset<MAX_BITS_SIZE> &depset,
+	killEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &meet_res,
 		 std::vector<Expression> &domainset) override {
 		for (Instruction &I : *BB) {
-			// null for Available expression
+			// null for Available expression long live SSA
 		}
-		return list;
+		BBgen.reset();
+		return BBgen;
 	}
 	std::bitset<MAX_BITS_SIZE>
-	genEval(llvm::BasicBlock *BB,
-		std::bitset<MAX_BITS_SIZE> meet_res) override {
+	genEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &meet_res,
+		std::vector<Expression> &domainset) override {
+		BBgen.reset();
 		for (Instruction &I : *BB) {
 
-			//			set the bit for corresponding
-			//	Expression
-			// expression;
-			//			ret = in.find(Expression);
-			//			list[ret] = 1;
+			Expression Ins = Expression(&I);
+			std::vector<Expression>::iterator it =
+			    std::find(domainset.begin(), domainset.end(), Ins);
+			BBgen.set(it - domainset.begin(), true);
 		}
 		return BBgen;
 	}

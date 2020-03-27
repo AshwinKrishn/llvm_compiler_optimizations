@@ -18,17 +18,16 @@ class KillGenLive : public KillGen<Value> {
 	KillGenLive() : KillGen() {}
 	std::bitset<MAX_BITS_SIZE> BBgen;
 	std::bitset<MAX_BITS_SIZE>
-	killEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &list,
-		 std::bitset<MAX_BITS_SIZE> &depset,
+	killEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &meet_res,
 		 std::vector<Value> &domainset) override {
 		for (Instruction &I : *BB) {
 			// null for Available expression
 		}
-		return list;
+		return BBgen;
 	}
 	std::bitset<MAX_BITS_SIZE>
-	genEval(llvm::BasicBlock *BB,
-		std::bitset<MAX_BITS_SIZE> meet_res) override {
+	genEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &meet_res,
+		std::vector<Value> &domainset) override {
 		for (Instruction &I : *BB) {
 
 			//			set the bit for corresponding

@@ -10,6 +10,7 @@ namespace llvm {
  * later if we require additional steps to be added to the transfer function
  */
 class BaseTransferFunction {
+      public:
         // Generalized transfer function, add extra implementation if required
         virtual std::bitset<MAX_BITS_SIZE>
         run(const std::bitset<MAX_BITS_SIZE> &input,
