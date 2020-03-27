@@ -11,6 +11,7 @@
 #include "llvm/IR/Instructions.h"
 #include "llvm/IR/ValueMap.h"
 #include <llvm/ADT/PostOrderIterator.h>
+#include <llvm/Support/Debug.h>
 #include <llvm/Support/Errc.h>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/raw_ostream.h>
@@ -19,9 +20,13 @@
 #include <vector>
 
 // Local includes:
+#include <BaseTransferFunction.h>
 #include <KillGen.h>
 #include <MeetOpInterface.h>
 #include <available-support.h>
+
+// Debug
+//#define DEBUG_TYPE "dataflow_framework"
 
 enum MeetOperator { UNION, INTERSECTION };
 enum FlowDirection { FORWARD, BACKWARD };
@@ -57,6 +62,7 @@ template <typename D> class DataflowFramework {
         BoundaryCondition m_boundary;
         std::vector<D> &m_domainSet;
         KillGen<D> &m_KG;
+        BaseTransferFunction &m_transferFunc;
 
         void doForwardTraversal(
             llvm::DenseMap<BasicBlock *, BBInOutBits *> &currentInOutMap,
@@ -82,7 +88,8 @@ template <typename D> class DataflowFramework {
         // 7) Sets of Expressions/Variables
         DataflowFramework(IMeetOp &meetOp, FlowDirection direction,
                           BoundaryCondition boundary, Function &function,
-                          std::vector<D> &domainset, KillGen<D> &KillGenImp);
+                          std::vector<D> &domainset, KillGen<D> &KillGenImp,
+                          BaseTransferFunction &transfer);
         // Placeholder function for entire computation, we may use template
         // later, depending on how we want to return the results and what
         // results to return. Eg: vector<Expression>? or vector<Variable>? We
@@ -93,9 +100,11 @@ template <typename D> class DataflowFramework {
 template <typename D>
 DataflowFramework<D>::DataflowFramework(
     IMeetOp &meetOp, FlowDirection direction, BoundaryCondition boundary,
-    Function &function, std::vector<D> &domainset, KillGen<D> &KillGenImp)
+    Function &function, std::vector<D> &domainset, KillGen<D> &KillGenImp,
+    BaseTransferFunction &transfer)
     : m_meetOp(meetOp), m_func(function), m_dir(direction),
-      m_boundary(boundary), m_domainSet(domainset), m_KG(KillGenImp) {}
+      m_boundary(boundary), m_domainSet(domainset), m_KG(KillGenImp),
+      m_transferFunc(transfer) {}
 
 template <typename D> std::vector<D> &DataflowFramework<D>::run() {
         llvm::DenseMap<BasicBlock *, BBInOutBits *> currentInOutMap;
@@ -224,28 +233,61 @@ void DataflowFramework<D>::doForwardTraversal(
         // instantiation might not be 100% accurate. This also applies for
         // post_order.
         BasicBlock *BB;
-        std::bitset<MAX_BITS_SIZE> meet_res;
-
+        std::bitset<MAX_BITS_SIZE> meet_res, BB_killset, BB_genset;
+        // if (m_boundary == UNIVERSAL) {
+        //        meet_res.set();
+        //} else {
+        //        meet_res.reset();
+        //}
         do {
                 previousInOutMap = currentInOutMap;
                 for (ipo_iterator<BasicBlock *> I =
                          ipo_begin(&m_func.getBasicBlockList().back());
                      I != ipo_end(&m_func.getEntryBlock()); ++I) {
+
                         if (BB = dyn_cast<BasicBlock>(*I))
                                 outs() << *BB << "\n";
+                        // Pre-define for convenience so we don't have to keep
+                        // looking it up
+                        BBInOutBits *currentInOutBits = currentInOutMap[BB];
+                        // Actually, normally meet of all predecessors vanilla
+                        // would work, but we need to initialize one of them to
+                        // our m_IN. Recall that we don't actually have an empty
+                        // ENTRY block. Our ENTRY block in llvm is actually
+                        // conceptually the block after the empty ENTRY block.
+                        // That's why we initialized the IN of this block to the
+                        // Universal or Empty set. Making the initial met_res
+                        // equal to the IN of the current block solves this.
+                        meet_res = currentInOutBits->m_IN;
+
                         // MEET OF ALL PREDECESSORS
                         for (BasicBlock *Pred : predecessors(BB)) {
-                                //	struct temp =  previous.find(BB);
-                                //	meet_res = m_meetOp.meet(temp.output);
-                                ////meet_res will be used for input in transffer
-                                // function
+                                BBInOutBits *ip1 = currentInOutMap[Pred];
+                                meet_res = m_meetOp.meet(ip1->m_OUT, meet_res);
                         }
-                        // genset = m_KG.genEval(BB, domainbits, depkillset,
-                        // m_domainSet); // OUTPUT = BITS GENERATED in this
-                        // basic block killset = killEval(); // OUTPUT =
-                        // DEFINITIONS THAT GET KILLED BY BASIC BLOCK
-                        // transferFunction(genset, killset, m_meetOp); general
-                        // implementation, OUTPUT = CURRENT_BITVECTOR
+
+                        outs() << "Current IN bits: "
+                               << meet_res.to_string().substr(0, 32) << "\n";
+
+                        // Create genset and killset
+                        BB_genset = m_KG.genEval(BB, meet_res, m_domainSet);
+                        outs() << "Current GEN Set: "
+                               << BB_genset.to_string().substr(0, 32) << "\n";
+
+                        BB_killset = m_KG.killEval(BB, meet_res, m_domainSet);
+                        outs() << "Current KILL Set: "
+                               << BB_genset.to_string().substr(0, 32) << "\n";
+
+                        // Run transfer function on our sets, store the bits:
+                        currentInOutBits->m_OUT =
+                            m_transferFunc.run(meet_res, BB_genset, BB_killset);
+                        outs()
+                            << "Current OUT bits: "
+                            << currentInOutBits->m_OUT.to_string().substr(0, 32)
+                            << "\n";
+                        outs() << "======================================"
+                                  "===================="
+                               << "\n";
                 }
         } while (hasOutChanged(currentInOutMap, previousInOutMap));
 }

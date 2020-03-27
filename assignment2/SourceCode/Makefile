@@ -17,7 +17,7 @@ clean:
 
 # Run
 run_avail: ./tests/available-test-m2r.bc all
-	opt -load ./available.so -available $< -o /dev/zero
+	opt -load ./available.so -available $< -o /dev/zero 
 
 run_live: ./tests/liveness-test-m2r.bc all
 	opt -load ./liveness.so -liveness $< -o /dev/zero
