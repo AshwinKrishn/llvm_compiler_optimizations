@@ -48,13 +48,16 @@ class KillGenLive : public KillGen<Value *> {
                         for (int i = 0; i < I.getNumOperands(); i++) {
                                 if ((isa<BinaryOperator>(I)) ||
                                     (isa<PHINode>(I))) {
-                                        Value *Ins = I.getOperand(i);
+                                        if (!isa<Constant>(I.getOperand(i))) {
+                                                Value *Ins = I.getOperand(i);
 
-                                        std::vector<Value *>::iterator it =
-                                            std::find(domainset.begin(),
-                                                      domainset.end(), Ins);
-                                        BBgen.set(
-                                            (size_t)(it - domainset.begin()));
+                                                std::vector<Value *>::iterator
+                                                    it = std::find(
+                                                        domainset.begin(),
+                                                        domainset.end(), Ins);
+                                                BBgen.set((size_t)(
+                                                    it - domainset.begin()));
+                                        }
                                 }
                         }
                 }
@@ -86,19 +89,37 @@ class Liveness : public FunctionPass, public KillGenLive {
                                 Instruction *I = &*i;
                                 if ((isa<BinaryOperator>(I)) ||
                                     (isa<PHINode>(I))) {
-                                        list.push_back(I);
+                                        // Only Insert if unique
+                                        if (std::find(list.begin(), list.end(),
+                                                      I) == list.end()) {
+                                                list.push_back(I);
+                                        }
                                         for (int i = 0; i < I->getNumOperands();
                                              i++) {
-                                                list.push_back(
-                                                    I->getOperand(i));
+                                                if (!isa<Constant>(
+                                                        I->getOperand(i))) {
+                                                        // Only Insert if unique
+                                                        if (std::find(
+                                                                list.begin(),
+                                                                list.end(),
+                                                                I->getOperand(
+                                                                    i)) ==
+                                                            list.end()) {
+                                                                list.push_back(
+                                                                    I->getOperand(
+                                                                        i));
+                                                        }
+                                                }
                                         }
                                 }
                         }
                 }
                 outs() << "Variables used by this function with length :"
                        << list.size() << "\n";
+                unsigned int index = 0;
                 for (auto it : list) {
-                        outs() << *it << "\n ";
+                        outs() << index << " : " << *it << "\n ";
+                        ++index;
                 }
                 UnionMeet m_UnionMeet;
                 KillGenLive KillGenL;

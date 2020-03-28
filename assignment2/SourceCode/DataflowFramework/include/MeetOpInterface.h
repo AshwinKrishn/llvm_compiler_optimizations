@@ -8,16 +8,22 @@
 #include <vector>
 
 #define MAX_BITS_SIZE 4096
-#define MAX_PRINT_SIZE 128
+#define MAX_PRINT_SIZE 32
 /*
  * Interface for meet operator
  *
  */
+
+enum BitsVal { ZEROS, ONES };
+
 class IMeetOp {
       public:
+        BitsVal m_topElem;
         virtual std::bitset<MAX_BITS_SIZE>
         meet(std::bitset<MAX_BITS_SIZE> input1,
              std::bitset<MAX_BITS_SIZE> input2) = 0;
+        virtual void setTopElem(BitsVal val) = 0;
+        virtual BitsVal getTopElem() = 0;
 };
 
 #endif
