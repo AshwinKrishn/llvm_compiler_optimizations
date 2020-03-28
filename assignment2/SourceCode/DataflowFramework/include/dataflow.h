@@ -168,7 +168,7 @@ void DataflowFramework<D>::initializeBbBitMaps(
                 }
         } else {
                 for (BasicBlock &BB : F) {
-                        BBInOutBits *p_inOut = new BBInOutBits(ONES, ZEROS);
+                        BBInOutBits *p_inOut = new BBInOutBits(ZEROS, ZEROS);
                         std::pair<BasicBlock *, BBInOutBits *> p_pair;
                         p_pair.first = &BB;
                         p_pair.second = p_inOut;
@@ -359,9 +359,9 @@ void DataflowFramework<D>::doBackwardTraversal(
                 // Make values of previous == current
                 deepCopyDenseMaps(currentInOutMap, previousInOutMap);
 
-                for (ipo_iterator<BasicBlock *> I =
-                         ipo_begin(&m_func.getBasicBlockList().back());
-                     I != ipo_end(&m_func.getEntryBlock()); ++I) {
+                for (po_iterator<BasicBlock *> I =
+                         po_begin(&m_func.getEntryBlock());
+                     I != po_end(&m_func.back()); ++I) {
 
                         if (BB = dyn_cast<BasicBlock>(*I))
                                 outs() << *BB << "\n";
@@ -380,18 +380,18 @@ void DataflowFramework<D>::doBackwardTraversal(
                         // any of the successors and make the meet_res equal
                         // to that.
                         if (BB == &m_func.back()) {
-                                meet_res = currentInOutBits->m_IN;
+                                meet_res = currentInOutBits->m_OUT;
                         } else {
                                 auto succ = succ_begin(BB);
-                                meet_res = currentInOutMap[*succ]->m_OUT;
+                                meet_res = currentInOutMap[*succ]->m_IN;
                         }
                         // MEET OF ALL PREDECESSORS
                         for (BasicBlock *Succ : successors(BB)) {
                                 BBInOutBits *ip1 = currentInOutMap[Succ];
-                                meet_res = m_meetOp.meet(ip1->m_OUT, meet_res);
+                                meet_res = m_meetOp.meet(ip1->m_IN, meet_res);
                         }
 
-                        outs() << "Current IN bits: "
+                        outs() << "Current OUT bits: "
                                << meet_res.to_string().substr(
                                       MAX_BITS_SIZE - MAX_PRINT_SIZE,
                                       MAX_BITS_SIZE)
@@ -413,10 +413,10 @@ void DataflowFramework<D>::doBackwardTraversal(
                                << "\n";
 
                         // Run transfer function on our sets, store the bits:
-                        currentInOutBits->m_OUT =
+                        currentInOutBits->m_IN =
                             m_transferFunc.run(meet_res, BB_genset, BB_killset);
-                        outs() << "Current OUT bits: "
-                               << currentInOutBits->m_OUT.to_string().substr(
+                        outs() << "Current IN bits: "
+                               << currentInOutBits->m_IN.to_string().substr(
                                       MAX_BITS_SIZE - MAX_PRINT_SIZE,
                                       MAX_BITS_SIZE)
                                << "\n";
