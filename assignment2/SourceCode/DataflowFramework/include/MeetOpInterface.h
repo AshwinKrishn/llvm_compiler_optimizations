@@ -8,16 +8,16 @@
 #include <vector>
 
 #define MAX_BITS_SIZE 4096
-#define MAX_PRINT_SIZE 64
+#define MAX_PRINT_SIZE 128
 /*
  * Interface for meet operator
  *
  */
 class IMeetOp {
       public:
-	virtual std::bitset<MAX_BITS_SIZE>
-	meet(std::bitset<MAX_BITS_SIZE> input1,
-	     std::bitset<MAX_BITS_SIZE> input2) = 0;
+        virtual std::bitset<MAX_BITS_SIZE>
+        meet(std::bitset<MAX_BITS_SIZE> input1,
+             std::bitset<MAX_BITS_SIZE> input2) = 0;
 };
 
 #endif
