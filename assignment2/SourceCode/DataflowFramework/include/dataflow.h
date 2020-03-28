@@ -348,11 +348,84 @@ template <typename D>
 void DataflowFramework<D>::doBackwardTraversal(
     llvm::DenseMap<BasicBlock *, BBInOutBits *> &currentInOutMap,
     llvm::DenseMap<BasicBlock *, BBInOutBits *> &previousInOutMap) {
-        for (po_iterator<BasicBlock *> I = po_begin(&m_func.getEntryBlock());
-             I != po_end(&m_func.getBasicBlockList().back()); ++I) {
-                if (BasicBlock *BB = dyn_cast<BasicBlock>(*I))
-                        outs() << *BB << "\n";
-        }
+        BasicBlock *BB;
+        std::bitset<MAX_BITS_SIZE> meet_res, BB_killset, BB_genset;
+        int iteration_no = 1;
+        do {
+                outs() << "ITERATION " << iteration_no << "\n";
+                outs() << "++++++++++++++++++++++++++++++++++++++++++++++++++++"
+                          "++++++++++++++++++++++++++++++++"
+                       << "\n";
+                // Make values of previous == current
+                deepCopyDenseMaps(currentInOutMap, previousInOutMap);
+
+                for (ipo_iterator<BasicBlock *> I =
+                         ipo_begin(&m_func.getBasicBlockList().back());
+                     I != ipo_end(&m_func.getEntryBlock()); ++I) {
+
+                        if (BB = dyn_cast<BasicBlock>(*I))
+                                outs() << *BB << "\n";
+                        // Pre-define for convenience so we don't have to keep
+                        // looking it up
+                        BBInOutBits *currentInOutBits = currentInOutMap[BB];
+                        // Actually, normally meet of all successors vanilla
+                        // would work, but we need to initialize one of them to
+                        // our m_IN. Recall that we don't actually have an empty
+                        // ENTRY block. Our ENTRY block in llvm is actually
+                        // conceptually the block after the empty ENTRY block.
+                        // That's why we initialized the IN of this block to the
+                        // Universal or Empty set. Making the initial met_res
+                        // equal to the IN of the current block solves this for
+                        // entry block. Else, if we're any other block, we take
+                        // any of the successors and make the meet_res equal
+                        // to that.
+                        if (BB == &m_func.back()) {
+                                meet_res = currentInOutBits->m_IN;
+                        } else {
+                                auto succ = succ_begin(BB);
+                                meet_res = currentInOutMap[*succ]->m_OUT;
+                        }
+                        // MEET OF ALL PREDECESSORS
+                        for (BasicBlock *Succ : successors(BB)) {
+                                BBInOutBits *ip1 = currentInOutMap[Succ];
+                                meet_res = m_meetOp.meet(ip1->m_OUT, meet_res);
+                        }
+
+                        outs() << "Current IN bits: "
+                               << meet_res.to_string().substr(
+                                      MAX_BITS_SIZE - MAX_PRINT_SIZE,
+                                      MAX_BITS_SIZE)
+                               << "\n";
+
+                        // Create genset and killset
+                        BB_genset = m_KG.genEval(BB, meet_res, m_domainSet);
+                        outs() << "Current GEN Set: "
+                               << BB_genset.to_string().substr(
+                                      MAX_BITS_SIZE - MAX_PRINT_SIZE,
+                                      MAX_BITS_SIZE)
+                               << "\n";
+
+                        BB_killset = m_KG.killEval(BB, meet_res, m_domainSet);
+                        outs() << "Current KILL Set: "
+                               << BB_killset.to_string().substr(
+                                      MAX_BITS_SIZE - MAX_PRINT_SIZE,
+                                      MAX_BITS_SIZE)
+                               << "\n";
+
+                        // Run transfer function on our sets, store the bits:
+                        currentInOutBits->m_OUT =
+                            m_transferFunc.run(meet_res, BB_genset, BB_killset);
+                        outs() << "Current OUT bits: "
+                               << currentInOutBits->m_OUT.to_string().substr(
+                                      MAX_BITS_SIZE - MAX_PRINT_SIZE,
+                                      MAX_BITS_SIZE)
+                               << "\n";
+                        outs() << "======================================"
+                                  "======================================"
+                               << "\n";
+                }
+                ++iteration_no;
+        } while (hasOutChanged(currentInOutMap, previousInOutMap));
 }
 
 } // namespace llvm
