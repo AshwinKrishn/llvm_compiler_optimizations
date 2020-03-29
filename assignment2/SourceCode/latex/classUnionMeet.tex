@@ -1,0 +1,102 @@
+\hypertarget{classUnionMeet}{}\doxysection{Union\+Meet Class Reference}
+\label{classUnionMeet}\index{UnionMeet@{UnionMeet}}
+
+
+Union meet, implements the meet operation, and is able to set and get the top element.  
+
+
+
+
+{\ttfamily \#include $<$Union\+Meet.\+h$>$}
+
+
+
+Inheritance diagram for Union\+Meet\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=172pt]{classUnionMeet__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Union\+Meet\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=172pt]{classUnionMeet__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classUnionMeet_a5131872d81cc681595027392a71b69cc}{Union\+Meet}} ()
+\item 
+void \mbox{\hyperlink{classUnionMeet_a75de7375be2db7b6d516f3cef3f4266b}{set\+Top\+Elem}} (\mbox{\hyperlink{MeetOpInterface_8h_a8c26048c0abbaaf0f016e2117e5826e1}{Bits\+Val}} val) override
+\item 
+\mbox{\hyperlink{MeetOpInterface_8h_a8c26048c0abbaaf0f016e2117e5826e1}{Bits\+Val}} \mbox{\hyperlink{classUnionMeet_a0e575c676ec2d2078e08c0f8d63c0111}{get\+Top\+Elem}} () override
+\item 
+std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \mbox{\hyperlink{classUnionMeet_af651ee86181543fc5571f707413ef0f9}{union\+\_\+op}} (std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ ip1, std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ ip2)
+\item 
+std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \mbox{\hyperlink{classUnionMeet_a91ab1c18394fc0673ad63854aa9abf1f}{meet}} (std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ input1, std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ input2) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+Union meet, implements the meet operation, and is able to set and get the top element. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classUnionMeet_a5131872d81cc681595027392a71b69cc}\label{classUnionMeet_a5131872d81cc681595027392a71b69cc}} 
+\index{UnionMeet@{UnionMeet}!UnionMeet@{UnionMeet}}
+\index{UnionMeet@{UnionMeet}!UnionMeet@{UnionMeet}}
+\doxysubsubsection{\texorpdfstring{UnionMeet()}{UnionMeet()}}
+{\footnotesize\ttfamily Union\+Meet\+::\+Union\+Meet (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classUnionMeet_a0e575c676ec2d2078e08c0f8d63c0111}\label{classUnionMeet_a0e575c676ec2d2078e08c0f8d63c0111}} 
+\index{UnionMeet@{UnionMeet}!getTopElem@{getTopElem}}
+\index{getTopElem@{getTopElem}!UnionMeet@{UnionMeet}}
+\doxysubsubsection{\texorpdfstring{getTopElem()}{getTopElem()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{MeetOpInterface_8h_a8c26048c0abbaaf0f016e2117e5826e1}{Bits\+Val}} Union\+Meet\+::get\+Top\+Elem (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classIMeetOp_afa3fbc30c3b47dd420254ee5aae11106}{I\+Meet\+Op}}.
+
+\mbox{\Hypertarget{classUnionMeet_a91ab1c18394fc0673ad63854aa9abf1f}\label{classUnionMeet_a91ab1c18394fc0673ad63854aa9abf1f}} 
+\index{UnionMeet@{UnionMeet}!meet@{meet}}
+\index{meet@{meet}!UnionMeet@{UnionMeet}}
+\doxysubsubsection{\texorpdfstring{meet()}{meet()}}
+{\footnotesize\ttfamily std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ Union\+Meet\+::meet (\begin{DoxyParamCaption}\item[{std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$}]{input1,  }\item[{std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$}]{input2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classIMeetOp_af22274c0e3ce73ba5e5d2896a66784aa}{I\+Meet\+Op}}.
+
+\mbox{\Hypertarget{classUnionMeet_a75de7375be2db7b6d516f3cef3f4266b}\label{classUnionMeet_a75de7375be2db7b6d516f3cef3f4266b}} 
+\index{UnionMeet@{UnionMeet}!setTopElem@{setTopElem}}
+\index{setTopElem@{setTopElem}!UnionMeet@{UnionMeet}}
+\doxysubsubsection{\texorpdfstring{setTopElem()}{setTopElem()}}
+{\footnotesize\ttfamily void Union\+Meet\+::set\+Top\+Elem (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{MeetOpInterface_8h_a8c26048c0abbaaf0f016e2117e5826e1}{Bits\+Val}}}]{val }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classIMeetOp_a60d60d3e192cc693e99fbd4be5602ab0}{I\+Meet\+Op}}.
+
+\mbox{\Hypertarget{classUnionMeet_af651ee86181543fc5571f707413ef0f9}\label{classUnionMeet_af651ee86181543fc5571f707413ef0f9}} 
+\index{UnionMeet@{UnionMeet}!union\_op@{union\_op}}
+\index{union\_op@{union\_op}!UnionMeet@{UnionMeet}}
+\doxysubsubsection{\texorpdfstring{union\_op()}{union\_op()}}
+{\footnotesize\ttfamily std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ Union\+Meet\+::union\+\_\+op (\begin{DoxyParamCaption}\item[{std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$}]{ip1,  }\item[{std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$}]{ip2 }\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Dataflow\+Framework/include/\mbox{\hyperlink{UnionMeet_8h}{Union\+Meet.\+h}}\item 
+Dataflow\+Framework/\mbox{\hyperlink{UnionMeet_8cpp}{Union\+Meet.\+cpp}}\end{DoxyCompactItemize}

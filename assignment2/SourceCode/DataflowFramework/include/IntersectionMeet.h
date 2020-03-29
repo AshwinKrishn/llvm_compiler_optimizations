@@ -3,8 +3,9 @@
 #include <MeetOpInterface.h>
 #include <bitset>
 
-/*
- *intersection operator inheriting pure virtual MeetOp
+/**
+ * @brief Intersection meet, implements the meet operation, and is able to set
+ * and get the top element.
  */
 class IntersectionMeet : public IMeetOp {
       public:

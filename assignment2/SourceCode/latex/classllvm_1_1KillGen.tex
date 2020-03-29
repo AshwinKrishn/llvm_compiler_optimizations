@@ -1,0 +1,81 @@
+\hypertarget{classllvm_1_1KillGen}{}\doxysection{llvm\+::Kill\+Gen$<$ D $>$ Class Template Reference}
+\label{classllvm_1_1KillGen}\index{llvm::KillGen$<$ D $>$@{llvm::KillGen$<$ D $>$}}
+
+
+Interface class for the Kill and Gen functionality. Any new data flow framework must implement their own kill\+Eval and gen\+Eval functions as they each operate on their domain in their own ways.  
+
+
+
+
+{\ttfamily \#include $<$Kill\+Gen.\+h$>$}
+
+
+
+Inheritance diagram for llvm\+::Kill\+Gen$<$ D $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classllvm_1_1KillGen__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for llvm\+::Kill\+Gen$<$ D $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{classllvm_1_1KillGen__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \mbox{\hyperlink{classllvm_1_1KillGen_a8a24dbd139553ae583a6520780ea4dd8}{kill\+Eval}} (llvm\+::\+Basic\+Block $\ast$BB, std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \&meet\+\_\+res, std\+::vector$<$ D $>$ \&domainset)=0
+\item 
+virtual std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \mbox{\hyperlink{classllvm_1_1KillGen_ad6977444c7846538e488b3efd9ecd363}{gen\+Eval}} (llvm\+::\+Basic\+Block $\ast$BB, std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \&meet\+\_\+res, std\+::vector$<$ D $>$ \&domainset)=0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename D$>$\newline
+class llvm\+::\+Kill\+Gen$<$ D $>$}
+
+Interface class for the Kill and Gen functionality. Any new data flow framework must implement their own kill\+Eval and gen\+Eval functions as they each operate on their domain in their own ways. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em D} & Domain we operate on (variables/values or expressions) \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classllvm_1_1KillGen_ad6977444c7846538e488b3efd9ecd363}\label{classllvm_1_1KillGen_ad6977444c7846538e488b3efd9ecd363}} 
+\index{llvm::KillGen$<$ D $>$@{llvm::KillGen$<$ D $>$}!genEval@{genEval}}
+\index{genEval@{genEval}!llvm::KillGen$<$ D $>$@{llvm::KillGen$<$ D $>$}}
+\doxysubsubsection{\texorpdfstring{genEval()}{genEval()}}
+{\footnotesize\ttfamily template$<$typename D $>$ \\
+virtual std\+::bitset$<$\mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}}$>$ \mbox{\hyperlink{classllvm_1_1KillGen}{llvm\+::\+Kill\+Gen}}$<$ D $>$\+::gen\+Eval (\begin{DoxyParamCaption}\item[{llvm\+::\+Basic\+Block $\ast$}]{BB,  }\item[{std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \&}]{meet\+\_\+res,  }\item[{std\+::vector$<$ D $>$ \&}]{domainset }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classanonymous__namespace_02liveness_8cpp_03_1_1KillGenLive_ab69fd3bdad7df7ad16d0493f032650b7}{anonymous\+\_\+namespace\{liveness.\+cpp\}\+::\+Kill\+Gen\+Live}}, and \mbox{\hyperlink{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval_a453cccaa35b40a0c87f6a5c9b219ff88}{anonymous\+\_\+namespace\{available.\+cpp\}\+::\+Kill\+Gen\+Eval}}.
+
+\mbox{\Hypertarget{classllvm_1_1KillGen_a8a24dbd139553ae583a6520780ea4dd8}\label{classllvm_1_1KillGen_a8a24dbd139553ae583a6520780ea4dd8}} 
+\index{llvm::KillGen$<$ D $>$@{llvm::KillGen$<$ D $>$}!killEval@{killEval}}
+\index{killEval@{killEval}!llvm::KillGen$<$ D $>$@{llvm::KillGen$<$ D $>$}}
+\doxysubsubsection{\texorpdfstring{killEval()}{killEval()}}
+{\footnotesize\ttfamily template$<$typename D $>$ \\
+virtual std\+::bitset$<$\mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}}$>$ \mbox{\hyperlink{classllvm_1_1KillGen}{llvm\+::\+Kill\+Gen}}$<$ D $>$\+::kill\+Eval (\begin{DoxyParamCaption}\item[{llvm\+::\+Basic\+Block $\ast$}]{BB,  }\item[{std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \&}]{meet\+\_\+res,  }\item[{std\+::vector$<$ D $>$ \&}]{domainset }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classanonymous__namespace_02liveness_8cpp_03_1_1KillGenLive_a1af1795a20381ea2e0aaaf7bda56eb28}{anonymous\+\_\+namespace\{liveness.\+cpp\}\+::\+Kill\+Gen\+Live}}, and \mbox{\hyperlink{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval_a8427d01d0a55cbf52a380d82db121f22}{anonymous\+\_\+namespace\{available.\+cpp\}\+::\+Kill\+Gen\+Eval}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Dataflow\+Framework/include/\mbox{\hyperlink{KillGen_8h}{Kill\+Gen.\+h}}\end{DoxyCompactItemize}

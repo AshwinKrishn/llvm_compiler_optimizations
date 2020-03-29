@@ -7,7 +7,9 @@
 namespace llvm {
 /**
  * @brief Holds the base implementation of a transfer function, to be extended
- * later if we require additional steps to be added to the transfer function
+ * later if we require additional steps to be added to the transfer function.
+ * Currently the only method, which is called run takes in the input, genset,
+ * and killset, and returns the result of [Gen U (In - Kill)]
  */
 class BaseTransferFunction {
       public:

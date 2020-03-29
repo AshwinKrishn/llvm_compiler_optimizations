@@ -3,8 +3,9 @@
 #include <MeetOpInterface.h>
 #include <bitset>
 
-/*
- *union operator inheriting pure virtual MeetOp
+/**
+ * @brief Union meet, implements the meet operation, and is able to set and get
+ * the top element.
  */
 class UnionMeet : public IMeetOp {
       public:

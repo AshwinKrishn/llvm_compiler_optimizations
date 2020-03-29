@@ -1,0 +1,48 @@
+\hypertarget{available_8cpp}{}\doxysection{available.\+cpp File Reference}
+\label{available_8cpp}\index{available.cpp@{available.cpp}}
+{\ttfamily \#include \char`\"{}available-\/support.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}llvm/\+I\+R/\+Constants.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}llvm/\+I\+R/\+Function.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}llvm/\+Pass.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}llvm/\+Support/raw\+\_\+ostream.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$Intersection\+Meet.\+h$>$}\newline
+{\ttfamily \#include $<$Kill\+Gen.\+h$>$}\newline
+{\ttfamily \#include $<$dataflow.\+h$>$}\newline
+Include dependency graph for available.\+cpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{available_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval}{anonymous\+\_\+namespace\{available.\+cpp\}\+::\+Kill\+Gen\+Eval}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval}{Kill\+Gen\+Eval}} is a subclass of Kill\+Gen class, which is a template class. Main function of this class is to provide a kill\+Eval and gen\+Eval function to take in the input bit set which is the result of the meet operator, the current Basic Block, and the domainset, which is a vector of objects we want to perform the analysis on (Expression in this case) and returns the resultant kill set or gen set bits respectively. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classanonymous__namespace_02available_8cpp_03_1_1AvailableExpressions}{anonymous\+\_\+namespace\{available.\+cpp\}\+::\+Available\+Expressions}}
+\begin{DoxyCompactList}\small\item\em Primary function pass to run \mbox{\hyperlink{classanonymous__namespace_02available_8cpp_03_1_1AvailableExpressions}{Available\+Expressions}} pass. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespaceanonymous__namespace_02available_8cpp_03}{anonymous\+\_\+namespace\{available.\+cpp\}}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{available_8cpp_ad78e062f62e0d6e453941fb4ca843e4d}{D\+E\+B\+U\+G\+\_\+\+T\+Y\+PE}}~\char`\"{}dataflow\+\_\+framework\char`\"{}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+Register\+Pass$<$ Available\+Expressions $>$ \mbox{\hyperlink{namespaceanonymous__namespace_02available_8cpp_03_aeb3d06d4da58c347b8b9b4694fc662f1}{anonymous\+\_\+namespace\{available.\+cpp\}\+::X}} (\char`\"{}available\char`\"{}, \char`\"{}E\+CE 5984 Available Expressions\char`\"{})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{available_8cpp_ad78e062f62e0d6e453941fb4ca843e4d}\label{available_8cpp_ad78e062f62e0d6e453941fb4ca843e4d}} 
+\index{available.cpp@{available.cpp}!DEBUG\_TYPE@{DEBUG\_TYPE}}
+\index{DEBUG\_TYPE@{DEBUG\_TYPE}!available.cpp@{available.cpp}}
+\doxysubsubsection{\texorpdfstring{DEBUG\_TYPE}{DEBUG\_TYPE}}
+{\footnotesize\ttfamily \#define D\+E\+B\+U\+G\+\_\+\+T\+Y\+PE~\char`\"{}dataflow\+\_\+framework\char`\"{}}
+

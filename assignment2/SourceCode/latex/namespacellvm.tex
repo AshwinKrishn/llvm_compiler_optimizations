@@ -1,0 +1,37 @@
+\hypertarget{namespacellvm}{}\doxysection{llvm Namespace Reference}
+\label{namespacellvm}\index{llvm@{llvm}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classllvm_1_1BaseTransferFunction}{Base\+Transfer\+Function}}
+\begin{DoxyCompactList}\small\item\em Holds the base implementation of a transfer function, to be extended later if we require additional steps to be added to the transfer function. Currently the only method, which is called run takes in the input, genset, and killset, and returns the result of \mbox{[}Gen U (In -\/ Kill)\mbox{]}. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}}
+\begin{DoxyCompactList}\small\item\em Holds the bitsets for each basic block\textquotesingle{}s IN and O\+UT. Owner of the memory. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classllvm_1_1DataflowFramework}{Dataflow\+Framework}}
+\begin{DoxyCompactList}\small\item\em Primary Dataflow Framework template class. Performs the generalized steps of initializing the IN and O\+UT, calling the Gen and Kill functions and then passing the results to the Transfer Function. Result of which gets set/cleared in the I\+N/\+O\+UT of the correct BB. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classllvm_1_1Expression}{Expression}}
+\item 
+class \mbox{\hyperlink{classllvm_1_1KillGen}{Kill\+Gen}}
+\begin{DoxyCompactList}\small\item\em Interface class for the Kill and Gen functionality. Any new data flow framework must implement their own kill\+Eval and gen\+Eval functions as they each operate on their domain in their own ways. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{namespacellvm_ac483013484e2a0a3dbc67ec90c8dd5de}{print\+Set}} (std\+::vector$<$ \mbox{\hyperlink{classllvm_1_1Expression}{Expression}} $>$ $\ast$x)
+\item 
+std\+::string \mbox{\hyperlink{namespacellvm_a372919c657c6aed741246d5255a460e8}{get\+Short\+Value\+Name}} (Value $\ast$v)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacellvm_a372919c657c6aed741246d5255a460e8}\label{namespacellvm_a372919c657c6aed741246d5255a460e8}} 
+\index{llvm@{llvm}!getShortValueName@{getShortValueName}}
+\index{getShortValueName@{getShortValueName}!llvm@{llvm}}
+\doxysubsubsection{\texorpdfstring{getShortValueName()}{getShortValueName()}}
+{\footnotesize\ttfamily std\+::string llvm\+::get\+Short\+Value\+Name (\begin{DoxyParamCaption}\item[{Value $\ast$}]{v }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacellvm_ac483013484e2a0a3dbc67ec90c8dd5de}\label{namespacellvm_ac483013484e2a0a3dbc67ec90c8dd5de}} 
+\index{llvm@{llvm}!printSet@{printSet}}
+\index{printSet@{printSet}!llvm@{llvm}}
+\doxysubsubsection{\texorpdfstring{printSet()}{printSet()}}
+{\footnotesize\ttfamily void llvm\+::print\+Set (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{classllvm_1_1Expression}{Expression}} $>$ $\ast$}]{x }\end{DoxyParamCaption})}
+

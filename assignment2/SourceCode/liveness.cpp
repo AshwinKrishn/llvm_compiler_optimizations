@@ -17,6 +17,14 @@ using namespace llvm;
 
 namespace {
 
+/**
+ * @brief KillGenLive is a subclass of KillGen class, which is a template class.
+ * Main function of this class is to provide a killEval and genEval function to
+ * take in the input bit set which is the result of the meet operator, the
+ * current Basic Block, and the domainset, which is a vector of objects we want
+ * to perform the analysis on (variables/Value type in thie case) and returns
+ * the resultant kill set or gen set bits respectively.
+ */
 class KillGenLive : public KillGen<Value *> {
       public:
         KillGenLive() : KillGen() {}

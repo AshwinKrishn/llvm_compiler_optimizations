@@ -1,0 +1,76 @@
+\hypertarget{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval}{}\doxysection{anonymous\+\_\+namespace\{available.\+cpp\}\+::Kill\+Gen\+Eval Class Reference}
+\label{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval}\index{anonymous\_namespace\lcurly{}available.cpp\rcurly{}::KillGenEval@{anonymous\_namespace\lcurly{}available.cpp\rcurly{}::KillGenEval}}
+
+
+\mbox{\hyperlink{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval}{Kill\+Gen\+Eval}} is a subclass of Kill\+Gen class, which is a template class. Main function of this class is to provide a kill\+Eval and gen\+Eval function to take in the input bit set which is the result of the meet operator, the current Basic Block, and the domainset, which is a vector of objects we want to perform the analysis on (Expression in this case) and returns the resultant kill set or gen set bits respectively.  
+
+
+
+
+Inheritance diagram for anonymous\+\_\+namespace\{available.\+cpp\}\+::Kill\+Gen\+Eval\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=237pt]{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for anonymous\+\_\+namespace\{available.\+cpp\}\+::Kill\+Gen\+Eval\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=237pt]{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval_a0fecb8348d29838b16dedc091ec3c327}{Kill\+Gen\+Eval}} ()
+\item 
+std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \mbox{\hyperlink{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval_a8427d01d0a55cbf52a380d82db121f22}{kill\+Eval}} (llvm\+::\+Basic\+Block $\ast$BB, std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \&meet\+\_\+res, std\+::vector$<$ \mbox{\hyperlink{classllvm_1_1Expression}{Expression}} $>$ \&domainset) override
+\item 
+std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \mbox{\hyperlink{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval_a453cccaa35b40a0c87f6a5c9b219ff88}{gen\+Eval}} (llvm\+::\+Basic\+Block $\ast$BB, std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \&meet\+\_\+res, std\+::vector$<$ \mbox{\hyperlink{classllvm_1_1Expression}{Expression}} $>$ \&domainset) override
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\mbox{\hyperlink{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval}{Kill\+Gen\+Eval}} is a subclass of Kill\+Gen class, which is a template class. Main function of this class is to provide a kill\+Eval and gen\+Eval function to take in the input bit set which is the result of the meet operator, the current Basic Block, and the domainset, which is a vector of objects we want to perform the analysis on (Expression in this case) and returns the resultant kill set or gen set bits respectively. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval_a0fecb8348d29838b16dedc091ec3c327}\label{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval_a0fecb8348d29838b16dedc091ec3c327}} 
+\index{anonymous\_namespace\lcurly{}available.cpp\rcurly{}::KillGenEval@{anonymous\_namespace\lcurly{}available.cpp\rcurly{}::KillGenEval}!KillGenEval@{KillGenEval}}
+\index{KillGenEval@{KillGenEval}!anonymous\_namespace\lcurly{}available.cpp\rcurly{}::KillGenEval@{anonymous\_namespace\lcurly{}available.cpp\rcurly{}::KillGenEval}}
+\doxysubsubsection{\texorpdfstring{KillGenEval()}{KillGenEval()}}
+{\footnotesize\ttfamily anonymous\+\_\+namespace\{available.\+cpp\}\+::Kill\+Gen\+Eval\+::\+Kill\+Gen\+Eval (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval_a453cccaa35b40a0c87f6a5c9b219ff88}\label{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval_a453cccaa35b40a0c87f6a5c9b219ff88}} 
+\index{anonymous\_namespace\lcurly{}available.cpp\rcurly{}::KillGenEval@{anonymous\_namespace\lcurly{}available.cpp\rcurly{}::KillGenEval}!genEval@{genEval}}
+\index{genEval@{genEval}!anonymous\_namespace\lcurly{}available.cpp\rcurly{}::KillGenEval@{anonymous\_namespace\lcurly{}available.cpp\rcurly{}::KillGenEval}}
+\doxysubsubsection{\texorpdfstring{genEval()}{genEval()}}
+{\footnotesize\ttfamily std\+::bitset$<$\mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}}$>$ anonymous\+\_\+namespace\{available.\+cpp\}\+::Kill\+Gen\+Eval\+::gen\+Eval (\begin{DoxyParamCaption}\item[{llvm\+::\+Basic\+Block $\ast$}]{BB,  }\item[{std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \&}]{meet\+\_\+res,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classllvm_1_1Expression}{Expression}} $>$ \&}]{domainset }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classllvm_1_1KillGen_ad6977444c7846538e488b3efd9ecd363}{llvm\+::\+Kill\+Gen$<$ Expression $>$}}.
+
+\mbox{\Hypertarget{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval_a8427d01d0a55cbf52a380d82db121f22}\label{classanonymous__namespace_02available_8cpp_03_1_1KillGenEval_a8427d01d0a55cbf52a380d82db121f22}} 
+\index{anonymous\_namespace\lcurly{}available.cpp\rcurly{}::KillGenEval@{anonymous\_namespace\lcurly{}available.cpp\rcurly{}::KillGenEval}!killEval@{killEval}}
+\index{killEval@{killEval}!anonymous\_namespace\lcurly{}available.cpp\rcurly{}::KillGenEval@{anonymous\_namespace\lcurly{}available.cpp\rcurly{}::KillGenEval}}
+\doxysubsubsection{\texorpdfstring{killEval()}{killEval()}}
+{\footnotesize\ttfamily std\+::bitset$<$\mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}}$>$ anonymous\+\_\+namespace\{available.\+cpp\}\+::Kill\+Gen\+Eval\+::kill\+Eval (\begin{DoxyParamCaption}\item[{llvm\+::\+Basic\+Block $\ast$}]{BB,  }\item[{std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \&}]{meet\+\_\+res,  }\item[{std\+::vector$<$ \mbox{\hyperlink{classllvm_1_1Expression}{Expression}} $>$ \&}]{domainset }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classllvm_1_1KillGen_a8a24dbd139553ae583a6520780ea4dd8}{llvm\+::\+Kill\+Gen$<$ Expression $>$}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{available_8cpp}{available.\+cpp}}\end{DoxyCompactItemize}

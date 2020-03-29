@@ -16,6 +16,11 @@
 
 enum BitsVal { ZEROS, ONES };
 
+/**
+ * @brief MeetOperator pure virtual class. Any new meet operator to be added
+ * must inherit this class and implement their own meet function and
+ * getters/setters for the top element.
+ */
 class IMeetOp {
       public:
         BitsVal m_topElem;

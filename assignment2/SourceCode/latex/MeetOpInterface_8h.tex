@@ -1,0 +1,74 @@
+\hypertarget{MeetOpInterface_8h}{}\doxysection{Dataflow\+Framework/include/\+Meet\+Op\+Interface.h File Reference}
+\label{MeetOpInterface_8h}\index{DataflowFramework/include/MeetOpInterface.h@{DataflowFramework/include/MeetOpInterface.h}}
+{\ttfamily \#include $<$bitset$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$queue$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+Include dependency graph for Meet\+Op\+Interface.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{MeetOpInterface_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{MeetOpInterface_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classIMeetOp}{I\+Meet\+Op}}
+\begin{DoxyCompactList}\small\item\em Meet\+Operator pure virtual class. Any new meet operator to be added must inherit this class and implement their own meet function and getters/setters for the top element. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}}~4096
+\item 
+\#define \mbox{\hyperlink{MeetOpInterface_8h_a292d4ad30890b6676e2f1c5a22cdef3c}{M\+A\+X\+\_\+\+P\+R\+I\+N\+T\+\_\+\+S\+I\+ZE}}~32
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{MeetOpInterface_8h_a8c26048c0abbaaf0f016e2117e5826e1}{Bits\+Val}} \{ \mbox{\hyperlink{MeetOpInterface_8h_a8c26048c0abbaaf0f016e2117e5826e1a5d7341ec5879a7f47c5cb82c0fdf6b5f}{Z\+E\+R\+OS}}, 
+\mbox{\hyperlink{MeetOpInterface_8h_a8c26048c0abbaaf0f016e2117e5826e1a3b1aa0a4c9259e85086e86d2070c5654}{O\+N\+ES}}
+ \}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}\label{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}} 
+\index{MeetOpInterface.h@{MeetOpInterface.h}!MAX\_BITS\_SIZE@{MAX\_BITS\_SIZE}}
+\index{MAX\_BITS\_SIZE@{MAX\_BITS\_SIZE}!MeetOpInterface.h@{MeetOpInterface.h}}
+\doxysubsubsection{\texorpdfstring{MAX\_BITS\_SIZE}{MAX\_BITS\_SIZE}}
+{\footnotesize\ttfamily \#define M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE~4096}
+
+\mbox{\Hypertarget{MeetOpInterface_8h_a292d4ad30890b6676e2f1c5a22cdef3c}\label{MeetOpInterface_8h_a292d4ad30890b6676e2f1c5a22cdef3c}} 
+\index{MeetOpInterface.h@{MeetOpInterface.h}!MAX\_PRINT\_SIZE@{MAX\_PRINT\_SIZE}}
+\index{MAX\_PRINT\_SIZE@{MAX\_PRINT\_SIZE}!MeetOpInterface.h@{MeetOpInterface.h}}
+\doxysubsubsection{\texorpdfstring{MAX\_PRINT\_SIZE}{MAX\_PRINT\_SIZE}}
+{\footnotesize\ttfamily \#define M\+A\+X\+\_\+\+P\+R\+I\+N\+T\+\_\+\+S\+I\+ZE~32}
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{MeetOpInterface_8h_a8c26048c0abbaaf0f016e2117e5826e1}\label{MeetOpInterface_8h_a8c26048c0abbaaf0f016e2117e5826e1}} 
+\index{MeetOpInterface.h@{MeetOpInterface.h}!BitsVal@{BitsVal}}
+\index{BitsVal@{BitsVal}!MeetOpInterface.h@{MeetOpInterface.h}}
+\doxysubsubsection{\texorpdfstring{BitsVal}{BitsVal}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{MeetOpInterface_8h_a8c26048c0abbaaf0f016e2117e5826e1}{Bits\+Val}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ZEROS@{ZEROS}!MeetOpInterface.h@{MeetOpInterface.h}}\index{MeetOpInterface.h@{MeetOpInterface.h}!ZEROS@{ZEROS}}}\mbox{\Hypertarget{MeetOpInterface_8h_a8c26048c0abbaaf0f016e2117e5826e1a5d7341ec5879a7f47c5cb82c0fdf6b5f}\label{MeetOpInterface_8h_a8c26048c0abbaaf0f016e2117e5826e1a5d7341ec5879a7f47c5cb82c0fdf6b5f}} 
+Z\+E\+R\+OS&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ONES@{ONES}!MeetOpInterface.h@{MeetOpInterface.h}}\index{MeetOpInterface.h@{MeetOpInterface.h}!ONES@{ONES}}}\mbox{\Hypertarget{MeetOpInterface_8h_a8c26048c0abbaaf0f016e2117e5826e1a3b1aa0a4c9259e85086e86d2070c5654}\label{MeetOpInterface_8h_a8c26048c0abbaaf0f016e2117e5826e1a3b1aa0a4c9259e85086e86d2070c5654}} 
+O\+N\+ES&\\
+\hline
+
+\end{DoxyEnumFields}
