@@ -30,7 +30,6 @@
 
 enum MeetOperator { UNION, INTERSECTION };
 enum FlowDirection { FORWARD, BACKWARD };
-enum BitsVal { ZEROS, ONES };
 enum BoundaryCondition { EMPTY, UNIVERSAL };
 
 namespace llvm {
@@ -76,6 +75,10 @@ template <typename D> class DataflowFramework {
         bool
         hasOutChanged(llvm::DenseMap<BasicBlock *, BBInOutBits *> &currentMap,
                       llvm::DenseMap<BasicBlock *, BBInOutBits *> &previousMap);
+
+        bool
+        hasInChanged(llvm::DenseMap<BasicBlock *, BBInOutBits *> &currentMap,
+                     llvm::DenseMap<BasicBlock *, BBInOutBits *> &previousMap);
 
         void deepCopyDenseMaps(
             llvm::DenseMap<BasicBlock *, BBInOutBits *> &currentMap,
@@ -150,7 +153,8 @@ void DataflowFramework<D>::initializeBbBitMaps(
         // is no issue.
         if (m_dir == FORWARD) {
                 for (BasicBlock &BB : F) {
-                        BBInOutBits *p_inOut = new BBInOutBits(ZEROS, ONES);
+                        BBInOutBits *p_inOut =
+                            new BBInOutBits(ZEROS, m_meetOp.getTopElem());
                         std::pair<BasicBlock *, BBInOutBits *> p_pair;
                         p_pair.first = &BB;
                         p_pair.second = p_inOut;
@@ -168,7 +172,8 @@ void DataflowFramework<D>::initializeBbBitMaps(
                 }
         } else {
                 for (BasicBlock &BB : F) {
-                        BBInOutBits *p_inOut = new BBInOutBits(ZEROS, ZEROS);
+                        BBInOutBits *p_inOut =
+                            new BBInOutBits(m_meetOp.getTopElem(), ZEROS);
                         std::pair<BasicBlock *, BBInOutBits *> p_pair;
                         p_pair.first = &BB;
                         p_pair.second = p_inOut;
@@ -242,6 +247,51 @@ bool DataflowFramework<D>::hasOutChanged(
                         //                                         MAX_PRINT_SIZE)
                         //       << "\n";
                         if (currentOut != previousOut) {
+                                retval = true;
+                        }
+                } else {
+                        // Error, BB entry in current not found in previous,
+                        // should be impossible
+                        llvm_unreachable(
+                            "BB Entry in Current not found in Previous");
+                }
+        }
+        return retval;
+}
+
+/**
+ * @brief
+ * Checks if any of the IN's of any basic blocks has changed, if it has, return
+ * true, else return false
+ *
+ * @tparam D Domain we operate on
+ * @param currentMap Current bitmap reference
+ * @param previousMap Previous bitmap reference from previous iteration
+ *
+ * @return
+ */
+template <typename D>
+bool DataflowFramework<D>::hasInChanged(
+    llvm::DenseMap<BasicBlock *, BBInOutBits *> &currentMap,
+    llvm::DenseMap<BasicBlock *, BBInOutBits *> &previousMap) {
+        bool retval = false;
+        // Iterate over both maps and check if OUT is the same
+        for (auto it = currentMap.begin(); it != currentMap.end(); ++it) {
+                auto currentIn = it->second->m_IN;
+                // Get previous mapping
+                auto previous = previousMap.find(it->first);
+                if (previous != previousMap.end()) {
+                        auto previousIn = previous->second->m_IN;
+                        // outs() << "Current OUT: "
+                        //       << currentOut.to_string().substr(MAX_BITS_SIZE
+                        //       -
+                        //                                        MAX_PRINT_SIZE)
+                        //       << "Previous OUT: "
+                        //       << previousOut.to_string().substr(MAX_BITS_SIZE
+                        //       -
+                        //                                         MAX_PRINT_SIZE)
+                        //       << "\n";
+                        if (currentIn != previousIn) {
                                 retval = true;
                         }
                 } else {
@@ -425,7 +475,7 @@ void DataflowFramework<D>::doBackwardTraversal(
                                << "\n";
                 }
                 ++iteration_no;
-        } while (hasOutChanged(currentInOutMap, previousInOutMap));
+        } while (hasInChanged(currentInOutMap, previousInOutMap));
 }
 
 } // namespace llvm
