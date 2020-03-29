@@ -1,0 +1,228 @@
+\hypertarget{classllvm_1_1DataflowFramework}{}\doxysection{llvm\+::Dataflow\+Framework$<$ D $>$ Class Template Reference}
+\label{classllvm_1_1DataflowFramework}\index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
+
+
+{\ttfamily \#include $<$dataflow.\+h$>$}
+
+
+
+Collaboration diagram for llvm\+::Dataflow\+Framework$<$ D $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=340pt]{classllvm_1_1DataflowFramework__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classllvm_1_1DataflowFramework_a4d0da3d723ee16d45af7b46b26e1ff7a}{Dataflow\+Framework}} (\mbox{\hyperlink{classIMeetOp}{I\+Meet\+Op}} \&meet\+Op, \mbox{\hyperlink{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3c}{Flow\+Direction}} direction, \mbox{\hyperlink{dataflow_8h_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary, Function \&function, std\+::vector$<$ D $>$ \&domainset, \mbox{\hyperlink{classllvm_1_1KillGen}{Kill\+Gen}}$<$ D $>$ \&Kill\+Gen\+Imp, \mbox{\hyperlink{classllvm_1_1BaseTransferFunction}{Base\+Transfer\+Function}} \&transfer)
+\item 
+std\+::vector$<$ D $>$ \& \mbox{\hyperlink{classllvm_1_1DataflowFramework_a0ffdb0ac79f476b2d4fd7eddbde8072a}{run}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classllvm_1_1DataflowFramework_a24bfa9b2cc1bdd54a27a5c3714d5add5}{do\+Forward\+Traversal}} (llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&current\+In\+Out\+Map, llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&previous\+In\+Out\+Map)
+\item 
+void \mbox{\hyperlink{classllvm_1_1DataflowFramework_a4b0a730cc535951f871860c4937db6a4}{do\+Backward\+Traversal}} (llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&current\+In\+Out\+Map, llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&previous\+In\+Out\+Map)
+\item 
+void \mbox{\hyperlink{classllvm_1_1DataflowFramework_aa329bbad55a93a657327399b8a745200}{initialize\+Bb\+Bit\+Maps}} (Function \&F, llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&map)
+\begin{DoxyCompactList}\small\item\em Initializes the basic block bitmaps for in and out. In charge of creating the bit vectors and associating them with the basic blocks. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classllvm_1_1DataflowFramework_a22f4f37365af5a36a24e9ecbe3134635}{has\+Out\+Changed}} (llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&current\+Map, llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&previous\+Map)
+\begin{DoxyCompactList}\small\item\em Checks if any of the O\+UT\textquotesingle{}s of any basic blocks has changed, if it has, return true, else return false. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classllvm_1_1DataflowFramework_aa44490e7ccc5db53033fc3d4d7e93e43}{has\+In\+Changed}} (llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&current\+Map, llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&previous\+Map)
+\begin{DoxyCompactList}\small\item\em Checks if any of the IN\textquotesingle{}s of any basic blocks has changed, if it has, return true, else return false. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classllvm_1_1DataflowFramework_a2b6d0208aff6f74796f517c0aec49e88}{deep\+Copy\+Dense\+Maps}} (llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&current\+Map, llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&previous\+Map)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classIMeetOp}{I\+Meet\+Op}} \& \mbox{\hyperlink{classllvm_1_1DataflowFramework_a39af62b3ab24142c18a5e3f57cd3ce3a}{m\+\_\+meet\+Op}}
+\item 
+Function \& \mbox{\hyperlink{classllvm_1_1DataflowFramework_a1d03dc2d24255c695fb1b2f9139a68e0}{m\+\_\+func}}
+\item 
+\mbox{\hyperlink{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3c}{Flow\+Direction}} \mbox{\hyperlink{classllvm_1_1DataflowFramework_a1925191fded005f7c04a83f2f68a9700}{m\+\_\+dir}}
+\item 
+\mbox{\hyperlink{dataflow_8h_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} \mbox{\hyperlink{classllvm_1_1DataflowFramework_a26b66c84f1f422b55616e2836bf92f2a}{m\+\_\+boundary}}
+\item 
+std\+::vector$<$ D $>$ \& \mbox{\hyperlink{classllvm_1_1DataflowFramework_aca67c8879354bf7d3efde4d8f2ae8688}{m\+\_\+domain\+Set}}
+\item 
+\mbox{\hyperlink{classllvm_1_1KillGen}{Kill\+Gen}}$<$ D $>$ \& \mbox{\hyperlink{classllvm_1_1DataflowFramework_a170a3e682a3007688ffabea835f1d7cd}{m\+\_\+\+KG}}
+\item 
+\mbox{\hyperlink{classllvm_1_1BaseTransferFunction}{Base\+Transfer\+Function}} \& \mbox{\hyperlink{classllvm_1_1DataflowFramework_a6a520bd7caf12ddaa8a9455c322966e1}{m\+\_\+transfer\+Func}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classllvm_1_1DataflowFramework_a4d0da3d723ee16d45af7b46b26e1ff7a}\label{classllvm_1_1DataflowFramework_a4d0da3d723ee16d45af7b46b26e1ff7a}} 
+\index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}!DataflowFramework@{DataflowFramework}}
+\index{DataflowFramework@{DataflowFramework}!llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
+\doxysubsubsection{\texorpdfstring{DataflowFramework()}{DataflowFramework()}}
+{\footnotesize\ttfamily template$<$typename D $>$ \\
+\mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::\mbox{\hyperlink{classllvm_1_1DataflowFramework}{Dataflow\+Framework}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classIMeetOp}{I\+Meet\+Op}} \&}]{meet\+Op,  }\item[{\mbox{\hyperlink{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3c}{Flow\+Direction}}}]{direction,  }\item[{\mbox{\hyperlink{dataflow_8h_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}}}]{boundary,  }\item[{Function \&}]{function,  }\item[{std\+::vector$<$ D $>$ \&}]{domainset,  }\item[{\mbox{\hyperlink{classllvm_1_1KillGen}{Kill\+Gen}}$<$ D $>$ \&}]{Kill\+Gen\+Imp,  }\item[{\mbox{\hyperlink{classllvm_1_1BaseTransferFunction}{Base\+Transfer\+Function}} \&}]{transfer }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classllvm_1_1DataflowFramework_a2b6d0208aff6f74796f517c0aec49e88}\label{classllvm_1_1DataflowFramework_a2b6d0208aff6f74796f517c0aec49e88}} 
+\index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}!deepCopyDenseMaps@{deepCopyDenseMaps}}
+\index{deepCopyDenseMaps@{deepCopyDenseMaps}!llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
+\doxysubsubsection{\texorpdfstring{deepCopyDenseMaps()}{deepCopyDenseMaps()}}
+{\footnotesize\ttfamily template$<$typename D $>$ \\
+void \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::deep\+Copy\+Dense\+Maps (\begin{DoxyParamCaption}\item[{llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&}]{current\+Map,  }\item[{llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&}]{previous\+Map }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classllvm_1_1DataflowFramework_a4b0a730cc535951f871860c4937db6a4}\label{classllvm_1_1DataflowFramework_a4b0a730cc535951f871860c4937db6a4}} 
+\index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}!doBackwardTraversal@{doBackwardTraversal}}
+\index{doBackwardTraversal@{doBackwardTraversal}!llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
+\doxysubsubsection{\texorpdfstring{doBackwardTraversal()}{doBackwardTraversal()}}
+{\footnotesize\ttfamily template$<$typename D $>$ \\
+void \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::do\+Backward\+Traversal (\begin{DoxyParamCaption}\item[{llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&}]{current\+In\+Out\+Map,  }\item[{llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&}]{previous\+In\+Out\+Map }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classllvm_1_1DataflowFramework_a24bfa9b2cc1bdd54a27a5c3714d5add5}\label{classllvm_1_1DataflowFramework_a24bfa9b2cc1bdd54a27a5c3714d5add5}} 
+\index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}!doForwardTraversal@{doForwardTraversal}}
+\index{doForwardTraversal@{doForwardTraversal}!llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
+\doxysubsubsection{\texorpdfstring{doForwardTraversal()}{doForwardTraversal()}}
+{\footnotesize\ttfamily template$<$typename D $>$ \\
+void \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::do\+Forward\+Traversal (\begin{DoxyParamCaption}\item[{llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&}]{current\+In\+Out\+Map,  }\item[{llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&}]{previous\+In\+Out\+Map }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classllvm_1_1DataflowFramework_aa44490e7ccc5db53033fc3d4d7e93e43}\label{classllvm_1_1DataflowFramework_aa44490e7ccc5db53033fc3d4d7e93e43}} 
+\index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}!hasInChanged@{hasInChanged}}
+\index{hasInChanged@{hasInChanged}!llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
+\doxysubsubsection{\texorpdfstring{hasInChanged()}{hasInChanged()}}
+{\footnotesize\ttfamily template$<$typename D $>$ \\
+bool \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::has\+In\+Changed (\begin{DoxyParamCaption}\item[{llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&}]{current\+Map,  }\item[{llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&}]{previous\+Map }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Checks if any of the IN\textquotesingle{}s of any basic blocks has changed, if it has, return true, else return false. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em D} & Domain we operate on \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em current\+Map} & Current bitmap reference \\
+\hline
+{\em previous\+Map} & Previous bitmap reference from previous iteration\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classllvm_1_1DataflowFramework_a22f4f37365af5a36a24e9ecbe3134635}\label{classllvm_1_1DataflowFramework_a22f4f37365af5a36a24e9ecbe3134635}} 
+\index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}!hasOutChanged@{hasOutChanged}}
+\index{hasOutChanged@{hasOutChanged}!llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
+\doxysubsubsection{\texorpdfstring{hasOutChanged()}{hasOutChanged()}}
+{\footnotesize\ttfamily template$<$typename D $>$ \\
+bool \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::has\+Out\+Changed (\begin{DoxyParamCaption}\item[{llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&}]{current\+Map,  }\item[{llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&}]{previous\+Map }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Checks if any of the O\+UT\textquotesingle{}s of any basic blocks has changed, if it has, return true, else return false. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em D} & Domain we operate on \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em current\+Map} & Current bitmap reference \\
+\hline
+{\em previous\+Map} & Previous bitmap reference from previous iteration\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classllvm_1_1DataflowFramework_aa329bbad55a93a657327399b8a745200}\label{classllvm_1_1DataflowFramework_aa329bbad55a93a657327399b8a745200}} 
+\index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}!initializeBbBitMaps@{initializeBbBitMaps}}
+\index{initializeBbBitMaps@{initializeBbBitMaps}!llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
+\doxysubsubsection{\texorpdfstring{initializeBbBitMaps()}{initializeBbBitMaps()}}
+{\footnotesize\ttfamily template$<$typename D $>$ \\
+void \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::initialize\+Bb\+Bit\+Maps (\begin{DoxyParamCaption}\item[{Function \&}]{F,  }\item[{llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&}]{map }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Initializes the basic block bitmaps for in and out. In charge of creating the bit vectors and associating them with the basic blocks. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em D} & Domain we operate on \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em F} & Function reference we\textquotesingle{}re operating on \\
+\hline
+{\em current\+Map} & Map reference for basic block pointer to IN O\+UT bitmap mapping \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classllvm_1_1DataflowFramework_a0ffdb0ac79f476b2d4fd7eddbde8072a}\label{classllvm_1_1DataflowFramework_a0ffdb0ac79f476b2d4fd7eddbde8072a}} 
+\index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}!run@{run}}
+\index{run@{run}!llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily template$<$typename D $>$ \\
+std\+::vector$<$ D $>$ \& \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::run}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classllvm_1_1DataflowFramework_a26b66c84f1f422b55616e2836bf92f2a}\label{classllvm_1_1DataflowFramework_a26b66c84f1f422b55616e2836bf92f2a}} 
+\index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}!m\_boundary@{m\_boundary}}
+\index{m\_boundary@{m\_boundary}!llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
+\doxysubsubsection{\texorpdfstring{m\_boundary}{m\_boundary}}
+{\footnotesize\ttfamily template$<$typename D $>$ \\
+\mbox{\hyperlink{dataflow_8h_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::m\+\_\+boundary\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classllvm_1_1DataflowFramework_a1925191fded005f7c04a83f2f68a9700}\label{classllvm_1_1DataflowFramework_a1925191fded005f7c04a83f2f68a9700}} 
+\index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}!m\_dir@{m\_dir}}
+\index{m\_dir@{m\_dir}!llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
+\doxysubsubsection{\texorpdfstring{m\_dir}{m\_dir}}
+{\footnotesize\ttfamily template$<$typename D $>$ \\
+\mbox{\hyperlink{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3c}{Flow\+Direction}} \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::m\+\_\+dir\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classllvm_1_1DataflowFramework_aca67c8879354bf7d3efde4d8f2ae8688}\label{classllvm_1_1DataflowFramework_aca67c8879354bf7d3efde4d8f2ae8688}} 
+\index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}!m\_domainSet@{m\_domainSet}}
+\index{m\_domainSet@{m\_domainSet}!llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
+\doxysubsubsection{\texorpdfstring{m\_domainSet}{m\_domainSet}}
+{\footnotesize\ttfamily template$<$typename D $>$ \\
+std\+::vector$<$D$>$\& \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::m\+\_\+domain\+Set\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classllvm_1_1DataflowFramework_a1d03dc2d24255c695fb1b2f9139a68e0}\label{classllvm_1_1DataflowFramework_a1d03dc2d24255c695fb1b2f9139a68e0}} 
+\index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}!m\_func@{m\_func}}
+\index{m\_func@{m\_func}!llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
+\doxysubsubsection{\texorpdfstring{m\_func}{m\_func}}
+{\footnotesize\ttfamily template$<$typename D $>$ \\
+Function\& \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::m\+\_\+func\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classllvm_1_1DataflowFramework_a170a3e682a3007688ffabea835f1d7cd}\label{classllvm_1_1DataflowFramework_a170a3e682a3007688ffabea835f1d7cd}} 
+\index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}!m\_KG@{m\_KG}}
+\index{m\_KG@{m\_KG}!llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
+\doxysubsubsection{\texorpdfstring{m\_KG}{m\_KG}}
+{\footnotesize\ttfamily template$<$typename D $>$ \\
+\mbox{\hyperlink{classllvm_1_1KillGen}{Kill\+Gen}}$<$D$>$\& \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::m\+\_\+\+KG\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classllvm_1_1DataflowFramework_a39af62b3ab24142c18a5e3f57cd3ce3a}\label{classllvm_1_1DataflowFramework_a39af62b3ab24142c18a5e3f57cd3ce3a}} 
+\index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}!m\_meetOp@{m\_meetOp}}
+\index{m\_meetOp@{m\_meetOp}!llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
+\doxysubsubsection{\texorpdfstring{m\_meetOp}{m\_meetOp}}
+{\footnotesize\ttfamily template$<$typename D $>$ \\
+\mbox{\hyperlink{classIMeetOp}{I\+Meet\+Op}}\& \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::m\+\_\+meet\+Op\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classllvm_1_1DataflowFramework_a6a520bd7caf12ddaa8a9455c322966e1}\label{classllvm_1_1DataflowFramework_a6a520bd7caf12ddaa8a9455c322966e1}} 
+\index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}!m\_transferFunc@{m\_transferFunc}}
+\index{m\_transferFunc@{m\_transferFunc}!llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
+\doxysubsubsection{\texorpdfstring{m\_transferFunc}{m\_transferFunc}}
+{\footnotesize\ttfamily template$<$typename D $>$ \\
+\mbox{\hyperlink{classllvm_1_1BaseTransferFunction}{Base\+Transfer\+Function}}\& \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::m\+\_\+transfer\+Func\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Dataflow\+Framework/include/\mbox{\hyperlink{dataflow_8h}{dataflow.\+h}}\end{DoxyCompactItemize}

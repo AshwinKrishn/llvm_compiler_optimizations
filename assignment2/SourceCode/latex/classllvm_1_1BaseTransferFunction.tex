@@ -1,0 +1,60 @@
+\hypertarget{classllvm_1_1BaseTransferFunction}{}\doxysection{llvm\+::Base\+Transfer\+Function Class Reference}
+\label{classllvm_1_1BaseTransferFunction}\index{llvm::BaseTransferFunction@{llvm::BaseTransferFunction}}
+
+
+Holds the base implementation of a transfer function, to be extended later if we require additional steps to be added to the transfer function.  
+
+
+
+
+{\ttfamily \#include $<$Base\+Transfer\+Function.\+h$>$}
+
+
+
+Collaboration diagram for llvm\+::Base\+Transfer\+Function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=229pt]{classllvm_1_1BaseTransferFunction__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \mbox{\hyperlink{classllvm_1_1BaseTransferFunction_a5f645deed48d13ba99745033b4aec1c9}{run}} (const std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \&input, const std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \&gen\+Set, const std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \&kill\+Set)
+\begin{DoxyCompactList}\small\item\em General base transfer function main method. Takes in 3 const set references, gen, kill, and input(\+I\+N for forward, O\+U\+T for backward analysis) General form is \mbox{[}Gen U (In -\/ Kill)\mbox{]}. To mimic the (In -\/ Kill) without doing a borrow operation, we flip the kill set and perform bitwise A\+ND. Truth table is 0-\/0 = 0; 0-\/1 = 0; 1-\/0 = 1; 1-\/1 = 0. Next, Union operation is synonymous to bitwise OR. Truth table is 0 U 0 = 0; 0 U 1 = 1; 1 U 0 = 1; 1 U 1 = 1. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Holds the base implementation of a transfer function, to be extended later if we require additional steps to be added to the transfer function. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classllvm_1_1BaseTransferFunction_a5f645deed48d13ba99745033b4aec1c9}\label{classllvm_1_1BaseTransferFunction_a5f645deed48d13ba99745033b4aec1c9}} 
+\index{llvm::BaseTransferFunction@{llvm::BaseTransferFunction}!run@{run}}
+\index{run@{run}!llvm::BaseTransferFunction@{llvm::BaseTransferFunction}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ llvm\+::\+Base\+Transfer\+Function\+::run (\begin{DoxyParamCaption}\item[{const std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \&}]{input,  }\item[{const std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \&}]{gen\+Set,  }\item[{const std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \&}]{kill\+Set }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+General base transfer function main method. Takes in 3 const set references, gen, kill, and input(\+I\+N for forward, O\+U\+T for backward analysis) General form is \mbox{[}Gen U (In -\/ Kill)\mbox{]}. To mimic the (In -\/ Kill) without doing a borrow operation, we flip the kill set and perform bitwise A\+ND. Truth table is 0-\/0 = 0; 0-\/1 = 0; 1-\/0 = 1; 1-\/1 = 0. Next, Union operation is synonymous to bitwise OR. Truth table is 0 U 0 = 0; 0 U 1 = 1; 1 U 0 = 1; 1 U 1 = 1. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input} & Input into function, can be IN or O\+UT depending on direction \\
+\hline
+{\em gen\+Set} & Gen set \\
+\hline
+{\em kill\+Set} & Kill set\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Copy out the bitset. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Dataflow\+Framework/include/\mbox{\hyperlink{BaseTransferFunction_8h}{Base\+Transfer\+Function.\+h}}\item 
+Dataflow\+Framework/\mbox{\hyperlink{BaseTransferFunction_8cpp}{Base\+Transfer\+Function.\+cpp}}\end{DoxyCompactItemize}

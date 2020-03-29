@@ -1,0 +1,111 @@
+\hypertarget{dataflow_8h}{}\doxysection{Dataflow\+Framework/include/dataflow.h File Reference}
+\label{dataflow_8h}\index{DataflowFramework/include/dataflow.h@{DataflowFramework/include/dataflow.h}}
+{\ttfamily \#include \char`\"{}llvm/\+A\+D\+T/\+Bit\+Vector.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}llvm/\+A\+D\+T/\+Dense\+Map.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}llvm/\+I\+R/\+C\+F\+G.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}llvm/\+I\+R/\+Instructions.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}llvm/\+I\+R/\+Value\+Map.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$llvm/\+A\+D\+T/\+Post\+Order\+Iterator.\+h$>$}\newline
+{\ttfamily \#include $<$llvm/\+Support/\+Debug.\+h$>$}\newline
+{\ttfamily \#include $<$llvm/\+Support/\+Errc.\+h$>$}\newline
+{\ttfamily \#include $<$llvm/\+Support/\+Error.\+h$>$}\newline
+{\ttfamily \#include $<$llvm/\+Support/raw\+\_\+ostream.\+h$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$Base\+Transfer\+Function.\+h$>$}\newline
+{\ttfamily \#include $<$Kill\+Gen.\+h$>$}\newline
+{\ttfamily \#include $<$Meet\+Op\+Interface.\+h$>$}\newline
+{\ttfamily \#include $<$available-\/support.\+h$>$}\newline
+Include dependency graph for dataflow.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{dataflow_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{dataflow_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classllvm_1_1BBInOutBits}{llvm\+::\+B\+B\+In\+Out\+Bits}}
+\item 
+class \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework$<$ D $>$}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacellvm}{llvm}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63}{Meet\+Operator}} \{ \mbox{\hyperlink{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63a4cf5e96eb7880eb38df303a6e5759afd}{U\+N\+I\+ON}}, 
+\mbox{\hyperlink{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63a692d8cc6fd4ce2a345352edb276644d2}{I\+N\+T\+E\+R\+S\+E\+C\+T\+I\+ON}}
+ \}
+\item 
+enum \mbox{\hyperlink{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3c}{Flow\+Direction}} \{ \mbox{\hyperlink{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3caa26736999186daf8146f809e863712a1}{F\+O\+R\+W\+A\+RD}}, 
+\mbox{\hyperlink{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3cafed2fca77e454294d6b8bda1bf2c9fd6}{B\+A\+C\+K\+W\+A\+RD}}
+ \}
+\item 
+enum \mbox{\hyperlink{dataflow_8h_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} \{ \mbox{\hyperlink{dataflow_8h_af3393571fa8a8daa4ee5c06613b26555a2f0d18fc0d0fa4a6cd92dc328501874d}{E\+M\+P\+TY}}, 
+\mbox{\hyperlink{dataflow_8h_af3393571fa8a8daa4ee5c06613b26555a5441eeb1ea3b7eff8ea600536afd8b35}{U\+N\+I\+V\+E\+R\+S\+AL}}
+ \}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{dataflow_8h_af3393571fa8a8daa4ee5c06613b26555}\label{dataflow_8h_af3393571fa8a8daa4ee5c06613b26555}} 
+\index{dataflow.h@{dataflow.h}!BoundaryCondition@{BoundaryCondition}}
+\index{BoundaryCondition@{BoundaryCondition}!dataflow.h@{dataflow.h}}
+\doxysubsubsection{\texorpdfstring{BoundaryCondition}{BoundaryCondition}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{dataflow_8h_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{EMPTY@{EMPTY}!dataflow.h@{dataflow.h}}\index{dataflow.h@{dataflow.h}!EMPTY@{EMPTY}}}\mbox{\Hypertarget{dataflow_8h_af3393571fa8a8daa4ee5c06613b26555a2f0d18fc0d0fa4a6cd92dc328501874d}\label{dataflow_8h_af3393571fa8a8daa4ee5c06613b26555a2f0d18fc0d0fa4a6cd92dc328501874d}} 
+E\+M\+P\+TY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UNIVERSAL@{UNIVERSAL}!dataflow.h@{dataflow.h}}\index{dataflow.h@{dataflow.h}!UNIVERSAL@{UNIVERSAL}}}\mbox{\Hypertarget{dataflow_8h_af3393571fa8a8daa4ee5c06613b26555a5441eeb1ea3b7eff8ea600536afd8b35}\label{dataflow_8h_af3393571fa8a8daa4ee5c06613b26555a5441eeb1ea3b7eff8ea600536afd8b35}} 
+U\+N\+I\+V\+E\+R\+S\+AL&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3c}\label{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3c}} 
+\index{dataflow.h@{dataflow.h}!FlowDirection@{FlowDirection}}
+\index{FlowDirection@{FlowDirection}!dataflow.h@{dataflow.h}}
+\doxysubsubsection{\texorpdfstring{FlowDirection}{FlowDirection}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3c}{Flow\+Direction}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FORWARD@{FORWARD}!dataflow.h@{dataflow.h}}\index{dataflow.h@{dataflow.h}!FORWARD@{FORWARD}}}\mbox{\Hypertarget{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3caa26736999186daf8146f809e863712a1}\label{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3caa26736999186daf8146f809e863712a1}} 
+F\+O\+R\+W\+A\+RD&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BACKWARD@{BACKWARD}!dataflow.h@{dataflow.h}}\index{dataflow.h@{dataflow.h}!BACKWARD@{BACKWARD}}}\mbox{\Hypertarget{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3cafed2fca77e454294d6b8bda1bf2c9fd6}\label{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3cafed2fca77e454294d6b8bda1bf2c9fd6}} 
+B\+A\+C\+K\+W\+A\+RD&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63}\label{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63}} 
+\index{dataflow.h@{dataflow.h}!MeetOperator@{MeetOperator}}
+\index{MeetOperator@{MeetOperator}!dataflow.h@{dataflow.h}}
+\doxysubsubsection{\texorpdfstring{MeetOperator}{MeetOperator}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63}{Meet\+Operator}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UNION@{UNION}!dataflow.h@{dataflow.h}}\index{dataflow.h@{dataflow.h}!UNION@{UNION}}}\mbox{\Hypertarget{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63a4cf5e96eb7880eb38df303a6e5759afd}\label{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63a4cf5e96eb7880eb38df303a6e5759afd}} 
+U\+N\+I\+ON&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{INTERSECTION@{INTERSECTION}!dataflow.h@{dataflow.h}}\index{dataflow.h@{dataflow.h}!INTERSECTION@{INTERSECTION}}}\mbox{\Hypertarget{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63a692d8cc6fd4ce2a345352edb276644d2}\label{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63a692d8cc6fd4ce2a345352edb276644d2}} 
+I\+N\+T\+E\+R\+S\+E\+C\+T\+I\+ON&\\
+\hline
+
+\end{DoxyEnumFields}
