@@ -2,6 +2,11 @@
 \label{classllvm_1_1KillGen}\index{llvm::KillGen$<$ D $>$@{llvm::KillGen$<$ D $>$}}
 
 
+Interface class for the Kill and Gen functionality. Any new data flow framework must implement their own kill\+Eval and gen\+Eval functions as they each operate on their domain in their own ways.  
+
+
+
+
 {\ttfamily \#include $<$Kill\+Gen.\+h$>$}
 
 
@@ -31,6 +36,19 @@ virtual std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18
 \item 
 virtual std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \mbox{\hyperlink{classllvm_1_1KillGen_ad6977444c7846538e488b3efd9ecd363}{gen\+Eval}} (llvm\+::\+Basic\+Block $\ast$BB, std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc2f079b}{M\+A\+X\+\_\+\+B\+I\+T\+S\+\_\+\+S\+I\+ZE}} $>$ \&meet\+\_\+res, std\+::vector$<$ D $>$ \&domainset)=0
 \end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename D$>$\newline
+class llvm\+::\+Kill\+Gen$<$ D $>$}
+
+Interface class for the Kill and Gen functionality. Any new data flow framework must implement their own kill\+Eval and gen\+Eval functions as they each operate on their domain in their own ways. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em D} & Domain we operate on (variables/values or expressions) \\
+\hline
+\end{DoxyTemplParams}
 
 
 \doxysubsection{Member Function Documentation}

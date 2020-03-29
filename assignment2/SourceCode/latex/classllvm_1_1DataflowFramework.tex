@@ -2,6 +2,11 @@
 \label{classllvm_1_1DataflowFramework}\index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
 
 
+Primary Dataflow Framework template class. Performs the generalized steps of initializing the IN and O\+UT, calling the Gen and Kill functions and then passing the results to the Transfer Function. Result of which gets set/cleared in the I\+N/\+O\+UT of the correct BB.  
+
+
+
+
 {\ttfamily \#include $<$dataflow.\+h$>$}
 
 
@@ -20,14 +25,14 @@ Collaboration diagram for llvm\+::Dataflow\+Framework$<$ D $>$\+:
 \mbox{\hyperlink{classllvm_1_1DataflowFramework_a4d0da3d723ee16d45af7b46b26e1ff7a}{Dataflow\+Framework}} (\mbox{\hyperlink{classIMeetOp}{I\+Meet\+Op}} \&meet\+Op, \mbox{\hyperlink{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3c}{Flow\+Direction}} direction, \mbox{\hyperlink{dataflow_8h_af3393571fa8a8daa4ee5c06613b26555}{Boundary\+Condition}} boundary, Function \&function, std\+::vector$<$ D $>$ \&domainset, \mbox{\hyperlink{classllvm_1_1KillGen}{Kill\+Gen}}$<$ D $>$ \&Kill\+Gen\+Imp, \mbox{\hyperlink{classllvm_1_1BaseTransferFunction}{Base\+Transfer\+Function}} \&transfer)
 \item 
 std\+::vector$<$ D $>$ \& \mbox{\hyperlink{classllvm_1_1DataflowFramework_a0ffdb0ac79f476b2d4fd7eddbde8072a}{run}} ()
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Primary run function of the Dataflow Framework. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 void \mbox{\hyperlink{classllvm_1_1DataflowFramework_a24bfa9b2cc1bdd54a27a5c3714d5add5}{do\+Forward\+Traversal}} (llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&current\+In\+Out\+Map, llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&previous\+In\+Out\+Map)
-\item 
+\begin{DoxyCompactList}\small\item\em Primary function for forward traversal. Iterates through basic blocks in an Inverse Post Order direction. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classllvm_1_1DataflowFramework_a4b0a730cc535951f871860c4937db6a4}{do\+Backward\+Traversal}} (llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&current\+In\+Out\+Map, llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&previous\+In\+Out\+Map)
-\item 
+\begin{DoxyCompactList}\small\item\em Primary function for backward traversal. Iterates through basic blocks in a Post Order direction. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classllvm_1_1DataflowFramework_aa329bbad55a93a657327399b8a745200}{initialize\+Bb\+Bit\+Maps}} (Function \&F, llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&map)
 \begin{DoxyCompactList}\small\item\em Initializes the basic block bitmaps for in and out. In charge of creating the bit vectors and associating them with the basic blocks. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{classllvm_1_1DataflowFramework_a22f4f37365af5a36a24e9ecbe3134635}{has\+Out\+Changed}} (llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&current\+Map, llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&previous\+Map)
@@ -35,7 +40,7 @@ bool \mbox{\hyperlink{classllvm_1_1DataflowFramework_a22f4f37365af5a36a24e9ecbe3
 bool \mbox{\hyperlink{classllvm_1_1DataflowFramework_aa44490e7ccc5db53033fc3d4d7e93e43}{has\+In\+Changed}} (llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&current\+Map, llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&previous\+Map)
 \begin{DoxyCompactList}\small\item\em Checks if any of the IN\textquotesingle{}s of any basic blocks has changed, if it has, return true, else return false. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classllvm_1_1DataflowFramework_a2b6d0208aff6f74796f517c0aec49e88}{deep\+Copy\+Dense\+Maps}} (llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&current\+Map, llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&previous\+Map)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Creates copies the memory contents of IN and O\+UT from current\+Map into previous\+Map. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -53,6 +58,19 @@ std\+::vector$<$ D $>$ \& \mbox{\hyperlink{classllvm_1_1DataflowFramework_aca67c
 \item 
 \mbox{\hyperlink{classllvm_1_1BaseTransferFunction}{Base\+Transfer\+Function}} \& \mbox{\hyperlink{classllvm_1_1DataflowFramework_a6a520bd7caf12ddaa8a9455c322966e1}{m\+\_\+transfer\+Func}}
 \end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename D$>$\newline
+class llvm\+::\+Dataflow\+Framework$<$ D $>$}
+
+Primary Dataflow Framework template class. Performs the generalized steps of initializing the IN and O\+UT, calling the Gen and Kill functions and then passing the results to the Transfer Function. Result of which gets set/cleared in the I\+N/\+O\+UT of the correct BB. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em D} & Domain we operate on. (Values, Expressions, etc.) \\
+\hline
+\end{DoxyTemplParams}
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
@@ -73,6 +91,22 @@ std\+::vector$<$ D $>$ \& \mbox{\hyperlink{classllvm_1_1DataflowFramework_aca67c
 {\footnotesize\ttfamily template$<$typename D $>$ \\
 void \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::deep\+Copy\+Dense\+Maps (\begin{DoxyParamCaption}\item[{llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&}]{current\+Map,  }\item[{llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&}]{previous\+Map }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
+
+
+Creates copies the memory contents of IN and O\+UT from current\+Map into previous\+Map. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em D} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em current\+Map} & \\
+\hline
+{\em previous\+Map} & \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{classllvm_1_1DataflowFramework_a4b0a730cc535951f871860c4937db6a4}\label{classllvm_1_1DataflowFramework_a4b0a730cc535951f871860c4937db6a4}} 
 \index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}!doBackwardTraversal@{doBackwardTraversal}}
 \index{doBackwardTraversal@{doBackwardTraversal}!llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
@@ -80,6 +114,22 @@ void \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framew
 {\footnotesize\ttfamily template$<$typename D $>$ \\
 void \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::do\+Backward\+Traversal (\begin{DoxyParamCaption}\item[{llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&}]{current\+In\+Out\+Map,  }\item[{llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&}]{previous\+In\+Out\+Map }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
+
+
+Primary function for backward traversal. Iterates through basic blocks in a Post Order direction. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em D} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em current\+In\+Out\+Map} & \\
+\hline
+{\em previous\+In\+Out\+Map} & \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{classllvm_1_1DataflowFramework_a24bfa9b2cc1bdd54a27a5c3714d5add5}\label{classllvm_1_1DataflowFramework_a24bfa9b2cc1bdd54a27a5c3714d5add5}} 
 \index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}!doForwardTraversal@{doForwardTraversal}}
 \index{doForwardTraversal@{doForwardTraversal}!llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
@@ -87,6 +137,22 @@ void \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framew
 {\footnotesize\ttfamily template$<$typename D $>$ \\
 void \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::do\+Forward\+Traversal (\begin{DoxyParamCaption}\item[{llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&}]{current\+In\+Out\+Map,  }\item[{llvm\+::\+Dense\+Map$<$ Basic\+Block $\ast$, \mbox{\hyperlink{classllvm_1_1BBInOutBits}{B\+B\+In\+Out\+Bits}} $\ast$ $>$ \&}]{previous\+In\+Out\+Map }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
 
+
+
+Primary function for forward traversal. Iterates through basic blocks in an Inverse Post Order direction. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em D} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em current\+In\+Out\+Map} & \\
+\hline
+{\em previous\+In\+Out\+Map} & \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{classllvm_1_1DataflowFramework_aa44490e7ccc5db53033fc3d4d7e93e43}\label{classllvm_1_1DataflowFramework_aa44490e7ccc5db53033fc3d4d7e93e43}} 
 \index{llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}!hasInChanged@{hasInChanged}}
 \index{hasInChanged@{hasInChanged}!llvm::DataflowFramework$<$ D $>$@{llvm::DataflowFramework$<$ D $>$}}
@@ -169,6 +235,18 @@ Initializes the basic block bitmaps for in and out. In charge of creating the bi
 {\footnotesize\ttfamily template$<$typename D $>$ \\
 std\+::vector$<$ D $>$ \& \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework}}$<$ D $>$\+::run}
 
+
+
+Primary run function of the Dataflow Framework. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em D} & \\
+\hline
+\end{DoxyTemplParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
 
 
 \doxysubsection{Member Data Documentation}

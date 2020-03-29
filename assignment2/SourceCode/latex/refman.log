@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2020.3.2)  29 MAR 2020 15:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2020.3.2)  29 MAR 2020 16:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -820,8 +820,7 @@ Package: etoc 2019/03/09 v1.09 Completely customisable TOCs (JFB)
 \c@etoc@tocdepth=\count148
 \etoc@framed@titlebox=\box74
 \etoc@framed@contentsbox=\box75
-)
-No file refman.aux.
+) (./refman.aux)
 \openout1 = `refman.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 150.
@@ -839,6 +838,7 @@ LaTeX Font Info:    ... okay on input line 150.
 LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 150.
 LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 1
 50.
+
 (/usr/share/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
@@ -934,13 +934,13 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 150.
 LaTeX Info: Redefining \pageref on input line 150.
 LaTeX Info: Redefining \nameref on input line 150.
+ (./refman.out) (./refman.out)
 \@outlinefile=\write5
 \openout5 = `refman.out'.
 
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-
-No file refman.toc.
+\Etoc@tf=\read3
 Package hyperref Info: Option `pageanchor' set `false' on input line 156.
 Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 156.
 
@@ -951,7 +951,7 @@ LaTeX Font Info:    Font shape `T1/phv/m/n' will be
 (Font)              scaled to size 6.29996pt on input line 161.
 LaTeX Font Info:    Trying to load font information for U+msa on input line 161
 .
-(/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
+ (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
 LaTeX Font Info:    Trying to load font information for U+msb on input line 161
@@ -977,6 +977,15 @@ LaTeX Font Info:    Font shape `T1/phv/m/n' will be
 \tf@toc=\write6
 \openout6 = `refman.toc'.
 
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 169.
+LaTeX Font Info:    Font shape `T1/phv/b/n' will be
+(Font)              scaled to size 8.99994pt on input line 169.
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <7> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 169.
+LaTeX Font Info:    Font shape `T1/phv/b/n' will be
+(Font)              scaled to size 6.29996pt on input line 169.
+ [1] [2] [3] [4]
 Package hyperref Info: Option `pageanchor' set `true' on input line 171.
 
 Chapter 1.
@@ -1001,216 +1010,31 @@ LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
 (Font)              Font shape `T1/phv/b/n' tried instead on input line 1.
 LaTeX Font Info:    Font shape `T1/phv/b/n' will be
 (Font)              scaled to size 12.9599pt on input line 1.
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 3.
-LaTeX Font Info:    Font shape `T1/phv/b/n' will be
-(Font)              scaled to size 8.99994pt on input line 3.
-
-
-LaTeX Warning: Reference `namespaceanonymous__namespace_02available_8cpp_03' on
- page 1 undefined on input line 3.
-
-
-LaTeX Warning: Reference `namespaceanonymous__namespace_02liveness_8cpp_03' on 
-page 1 undefined on input line 4.
-
-
-LaTeX Warning: Reference `namespacellvm' on page 1 undefined on input line 5.
-
 ) [1
 
 
-]
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <7> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 176.
-LaTeX Font Info:    Font shape `T1/phv/b/n' will be
-(Font)              scaled to size 6.29996pt on input line 176.
- [2
+] [2
 
 ]
 Chapter 2.
-(./hierarchy.tex
-
-LaTeX Warning: Reference `classllvm_1_1BaseTransferFunction' on page 3 undefine
-d on input line 3.
-
-
-LaTeX Warning: Reference `classllvm_1_1BBInOutBits' on page 3 undefined on inpu
-t line 4.
-
-
-LaTeX Warning: Reference `classllvm_1_1DataflowFramework' on page 3 undefined o
-n input line 5.
-
-
-LaTeX Warning: Reference `classllvm_1_1Expression' on page 3 undefined on input
- line 6.
-
-
-LaTeX Warning: Reference `classanonymous__namespace_02available_8cpp_03_1_1Avai
-lableExpressions' on page 3 undefined on input line 8.
-
-
-LaTeX Warning: Reference `classanonymous__namespace_02liveness_8cpp_03_1_1Liven
-ess' on page 3 undefined on input line 9.
-
-
-LaTeX Warning: Reference `classIMeetOp' on page 3 undefined on input line 11.
-
-
-LaTeX Warning: Reference `classIntersectionMeet' on page 3 undefined on input l
-ine 13.
-
-
-LaTeX Warning: Reference `classUnionMeet' on page 3 undefined on input line 14.
-
-
-
-LaTeX Warning: Reference `classllvm_1_1KillGen' on page 3 undefined on input li
-ne 16.
-
-
-LaTeX Warning: Reference `classllvm_1_1KillGen' on page 3 undefined on input li
-ne 17.
-
-
-LaTeX Warning: Reference `classanonymous__namespace_02available_8cpp_03_1_1Kill
-GenEval' on page 3 undefined on input line 19.
-
-
-LaTeX Warning: Reference `classllvm_1_1KillGen' on page 3 undefined on input li
-ne 21.
-
-
-LaTeX Warning: Reference `classanonymous__namespace_02liveness_8cpp_03_1_1KillG
-enLive' on page 3 undefined on input line 23.
-
-
-LaTeX Warning: Reference `classanonymous__namespace_02liveness_8cpp_03_1_1Liven
-ess' on page 3 undefined on input line 25.
-
-) [3] [4
+(./hierarchy.tex) [3] [4
 
 ]
 Chapter 3.
 (./annotated.tex
-
-LaTeX Warning: Reference `classanonymous__namespace_02available_8cpp_03_1_1Avai
-lableExpressions' on page 5 undefined on input line 3.
-
-
-LaTeX Warning: Reference `classllvm_1_1BaseTransferFunction' on page 5 undefine
-d on input line 4.
-
-
-LaTeX Warning: Reference `classllvm_1_1BBInOutBits' on page 5 undefined on inpu
-t line 5.
-
-
-LaTeX Warning: Reference `classllvm_1_1DataflowFramework' on page 5 undefined o
-n input line 6.
-
-
-LaTeX Warning: Reference `classllvm_1_1Expression' on page 5 undefined on input
- line 7.
-
-
-LaTeX Warning: Reference `classIMeetOp' on page 5 undefined on input line 8.
-
-
-LaTeX Warning: Reference `classIntersectionMeet' on page 5 undefined on input l
-ine 9.
-
-
-LaTeX Warning: Reference `classllvm_1_1KillGen' on page 5 undefined on input li
-ne 10.
-
-
-LaTeX Warning: Reference `classanonymous__namespace_02available_8cpp_03_1_1Kill
-GenEval' on page 5 undefined on input line 11.
-
-
-LaTeX Warning: Reference `classanonymous__namespace_02liveness_8cpp_03_1_1KillG
-enLive' on page 5 undefined on input line 12.
-
-
-LaTeX Warning: Reference `classanonymous__namespace_02liveness_8cpp_03_1_1Liven
-ess' on page 5 undefined on input line 13.
-
-
-LaTeX Warning: Reference `classUnionMeet' on page 5 undefined on input line 14.
-
-
-) [5] [6
+LaTeX Font Info:    Trying to load font information for TS1+phv on input line 5
+.
+ (/usr/share/texmf-dist/tex/latex/psnfss/ts1phv.fd
+File: ts1phv.fd 2001/06/04 scalable font definitions for TS1/phv.
+)
+LaTeX Font Info:    Font shape `TS1/phv/m/n' will be
+(Font)              scaled to size 8.99994pt on input line 5.
+) [5]
+[6
 
 ]
 Chapter 4.
-(./files.tex
-
-LaTeX Warning: Reference `available-support_8cpp' on page 7 undefined on input 
-line 3.
-
-
-LaTeX Warning: Reference `available-support_8h' on page 7 undefined on input li
-ne 4.
-
-
-LaTeX Warning: Reference `available_8cpp' on page 7 undefined on input line 5.
-
-
-LaTeX Warning: Reference `liveness-support_8cpp' on page 7 undefined on input l
-ine 6.
-
-
-LaTeX Warning: Reference `liveness-support_8h' on page 7 undefined on input lin
-e 7.
-
-
-LaTeX Warning: Reference `liveness_8cpp' on page 7 undefined on input line 8.
-
-
-LaTeX Warning: Reference `BaseTransferFunction_8cpp' on page 7 undefined on inp
-ut line 9.
-
-
-LaTeX Warning: Reference `dataflow_8cpp' on page 7 undefined on input line 10.
-
-
-LaTeX Warning: Reference `IntersectionMeet_8cpp' on page 7 undefined on input l
-ine 11.
-
-
-LaTeX Warning: Reference `KillGen_8cpp' on page 7 undefined on input line 12.
-
-
-LaTeX Warning: Reference `UnionMeet_8cpp' on page 7 undefined on input line 13.
-
-
-
-LaTeX Warning: Reference `BaseTransferFunction_8h' on page 7 undefined on input
- line 14.
-
-
-LaTeX Warning: Reference `dataflow_8h' on page 7 undefined on input line 15.
-
-
-LaTeX Warning: Reference `IntersectionMeet_8h' on page 7 undefined on input lin
-e 16.
-
-
-LaTeX Warning: Reference `KillGen_8h' on page 7 undefined on input line 17.
-
-
-LaTeX Warning: Reference `MeetOpInterface_8h' on page 7 undefined on input line
- 18.
-
-
-LaTeX Warning: Reference `UnionMeet_8h' on page 7 undefined on input line 19.
-
-
-LaTeX Warning: Reference `test_8c' on page 7 undefined on input line 20.
-
-) [7] [8
+(./files.tex) [7] [8
 
 ]
 Chapter 5.
@@ -1219,14 +1043,16 @@ LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
 (Font)              Font shape `T1/phv/b/n' tried instead on input line 3.
 LaTeX Font Info:    Font shape `T1/phv/b/n' will be
 (Font)              scaled to size 10.79993pt on input line 3.
-LaTeX Font Info:    Trying to load font information for TS1+phv on input line 6
-.
-
-(/usr/share/texmf-dist/tex/latex/psnfss/ts1phv.fd
-File: ts1phv.fd 2001/06/04 scalable font definitions for TS1/phv.
-)
-LaTeX Font Info:    Font shape `TS1/phv/m/n' will be
-(Font)              scaled to size 8.99994pt on input line 6.
+LaTeX Font Info:    Font shape `T1/phv/m/n' will be
+(Font)              scaled to size 8.09995pt on input line 7.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <9> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 7.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 8.09995pt on input line 7.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <7> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 7.
+LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
+(Font)              scaled to size 6.29996pt on input line 7.
 LaTeX Font Info:    Font shape `T1/phv/m/n' will be
 (Font)              scaled to size 7.19995pt on input line 22.
 LaTeX Font Info:    Trying to load font information for T1+pcr on input line 22
@@ -1240,12 +1066,10 @@ LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <8> not available
 )
 (./namespaceanonymous__namespace_02liveness_8cpp_03.tex [9])
 (./namespacellvm.tex
-LaTeX Font Info:    Font shape `T1/phv/m/n' will be
-(Font)              scaled to size 8.09995pt on input line 7.
-LaTeX Font Info:    Font shape `T1/phv/m/it' in size <9> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 7.
-LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
-(Font)              scaled to size 8.09995pt on input line 7.
+LaTeX Font Info:    Font shape `TS1/phv/m/it' in size <9> not available
+(Font)              Font shape `TS1/phv/m/sl' tried instead on input line 9.
+LaTeX Font Info:    Font shape `TS1/phv/m/sl' will be
+(Font)              scaled to size 8.09995pt on input line 9.
 ) [10]
 Chapter 6.
 (./classanonymous__namespace_02available_8cpp_03_1_1AvailableExpressions.tex <.
@@ -1257,13 +1081,13 @@ _8cpp_03_1_1AvailableExpressions__inherit__graph.pdf): PDF inclusion: multiple
 pdfs with page group included in a single page
 >
 <classanonymous__namespace_02available_8cpp_03_1_1AvailableExpressions__inherit
-__graph.pdf, id=180, 225.84375pt x 277.035pt>
+__graph.pdf, id=978, 225.84375pt x 277.035pt>
 File: classanonymous__namespace_02available_8cpp_03_1_1AvailableExpressions__in
 herit__graph.pdf Graphic file (type pdf)
 <use classanonymous__namespace_02available_8cpp_03_1_1AvailableExpressions__inh
 erit__graph.pdf>
 Package pdftex.def Info: classanonymous__namespace_02available_8cpp_03_1_1Avail
-ableExpressions__inherit__graph.pdf  used on input line 10.
+ableExpressions__inherit__graph.pdf  used on input line 14.
 (pdftex.def)             Requested size: 225.0pt x 276.01555pt.
  <./classanonymous__namespace_02available_8cpp_03_1_1AvailableExpressions__coll
 __graph.pdf
@@ -1273,55 +1097,43 @@ _8cpp_03_1_1AvailableExpressions__coll__graph.pdf): PDF inclusion: multiple pdf
 s with page group included in a single page
 >
 <classanonymous__namespace_02available_8cpp_03_1_1AvailableExpressions__coll__g
-raph.pdf, id=188, 225.84375pt x 277.035pt>
+raph.pdf, id=986, 225.84375pt x 277.035pt>
 File: classanonymous__namespace_02available_8cpp_03_1_1AvailableExpressions__co
 ll__graph.pdf Graphic file (type pdf)
 <use classanonymous__namespace_02available_8cpp_03_1_1AvailableExpressions__col
 l__graph.pdf>
 Package pdftex.def Info: classanonymous__namespace_02available_8cpp_03_1_1Avail
-ableExpressions__coll__graph.pdf  used on input line 20.
+ableExpressions__coll__graph.pdf  used on input line 23.
 (pdftex.def)             Requested size: 225.0pt x 276.01555pt.
-
-Underfull \vbox (badness 3009) has occurred while \output is active []
-
  [11
 
-]
-[12]) (./classllvm_1_1BaseTransferFunction.tex <./classllvm_1_1BaseTransferFunc
-tion__coll__graph.pdf>
-<classllvm_1_1BaseTransferFunction__coll__graph.pdf, id=225, 229.85875pt x 138.
-5175pt>
+] [12]) (./classllvm_1_1BaseTransferFunction.tex <./classllvm_1_1BaseTransferFu
+nction__coll__graph.pdf>
+<classllvm_1_1BaseTransferFunction__coll__graph.pdf, id=1018, 229.85875pt x 138
+.5175pt>
 File: classllvm_1_1BaseTransferFunction__coll__graph.pdf Graphic file (type pdf
 )
 <use classllvm_1_1BaseTransferFunction__coll__graph.pdf>
 Package pdftex.def Info: classllvm_1_1BaseTransferFunction__coll__graph.pdf  us
-ed on input line 19.
+ed on input line 18.
 (pdftex.def)             Requested size: 229.0pt x 138.00777pt.
-LaTeX Font Info:    Font shape `T1/phv/m/it' in size <7> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 26.
-LaTeX Font Info:    Font shape `T1/phv/m/sl' will be
-(Font)              scaled to size 6.29996pt on input line 26.
  [13]
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <7> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 37.
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 36.
 
-
-Package longtable Warning: Column widths have changed
-(longtable)                in table 6.1 on input line 51.
-
-
-Underfull \hbox (badness 10000) detected at line 52
+Underfull \hbox (badness 10000) detected at line 51
 [][][]
  []
 
 ) (./classllvm_1_1BBInOutBits.tex <./classllvm_1_1BBInOutBits__coll__graph.pdf>
-<classllvm_1_1BBInOutBits__coll__graph.pdf, id=255, 183.68625pt x 149.55875pt>
+<classllvm_1_1BBInOutBits__coll__graph.pdf, id=1044, 183.68625pt x 149.55875pt>
+
 File: classllvm_1_1BBInOutBits__coll__graph.pdf Graphic file (type pdf)
 <use classllvm_1_1BBInOutBits__coll__graph.pdf>
 Package pdftex.def Info: classllvm_1_1BBInOutBits__coll__graph.pdf  used on inp
-ut line 14.
+ut line 18.
 (pdftex.def)             Requested size: 183.0pt x 149.01067pt.
-[14]) (./classllvm_1_1DataflowFramework.tex
+[14] [15]) (./classllvm_1_1DataflowFramework.tex
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1.
@@ -1338,161 +1150,99 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1.
 
-[15] <./classllvm_1_1DataflowFramework__coll__graph.pdf>
-<classllvm_1_1DataflowFramework__coll__graph.pdf, id=304, 341.275pt x 387.4475p
-t>
+ <./classllvm_1_1DataflowFramework__coll__graph.pdf>
+<classllvm_1_1DataflowFramework__coll__graph.pdf, id=1085, 341.275pt x 387.4475
+pt>
 File: classllvm_1_1DataflowFramework__coll__graph.pdf Graphic file (type pdf)
 <use classllvm_1_1DataflowFramework__coll__graph.pdf>
 Package pdftex.def Info: classllvm_1_1DataflowFramework__coll__graph.pdf  used 
-on input line 14.
+on input line 19.
 (pdftex.def)             Requested size: 340.0pt x 386.02176pt.
- [16]
-LaTeX Font Info:    Font shape `TS1/phv/m/it' in size <9> not available
-(Font)              Font shape `TS1/phv/m/sl' tried instead on input line 34.
-LaTeX Font Info:    Font shape `TS1/phv/m/sl' will be
-(Font)              scaled to size 8.09995pt on input line 34.
- [17]
-
-Package longtable Warning: Column widths have changed
-(longtable)                in table 6.2 on input line 105.
-
-
-Package longtable Warning: Column widths have changed
-(longtable)                in table 6.3 on input line 112.
-
-
-Underfull \hbox (badness 10000) detected at line 113
+ [16] [17]
+LaTeX Font Info:    Font shape `T1/phv/bc/n' will be
+(Font)              scaled to size 6.29996pt on input line 65.
+ [18] [19]
+Underfull \hbox (badness 10000) detected at line 179
 [][][]
  []
 
-[18]
-
-Package longtable Warning: Column widths have changed
-(longtable)                in table 6.4 on input line 131.
-
-
-Package longtable Warning: Column widths have changed
-(longtable)                in table 6.5 on input line 138.
-
-
-Underfull \hbox (badness 10000) detected at line 139
+[20]
+Underfull \hbox (badness 10000) detected at line 205
 [][][]
  []
 
+[21]
+Underfull \hbox (badness 10000) detected at line 247
+[][][]
+ []
 
-Package longtable Warning: Column widths have changed
-(longtable)                in table 6.6 on input line 157.
-
-
-Package longtable Warning: Column widths have changed
-(longtable)                in table 6.7 on input line 164.
-
-[19]) (./classllvm_1_1Expression.tex <./classllvm_1_1Expression__coll__graph.pd
-f
+) (./classllvm_1_1Expression.tex [22] <./classllvm_1_1Expression__coll__graph.p
+df
 
 pdfTeX warning: /usr/bin/pdflatex (file ./classllvm_1_1Expression__coll__graph.
 pdf): PDF inclusion: multiple pdfs with page group included in a single page
 >
-<classllvm_1_1Expression__coll__graph.pdf, id=447, 178.6675pt x 237.88875pt>
+<classllvm_1_1Expression__coll__graph.pdf, id=1238, 178.6675pt x 193.72375pt>
 File: classllvm_1_1Expression__coll__graph.pdf Graphic file (type pdf)
 <use classllvm_1_1Expression__coll__graph.pdf>
 Package pdftex.def Info: classllvm_1_1Expression__coll__graph.pdf  used on inpu
-t line 14.
-(pdftex.def)             Requested size: 178.0pt x 237.01334pt.
- [20]
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <8> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 51.
-LaTeX Font Info:    Font shape `T1/phv/b/n' will be
-(Font)              scaled to size 7.19995pt on input line 51.
-LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <8> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 51.
- [21] [22pdfTeX warning (ext4): destination with the same identifier (name{clas
-sllvm_1_1Expression_ac36e629006ef7b98ca5b1af26269f029}) has been already used, 
-duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.105 \doxysubsubsection
-                        {\texorpdfstring{op}{op}}pdfTeX warning (ext4): destina
-tion with the same identifier (name{classllvm_1_1Expression_afe0c4ef975f4f8c144
-fa17d3268a36ff}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.105 \doxysubsubsection
-                        {\texorpdfstring{op}{op}}pdfTeX warning (ext4): destina
-tion with the same identifier (name{classllvm_1_1Expression_a5247e5a41b8c5e51f9
-dd57d5fb60e9b7}) has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.105 \doxysubsubsection
-                        {\texorpdfstring{op}{op}}]) (./classIMeetOp.tex <./clas
-sIMeetOp__inherit__graph.pdf
+t line 13.
+(pdftex.def)             Requested size: 178.0pt x 193.01086pt.
+ [23]) (./classIMeetOp.tex [24] <./classIMeetOp__inherit__graph.pdf
 
 pdfTeX warning: /usr/bin/pdflatex (file ./classIMeetOp__inherit__graph.pdf): PD
 F inclusion: multiple pdfs with page group included in a single page
 >
-<classIMeetOp__inherit__graph.pdf, id=520, 309.155pt x 299.1175pt>
+<classIMeetOp__inherit__graph.pdf, id=1279, 309.155pt x 299.1175pt>
 File: classIMeetOp__inherit__graph.pdf Graphic file (type pdf)
 <use classIMeetOp__inherit__graph.pdf>
 Package pdftex.def Info: classIMeetOp__inherit__graph.pdf  used on input line 1
-4.
+9.
 (pdftex.def)             Requested size: 308.0pt x 298.02592pt.
- [23pdfTeX warning (ext4): destination with the same identifier (name{classllvm
-_1_1Expression_a9e5fa6db2df352bfa44c8f8063251bb1}) has been already used, dupli
-cate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.17 
-     ] <./classIMeetOp__coll__graph.pdf
+ <./classIMeetOp__coll__graph.pdf
 
 pdfTeX warning: /usr/bin/pdflatex (file ./classIMeetOp__coll__graph.pdf): PDF i
 nclusion: multiple pdfs with page group included in a single page
 >
-<classIMeetOp__coll__graph.pdf, id=539, 172.645pt x 160.6pt>
+<classIMeetOp__coll__graph.pdf, id=1287, 172.645pt x 160.6pt>
 File: classIMeetOp__coll__graph.pdf Graphic file (type pdf)
 <use classIMeetOp__coll__graph.pdf>
-Package pdftex.def Info: classIMeetOp__coll__graph.pdf  used on input line 24.
+Package pdftex.def Info: classIMeetOp__coll__graph.pdf  used on input line 29.
 (pdftex.def)             Requested size: 172.0pt x 160.00165pt.
-
-Underfull \hbox (badness 2393) in paragraph at lines 30--32
+ [25]
+Underfull \hbox (badness 2393) in paragraph at lines 35--37
 []\T1/phv/m/n/10 virtual std[]::bitset$\OML/cmm/m/it/10 <$ [] $>$ [] \T1/phv/m/
 n/10 (std[]::bitset$\OML/cmm/m/it/10 <$ [] $>$ \T1/phv/m/n/10 in-put1, std[]::b
 itset$\OML/cmm/m/it/10 <$
  []
 
-[24]) (./classIntersectionMeet.tex <./classIntersectionMeet__inherit__graph.pdf
+[26]) (./classIntersectionMeet.tex <./classIntersectionMeet__inherit__graph.pdf
 >
-<classIntersectionMeet__inherit__graph.pdf, id=582, 198.7425pt x 299.1175pt>
+<classIntersectionMeet__inherit__graph.pdf, id=1339, 198.7425pt x 299.1175pt>
 File: classIntersectionMeet__inherit__graph.pdf Graphic file (type pdf)
 <use classIntersectionMeet__inherit__graph.pdf>
 Package pdftex.def Info: classIntersectionMeet__inherit__graph.pdf  used on inp
-ut line 14.
+ut line 19.
 (pdftex.def)             Requested size: 198.0pt x 298.00766pt.
- [25] <./classIntersectionMeet__coll__graph.pdf
+ [27] <./classIntersectionMeet__coll__graph.pdf
 
 pdfTeX warning: /usr/bin/pdflatex (file ./classIntersectionMeet__coll__graph.pd
 f): PDF inclusion: multiple pdfs with page group included in a single page
 >
-<classIntersectionMeet__coll__graph.pdf, id=608, 198.7425pt x 299.1175pt>
+<classIntersectionMeet__coll__graph.pdf, id=1360, 198.7425pt x 299.1175pt>
 File: classIntersectionMeet__coll__graph.pdf Graphic file (type pdf)
 <use classIntersectionMeet__coll__graph.pdf>
 Package pdftex.def Info: classIntersectionMeet__coll__graph.pdf  used on input 
-line 24.
+line 29.
 (pdftex.def)             Requested size: 198.0pt x 298.00766pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [26]
-Underfull \hbox (badness 2970) in paragraph at lines 36--38
+ [28]
+Underfull \hbox (badness 2970) in paragraph at lines 41--43
 []\T1/phv/m/n/10 std[]::bitset$\OML/cmm/m/it/10 <$ [] $>$ [] \T1/phv/m/n/10 (st
 d[]::bitset$\OML/cmm/m/it/10 <$ [] $>$ \T1/phv/m/n/10 ip1, std[]::bitset$\OML/c
 mm/m/it/10 <$
  []
 
-[27]) (./classllvm_1_1KillGen.tex
+[29]) (./classllvm_1_1KillGen.tex
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1.
@@ -1509,102 +1259,119 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1.
 
- <./classllvm_1_1KillGen__inherit__graph.pdf>
-<classllvm_1_1KillGen__inherit__graph.pdf, id=663, 407.5225pt x 533.995pt>
+ <./classllvm_1_1KillGen__inherit__graph.pdf
+
+pdfTeX warning: /usr/bin/pdflatex (file ./classllvm_1_1KillGen__inherit__graph.
+pdf): PDF inclusion: multiple pdfs with page group included in a single page
+>
+<classllvm_1_1KillGen__inherit__graph.pdf, id=1412, 407.5225pt x 533.995pt>
 File: classllvm_1_1KillGen__inherit__graph.pdf Graphic file (type pdf)
 <use classllvm_1_1KillGen__inherit__graph.pdf>
 Package pdftex.def Info: classllvm_1_1KillGen__inherit__graph.pdf  used on inpu
-t line 14.
+t line 19.
 (pdftex.def)             Requested size: 350.0pt x 458.64009pt.
- [28] <./classllvm_1_1KillGen__coll__graph.pdf
+
+Underfull \vbox (badness 1728) has occurred while \output is active []
+
+ [30] <./classllvm_1_1KillGen__coll__graph.pdf
 
 pdfTeX warning: /usr/bin/pdflatex (file ./classllvm_1_1KillGen__coll__graph.pdf
 ): PDF inclusion: multiple pdfs with page group included in a single page
 >
-<classllvm_1_1KillGen__coll__graph.pdf, id=679, 190.7125pt x 149.55875pt>
+<classllvm_1_1KillGen__coll__graph.pdf, id=1426, 190.7125pt x 149.55875pt>
 File: classllvm_1_1KillGen__coll__graph.pdf Graphic file (type pdf)
 <use classllvm_1_1KillGen__coll__graph.pdf>
 Package pdftex.def Info: classllvm_1_1KillGen__coll__graph.pdf  used on input l
-ine 24.
+ine 29.
 (pdftex.def)             Requested size: 190.0pt x 149.0061pt.
+ [31]
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Package longtable Warning: Column widths have changed
+(longtable)                in table 6.17 on input line 51.
 
- [29]
-Overfull \hbox (41.9271pt too wide) in paragraph at lines 46--47
+
+Overfull \hbox (41.9271pt too wide) in paragraph at lines 64--65
 []\T1/phv/m/n/10 Implemented in [], and []. 
  []
 
 
-Overfull \hbox (41.9271pt too wide) in paragraph at lines 57--58
+Overfull \hbox (41.9271pt too wide) in paragraph at lines 75--76
 []\T1/phv/m/n/10 Implemented in [], and []. 
  []
 
-) (./classanonymous__namespace_02available_8cpp_03_1_1KillGenEval.tex <./classa
-nonymous__namespace_02available_8cpp_03_1_1KillGenEval__inherit__graph.pdf>
+) (./classanonymous__namespace_02available_8cpp_03_1_1KillGenEval.tex [32] <./c
+lassanonymous__namespace_02available_8cpp_03_1_1KillGenEval__inherit__graph.pdf
+
+
+pdfTeX warning: /usr/bin/pdflatex (file ./classanonymous__namespace_02available
+_8cpp_03_1_1KillGenEval__inherit__graph.pdf): PDF inclusion: multiple pdfs with
+ page group included in a single page
+>
 <classanonymous__namespace_02available_8cpp_03_1_1KillGenEval__inherit__graph.p
-df, id=712, 237.88875pt x 394.47375pt>
+df, id=1477, 237.88875pt x 394.47375pt>
 File: classanonymous__namespace_02available_8cpp_03_1_1KillGenEval__inherit__gr
 aph.pdf Graphic file (type pdf)
 <use classanonymous__namespace_02available_8cpp_03_1_1KillGenEval__inherit__gra
 ph.pdf>
 Package pdftex.def Info: classanonymous__namespace_02available_8cpp_03_1_1KillG
-enEval__inherit__graph.pdf  used on input line 10.
+enEval__inherit__graph.pdf  used on input line 15.
 (pdftex.def)             Requested size: 237.0pt x 393.01613pt.
+ <./classanonymous__namespace_02available_8cpp_03_1_1KillGenEval__coll__graph.p
+df
 
-[30] <./classanonymous__namespace_02available_8cpp_03_1_1KillGenEval__coll__gra
-ph.pdf>
+pdfTeX warning: /usr/bin/pdflatex (file ./classanonymous__namespace_02available
+_8cpp_03_1_1KillGenEval__coll__graph.pdf): PDF inclusion: multiple pdfs with pa
+ge group included in a single page
+>
 <classanonymous__namespace_02available_8cpp_03_1_1KillGenEval__coll__graph.pdf,
- id=737, 237.88875pt x 394.47375pt>
+ id=1485, 237.88875pt x 394.47375pt>
 File: classanonymous__namespace_02available_8cpp_03_1_1KillGenEval__coll__graph
 .pdf Graphic file (type pdf)
 <use classanonymous__namespace_02available_8cpp_03_1_1KillGenEval__coll__graph.
 pdf>
 Package pdftex.def Info: classanonymous__namespace_02available_8cpp_03_1_1KillG
-enEval__coll__graph.pdf  used on input line 20.
+enEval__coll__graph.pdf  used on input line 25.
 (pdftex.def)             Requested size: 237.0pt x 393.01613pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [31]
-[32]) (./classanonymous__namespace_02liveness_8cpp_03_1_1KillGenLive.tex <./cla
+ [33]
+[34]) (./classanonymous__namespace_02liveness_8cpp_03_1_1KillGenLive.tex <./cla
 ssanonymous__namespace_02liveness_8cpp_03_1_1KillGenLive__inherit__graph.pdf>
 <classanonymous__namespace_02liveness_8cpp_03_1_1KillGenLive__inherit__graph.pd
-f, id=780, 231.86626pt x 533.995pt>
+f, id=1527, 231.86626pt x 533.995pt>
 File: classanonymous__namespace_02liveness_8cpp_03_1_1KillGenLive__inherit__gra
 ph.pdf Graphic file (type pdf)
 <use classanonymous__namespace_02liveness_8cpp_03_1_1KillGenLive__inherit__grap
 h.pdf>
 Package pdftex.def Info: classanonymous__namespace_02liveness_8cpp_03_1_1KillGe
-nLive__inherit__graph.pdf  used on input line 10.
+nLive__inherit__graph.pdf  used on input line 15.
 (pdftex.def)             Requested size: 231.0pt x 532.0137pt.
 
-Underfull \vbox (badness 3000) has occurred while \output is active []
-
- [33] <./classanonymous__namespace_02liveness_8cpp_03_1_1KillGenLive__coll__gra
-ph.pdf
+[35] <./classanonymous__namespace_02liveness_8cpp_03_1_1KillGenLive__coll__grap
+h.pdf
 
 pdfTeX warning: /usr/bin/pdflatex (file ./classanonymous__namespace_02liveness_
 8cpp_03_1_1KillGenLive__coll__graph.pdf): PDF inclusion: multiple pdfs with pag
 e group included in a single page
 >
 <classanonymous__namespace_02liveness_8cpp_03_1_1KillGenLive__coll__graph.pdf, 
-id=795, 231.86626pt x 394.47375pt>
+id=1539, 231.86626pt x 394.47375pt>
 File: classanonymous__namespace_02liveness_8cpp_03_1_1KillGenLive__coll__graph.
 pdf Graphic file (type pdf)
 <use classanonymous__namespace_02liveness_8cpp_03_1_1KillGenLive__coll__graph.p
 df>
 Package pdftex.def Info: classanonymous__namespace_02liveness_8cpp_03_1_1KillGe
-nLive__coll__graph.pdf  used on input line 20.
+nLive__coll__graph.pdf  used on input line 25.
 (pdftex.def)             Requested size: 231.0pt x 393.01012pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [34]
-[35]) (./classanonymous__namespace_02liveness_8cpp_03_1_1Liveness.tex <./classa
+ [36]
+[37]) (./classanonymous__namespace_02liveness_8cpp_03_1_1Liveness.tex <./classa
 nonymous__namespace_02liveness_8cpp_03_1_1Liveness__inherit__graph.pdf>
 <classanonymous__namespace_02liveness_8cpp_03_1_1Liveness__inherit__graph.pdf, 
-id=835, 348.30125pt x 533.995pt>
+id=1577, 348.30125pt x 533.995pt>
 File: classanonymous__namespace_02liveness_8cpp_03_1_1Liveness__inherit__graph.
 pdf Graphic file (type pdf)
 <use classanonymous__namespace_02liveness_8cpp_03_1_1Liveness__inherit__graph.p
@@ -1613,17 +1380,15 @@ Package pdftex.def Info: classanonymous__namespace_02liveness_8cpp_03_1_1Livene
 ss__inherit__graph.pdf  used on input line 10.
 (pdftex.def)             Requested size: 347.0pt x 532.02185pt.
 
-Underfull \vbox (badness 3000) has occurred while \output is active []
-
- [36] <./classanonymous__namespace_02liveness_8cpp_03_1_1Liveness__coll__graph.
-pdf
+[38] <./classanonymous__namespace_02liveness_8cpp_03_1_1Liveness__coll__graph.p
+df
 
 pdfTeX warning: /usr/bin/pdflatex (file ./classanonymous__namespace_02liveness_
 8cpp_03_1_1Liveness__coll__graph.pdf): PDF inclusion: multiple pdfs with page g
 roup included in a single page
 >
 <classanonymous__namespace_02liveness_8cpp_03_1_1Liveness__coll__graph.pdf, id=
-850, 348.30125pt x 533.995pt>
+1590, 348.30125pt x 533.995pt>
 File: classanonymous__namespace_02liveness_8cpp_03_1_1Liveness__coll__graph.pdf
  Graphic file (type pdf)
 <use classanonymous__namespace_02liveness_8cpp_03_1_1Liveness__coll__graph.pdf>
@@ -1634,40 +1399,40 @@ ss__coll__graph.pdf  used on input line 20.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [37]
-[38]) (./classUnionMeet.tex <./classUnionMeet__inherit__graph.pdf>
-<classUnionMeet__inherit__graph.pdf, id=884, 172.645pt x 299.1175pt>
+ [39]
+[40]) (./classUnionMeet.tex <./classUnionMeet__inherit__graph.pdf>
+<classUnionMeet__inherit__graph.pdf, id=1622, 172.645pt x 299.1175pt>
 File: classUnionMeet__inherit__graph.pdf Graphic file (type pdf)
 <use classUnionMeet__inherit__graph.pdf>
 Package pdftex.def Info: classUnionMeet__inherit__graph.pdf  used on input line
- 14.
+ 19.
 (pdftex.def)             Requested size: 172.0pt x 298.0031pt.
- [39] <./classUnionMeet__coll__graph.pdf
+ [41] <./classUnionMeet__coll__graph.pdf
 
 pdfTeX warning: /usr/bin/pdflatex (file ./classUnionMeet__coll__graph.pdf): PDF
  inclusion: multiple pdfs with page group included in a single page
 >
-<classUnionMeet__coll__graph.pdf, id=906, 172.645pt x 299.1175pt>
+<classUnionMeet__coll__graph.pdf, id=1636, 172.645pt x 299.1175pt>
 File: classUnionMeet__coll__graph.pdf Graphic file (type pdf)
 <use classUnionMeet__coll__graph.pdf>
-Package pdftex.def Info: classUnionMeet__coll__graph.pdf  used on input line 24
+Package pdftex.def Info: classUnionMeet__coll__graph.pdf  used on input line 29
 .
 (pdftex.def)             Requested size: 172.0pt x 298.0031pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [40]
-[41]) [42]
+ [42]
+[43]) [44]
 Chapter 7.
 (./available-support_8cpp.tex <./available-support_8cpp__incl.pdf
 
 pdfTeX warning: /usr/bin/pdflatex (file ./available-support_8cpp__incl.pdf): PD
 F inclusion: multiple pdfs with page group included in a single page
 >
-<available-support_8cpp__incl.pdf, id=970, 982.67125pt x 212.795pt>
+<available-support_8cpp__incl.pdf, id=1697, 982.67125pt x 212.795pt>
 File: available-support_8cpp__incl.pdf Graphic file (type pdf)
 <use available-support_8cpp__incl.pdf>
-Package pdftex.def Info: available-support_8cpp__incl.pdf  used on input line 9
+Package pdftex.def Info: available-support_8cpp__incl.pdf  used on input line 8
 .
 (pdftex.def)             Requested size: 350.0pt x 75.79114pt.
 ) (./available-support_8h.tex <./available-support_8h__incl.pdf
@@ -1675,10 +1440,10 @@ Package pdftex.def Info: available-support_8cpp__incl.pdf  used on input line 9
 pdfTeX warning: /usr/bin/pdflatex (file ./available-support_8h__incl.pdf): PDF 
 inclusion: multiple pdfs with page group included in a single page
 >
-<available-support_8h__incl.pdf, id=981, 982.67125pt x 156.585pt>
+<available-support_8h__incl.pdf, id=1708, 982.67125pt x 156.585pt>
 File: available-support_8h__incl.pdf Graphic file (type pdf)
 <use available-support_8h__incl.pdf>
-Package pdftex.def Info: available-support_8h__incl.pdf  used on input line 16.
+Package pdftex.def Info: available-support_8h__incl.pdf  used on input line 15.
 
 (pdftex.def)             Requested size: 350.0pt x 55.77083pt.
  <./available-support_8h__dep__incl.pdf
@@ -1686,34 +1451,34 @@ Package pdftex.def Info: available-support_8h__incl.pdf  used on input line 16.
 pdfTeX warning: /usr/bin/pdflatex (file ./available-support_8h__dep__incl.pdf):
  PDF inclusion: multiple pdfs with page group included in a single page
 >
-<available-support_8h__dep__incl.pdf, id=989, 698.61pt x 291.0875pt>
+<available-support_8h__dep__incl.pdf, id=1716, 698.61pt x 291.0875pt>
 File: available-support_8h__dep__incl.pdf Graphic file (type pdf)
 <use available-support_8h__dep__incl.pdf>
 Package pdftex.def Info: available-support_8h__dep__incl.pdf  used on input lin
-e 24.
+e 22.
 (pdftex.def)             Requested size: 350.0pt x 145.83209pt.
- [43
+ [45
 
 ]) (./available_8cpp.tex <./available_8cpp__incl.pdf>
-<available_8cpp__incl.pdf, id=1012, 2038.61626pt x 381.425pt>
+<available_8cpp__incl.pdf, id=1736, 2038.61626pt x 381.425pt>
 File: available_8cpp__incl.pdf Graphic file (type pdf)
 <use available_8cpp__incl.pdf>
-Package pdftex.def Info: available_8cpp__incl.pdf  used on input line 16.
+Package pdftex.def Info: available_8cpp__incl.pdf  used on input line 15.
 (pdftex.def)             Requested size: 350.0pt x 65.4816pt.
- [44])
+ [46])
 (./BaseTransferFunction_8cpp.tex <./BaseTransferFunction_8cpp__incl.pdf>
-<BaseTransferFunction_8cpp__incl.pdf, id=1036, 403.5075pt x 280.04625pt>
+<BaseTransferFunction_8cpp__incl.pdf, id=1761, 403.5075pt x 280.04625pt>
 File: BaseTransferFunction_8cpp__incl.pdf Graphic file (type pdf)
 <use BaseTransferFunction_8cpp__incl.pdf>
 Package pdftex.def Info: BaseTransferFunction_8cpp__incl.pdf  used on input lin
-e 9.
+e 8.
 (pdftex.def)             Requested size: 350.0pt x 242.91182pt.
 
-[45]) (./dataflow_8cpp.tex <./dataflow_8cpp__incl.pdf>
-<dataflow_8cpp__incl.pdf, id=1058, 1516.66624pt x 381.425pt>
+[47]) (./dataflow_8cpp.tex <./dataflow_8cpp__incl.pdf>
+<dataflow_8cpp__incl.pdf, id=1782, 1516.66624pt x 381.425pt>
 File: dataflow_8cpp__incl.pdf Graphic file (type pdf)
 <use dataflow_8cpp__incl.pdf>
-Package pdftex.def Info: dataflow_8cpp__incl.pdf  used on input line 11.
+Package pdftex.def Info: dataflow_8cpp__incl.pdf  used on input line 10.
 (pdftex.def)             Requested size: 350.0pt x 88.0169pt.
 )
 (./BaseTransferFunction_8h.tex <./BaseTransferFunction_8h__incl.pdf
@@ -1721,200 +1486,163 @@ Package pdftex.def Info: dataflow_8cpp__incl.pdf  used on input line 11.
 pdfTeX warning: /usr/bin/pdflatex (file ./BaseTransferFunction_8h__incl.pdf): P
 DF inclusion: multiple pdfs with page group included in a single page
 >
-<BaseTransferFunction_8h__incl.pdf, id=1067, 403.5075pt x 223.83624pt>
+<BaseTransferFunction_8h__incl.pdf, id=1791, 403.5075pt x 223.83624pt>
 File: BaseTransferFunction_8h__incl.pdf Graphic file (type pdf)
 <use BaseTransferFunction_8h__incl.pdf>
 Package pdftex.def Info: BaseTransferFunction_8h__incl.pdf  used on input line 
-11.
+10.
 (pdftex.def)             Requested size: 350.0pt x 194.15532pt.
- [46] <./BaseTransferFunction_8h__dep__incl.pdf>
-<BaseTransferFunction_8h__dep__incl.pdf, id=1086, 545.03625pt x 234.8775pt>
+ [48] <./BaseTransferFunction_8h__dep__incl.pdf>
+<BaseTransferFunction_8h__dep__incl.pdf, id=1808, 545.03625pt x 234.8775pt>
 File: BaseTransferFunction_8h__dep__incl.pdf Graphic file (type pdf)
 <use BaseTransferFunction_8h__dep__incl.pdf>
 Package pdftex.def Info: BaseTransferFunction_8h__dep__incl.pdf  used on input 
-line 19.
+line 17.
 (pdftex.def)             Requested size: 350.0pt x 150.82642pt.
 ) (./dataflow_8h.tex <./dataflow_8h__incl.pdf
 
 pdfTeX warning: /usr/bin/pdflatex (file ./dataflow_8h__incl.pdf): PDF inclusion
 : multiple pdfs with page group included in a single page
 >
-<dataflow_8h__incl.pdf, id=1097, 1830.84pt x 336.25626pt>
+<dataflow_8h__incl.pdf, id=1818, 1830.84pt x 336.25626pt>
 File: dataflow_8h__incl.pdf Graphic file (type pdf)
 <use dataflow_8h__incl.pdf>
-Package pdftex.def Info: dataflow_8h__incl.pdf  used on input line 23.
+Package pdftex.def Info: dataflow_8h__incl.pdf  used on input line 22.
 (pdftex.def)             Requested size: 350.0pt x 64.2793pt.
- [47] <./dataflow_8h__dep__incl.pdf>
-<dataflow_8h__dep__incl.pdf, id=1116, 458.71375pt x 167.62625pt>
+ [49] <./dataflow_8h__dep__incl.pdf>
+<dataflow_8h__dep__incl.pdf, id=1836, 458.71375pt x 167.62625pt>
 File: dataflow_8h__dep__incl.pdf Graphic file (type pdf)
 <use dataflow_8h__dep__incl.pdf>
-Package pdftex.def Info: dataflow_8h__dep__incl.pdf  used on input line 31.
+Package pdftex.def Info: dataflow_8h__dep__incl.pdf  used on input line 29.
 (pdftex.def)             Requested size: 350.0pt x 127.90625pt.
- [48]
+ [50]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 7.1 on input line 79.
-
-
-Package longtable Warning: Column widths have changed
-(longtable)                in table 7.2 on input line 95.
+(longtable)                in table 7.1 on input line 73.
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 7.3 on input line 111.
+(longtable)                in table 7.2 on input line 89.
 
 ) (./IntersectionMeet_8h.tex <./IntersectionMeet_8h__incl.pdf>
-<IntersectionMeet_8h__incl.pdf, id=1157, 403.5075pt x 223.83624pt>
+<IntersectionMeet_8h__incl.pdf, id=1864, 403.5075pt x 223.83624pt>
 File: IntersectionMeet_8h__incl.pdf Graphic file (type pdf)
 <use IntersectionMeet_8h__incl.pdf>
-Package pdftex.def Info: IntersectionMeet_8h__incl.pdf  used on input line 10.
+Package pdftex.def Info: IntersectionMeet_8h__incl.pdf  used on input line 9.
 (pdftex.def)             Requested size: 350.0pt x 194.15532pt.
 
-Underfull \vbox (badness 1946) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [49] <./IntersectionMeet_8h__dep__incl.pdf
+ [51] <./IntersectionMeet_8h__dep__incl.pdf
 
 pdfTeX warning: /usr/bin/pdflatex (file ./IntersectionMeet_8h__dep__incl.pdf): 
 PDF inclusion: multiple pdfs with page group included in a single page
 >
-<IntersectionMeet_8h__dep__incl.pdf, id=1177, 453.695pt x 178.6675pt>
+<IntersectionMeet_8h__dep__incl.pdf, id=1883, 453.695pt x 178.6675pt>
 File: IntersectionMeet_8h__dep__incl.pdf Graphic file (type pdf)
 <use IntersectionMeet_8h__dep__incl.pdf>
 Package pdftex.def Info: IntersectionMeet_8h__dep__incl.pdf  used on input line
- 18.
+ 16.
 (pdftex.def)             Requested size: 350.0pt x 137.83337pt.
 ) (./KillGen_8h.tex <./KillGen_8h__incl.pdf
 
 pdfTeX warning: /usr/bin/pdflatex (file ./KillGen_8h__incl.pdf): PDF inclusion:
  multiple pdfs with page group included in a single page
 >
-<KillGen_8h__incl.pdf, id=1186, 1414.28375pt x 280.04625pt>
+<KillGen_8h__incl.pdf, id=1892, 1414.28375pt x 280.04625pt>
 File: KillGen_8h__incl.pdf Graphic file (type pdf)
 <use KillGen_8h__incl.pdf>
-Package pdftex.def Info: KillGen_8h__incl.pdf  used on input line 18.
+Package pdftex.def Info: KillGen_8h__incl.pdf  used on input line 17.
 (pdftex.def)             Requested size: 350.0pt x 69.30203pt.
- [50] <./KillGen_8h__dep__incl.pdf>
-<KillGen_8h__dep__incl.pdf, id=1203, 580.1675pt x 234.8775pt>
+ [52] <./KillGen_8h__dep__incl.pdf>
+<KillGen_8h__dep__incl.pdf, id=1909, 580.1675pt x 234.8775pt>
 File: KillGen_8h__dep__incl.pdf Graphic file (type pdf)
 <use KillGen_8h__dep__incl.pdf>
-Package pdftex.def Info: KillGen_8h__dep__incl.pdf  used on input line 26.
+Package pdftex.def Info: KillGen_8h__dep__incl.pdf  used on input line 24.
 (pdftex.def)             Requested size: 350.0pt x 141.69455pt.
 ) (./MeetOpInterface_8h.tex <./MeetOpInterface_8h__incl.pdf
 
 pdfTeX warning: /usr/bin/pdflatex (file ./MeetOpInterface_8h__incl.pdf): PDF in
 clusion: multiple pdfs with page group included in a single page
 >
-<MeetOpInterface_8h__incl.pdf, id=1214, 403.5075pt x 167.62625pt>
+<MeetOpInterface_8h__incl.pdf, id=1919, 403.5075pt x 167.62625pt>
 File: MeetOpInterface_8h__incl.pdf Graphic file (type pdf)
 <use MeetOpInterface_8h__incl.pdf>
-Package pdftex.def Info: MeetOpInterface_8h__incl.pdf  used on input line 13.
+Package pdftex.def Info: MeetOpInterface_8h__incl.pdf  used on input line 12.
 (pdftex.def)             Requested size: 350.0pt x 145.39882pt.
- <./MeetOpInterface_8h__dep__incl.pdf
-
-pdfTeX warning: /usr/bin/pdflatex (file ./MeetOpInterface_8h__dep__incl.pdf): P
-DF inclusion: multiple pdfs with page group included in a single page
->
-<MeetOpInterface_8h__dep__incl.pdf, id=1222, 1008.76875pt x 369.38pt>
+ [53] <./MeetOpInterface_8h__dep__incl.pdf>
+<MeetOpInterface_8h__dep__incl.pdf, id=1936, 1008.76875pt x 369.38pt>
 File: MeetOpInterface_8h__dep__incl.pdf Graphic file (type pdf)
 <use MeetOpInterface_8h__dep__incl.pdf>
 Package pdftex.def Info: MeetOpInterface_8h__dep__incl.pdf  used on input line 
-21.
+19.
 (pdftex.def)             Requested size: 350.0pt x 128.15767pt.
- [51] [52]
+ [54]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 7.4 on input line 76.
+(longtable)                in table 7.3 on input line 74.
 
 ) (./UnionMeet_8h.tex <./UnionMeet_8h__incl.pdf>
-<UnionMeet_8h__incl.pdf, id=1265, 403.5075pt x 223.83624pt>
+<UnionMeet_8h__incl.pdf, id=1964, 403.5075pt x 223.83624pt>
 File: UnionMeet_8h__incl.pdf Graphic file (type pdf)
 <use UnionMeet_8h__incl.pdf>
-Package pdftex.def Info: UnionMeet_8h__incl.pdf  used on input line 10.
+Package pdftex.def Info: UnionMeet_8h__incl.pdf  used on input line 9.
 (pdftex.def)             Requested size: 350.0pt x 194.15532pt.
  <./UnionMeet_8h__dep__incl.pdf
 
 pdfTeX warning: /usr/bin/pdflatex (file ./UnionMeet_8h__dep__incl.pdf): PDF inc
 lusion: multiple pdfs with page group included in a single page
 >
-<UnionMeet_8h__dep__incl.pdf, id=1273, 612.2875pt x 302.12875pt>
+<UnionMeet_8h__dep__incl.pdf, id=1972, 612.2875pt x 302.12875pt>
 File: UnionMeet_8h__dep__incl.pdf Graphic file (type pdf)
 <use UnionMeet_8h__dep__incl.pdf>
-Package pdftex.def Info: UnionMeet_8h__dep__incl.pdf  used on input line 18.
+Package pdftex.def Info: UnionMeet_8h__dep__incl.pdf  used on input line 16.
 (pdftex.def)             Requested size: 350.0pt x 172.70384pt.
-) (./IntersectionMeet_8cpp.tex <./IntersectionMeet_8cpp__incl.pdf
-
-pdfTeX warning: /usr/bin/pdflatex (file ./IntersectionMeet_8cpp__incl.pdf): PDF
- inclusion: multiple pdfs with page group included in a single page
->
-<IntersectionMeet_8cpp__incl.pdf, id=1282, 403.5075pt x 280.04625pt>
+ [55]) (./IntersectionMeet_8cpp.tex <./IntersectionMeet_8cpp__incl.pdf>
+<IntersectionMeet_8cpp__incl.pdf, id=1989, 403.5075pt x 280.04625pt>
 File: IntersectionMeet_8cpp__incl.pdf Graphic file (type pdf)
 <use IntersectionMeet_8cpp__incl.pdf>
-Package pdftex.def Info: IntersectionMeet_8cpp__incl.pdf  used on input line 10
-.
+Package pdftex.def Info: IntersectionMeet_8cpp__incl.pdf  used on input line 9.
+
 (pdftex.def)             Requested size: 350.0pt x 242.91182pt.
- [53]) (./KillGen_8cpp.tex <./KillGen_8cpp__incl.pdf>
-<KillGen_8cpp__incl.pdf, id=1301, 1414.28375pt x 325.215pt>
+)
+(./KillGen_8cpp.tex <./KillGen_8cpp__incl.pdf
+
+pdfTeX warning: /usr/bin/pdflatex (file ./KillGen_8cpp__incl.pdf): PDF inclusio
+n: multiple pdfs with page group included in a single page
+>
+<KillGen_8cpp__incl.pdf, id=1997, 1414.28375pt x 325.215pt>
 File: KillGen_8cpp__incl.pdf Graphic file (type pdf)
 <use KillGen_8cpp__incl.pdf>
-Package pdftex.def Info: KillGen_8cpp__incl.pdf  used on input line 9.
+Package pdftex.def Info: KillGen_8cpp__incl.pdf  used on input line 8.
 (pdftex.def)             Requested size: 350.0pt x 80.47978pt.
-) (./UnionMeet_8cpp.tex <./UnionMeet_8cpp__incl.pdf
-
-pdfTeX warning: /usr/bin/pdflatex (file ./UnionMeet_8cpp__incl.pdf): PDF inclus
-ion: multiple pdfs with page group included in a single page
->
-<UnionMeet_8cpp__incl.pdf, id=1309, 403.5075pt x 269.005pt>
+) (./UnionMeet_8cpp.tex [56] <./UnionMeet_8cpp__incl.pdf>
+<UnionMeet_8cpp__incl.pdf, id=2014, 403.5075pt x 269.005pt>
 File: UnionMeet_8cpp__incl.pdf Graphic file (type pdf)
 <use UnionMeet_8cpp__incl.pdf>
-Package pdftex.def Info: UnionMeet_8cpp__incl.pdf  used on input line 10.
+Package pdftex.def Info: UnionMeet_8cpp__incl.pdf  used on input line 9.
 (pdftex.def)             Requested size: 350.0pt x 233.33466pt.
-) (./liveness-support_8cpp.tex [54] <./liveness-support_8cpp__incl.pdf>
-<liveness-support_8cpp__incl.pdf, id=1327, 982.67125pt x 212.795pt>
-File: liveness-support_8cpp__incl.pdf Graphic file (type pdf)
-<use liveness-support_8cpp__incl.pdf>
-Package pdftex.def Info: liveness-support_8cpp__incl.pdf  used on input line 9.
-
-(pdftex.def)             Requested size: 350.0pt x 75.79114pt.
 )
-(./liveness-support_8h.tex <./liveness-support_8h__incl.pdf
-
-pdfTeX warning: /usr/bin/pdflatex (file ./liveness-support_8h__incl.pdf): PDF i
-nclusion: multiple pdfs with page group included in a single page
->
-<liveness-support_8h__incl.pdf, id=1339, 982.67125pt x 156.585pt>
-File: liveness-support_8h__incl.pdf Graphic file (type pdf)
-<use liveness-support_8h__incl.pdf>
-Package pdftex.def Info: liveness-support_8h__incl.pdf  used on input line 16.
-(pdftex.def)             Requested size: 350.0pt x 55.77083pt.
- [55] <./liveness-support_8h__dep__incl.pdf>
-<liveness-support_8h__dep__incl.pdf, id=1357, 198.7425pt x 156.585pt>
-File: liveness-support_8h__dep__incl.pdf Graphic file (type pdf)
-<use liveness-support_8h__dep__incl.pdf>
-Package pdftex.def Info: liveness-support_8h__dep__incl.pdf  used on input line
- 24.
-(pdftex.def)             Requested size: 198.0pt x 156.004pt.
-) (./liveness_8cpp.tex <./liveness_8cpp__incl.pdf
+(./liveness_8cpp.tex <./liveness_8cpp__incl.pdf
 
 pdfTeX warning: /usr/bin/pdflatex (file ./liveness_8cpp__incl.pdf): PDF inclusi
 on: multiple pdfs with page group included in a single page
 >
-<liveness_8cpp__incl.pdf, id=1369, 1912.14375pt x 381.425pt>
+<liveness_8cpp__incl.pdf, id=2022, 1912.14375pt x 381.425pt>
 File: liveness_8cpp__incl.pdf Graphic file (type pdf)
 <use liveness_8cpp__incl.pdf>
-Package pdftex.def Info: liveness_8cpp__incl.pdf  used on input line 17.
+Package pdftex.def Info: liveness_8cpp__incl.pdf  used on input line 16.
 (pdftex.def)             Requested size: 350.0pt x 69.81172pt.
- [56]) (./test_8c.tex) [57] [58
-
-]
+ [57]) (./test_8c.tex) [58]
 No file refman.ind.
 
 Package longtable Warning: Table widths have changed. Rerun LaTeX.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 228.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 228.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 226.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 226.
 (./refman.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 228.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 228.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 226.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 226.
 
 
 Package rerunfilecheck Warning: File `refman.out' has changed.
@@ -1922,39 +1650,74 @@ Package rerunfilecheck Warning: File `refman.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `refman.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  EF9A6EDB5047AF8B65B626ED19730E78;33752.
-
-LaTeX Warning: There were undefined references.
-
+(rerunfilecheck)             Before: 3AF38A26C8F612D58638942FFA3A880D;33079
+(rerunfilecheck)             After:  8E6F7189486692BE53309185D17CA8C3;33882.
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
- 17702 strings out of 492167
- 269804 string characters out of 6131559
- 352983 words of memory out of 5000000
- 21292 multiletter control sequences out of 15000+600000
- 65289 words of font info for 93 fonts, out of 8000000 for 9000
+ 17847 strings out of 492167
+ 271689 string characters out of 6131559
+ 382902 words of memory out of 5000000
+ 21424 multiletter control sequences out of 15000+600000
+ 64669 words of font info for 91 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,16n,96p,942b,620s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmmi12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/
-cmmi7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr
-/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/uc
-rb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/
-texmf-dist/fonts/type1/urw/courier/ucrro8a.pfb></usr/share/texmf-dist/fonts/typ
-e1/urw/helvetic/uhvb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/helvetic/uhvb
-8ac.pfb></usr/share/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/
-texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on refman.pdf (60 pages, 577986 bytes).
+ 55i,16n,96p,942b,627s stack positions out of 5000i,500n,10000p,200000b,80000s
+pdfTeX warning (dest): name{subsubsection.6.12.2.4} has been referenced but d
+oes not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.6.12.2.3} has been referenced but doe
+s not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.6.12.2.2} has been referenced but doe
+s not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.6.12.1.1} has been referenced but doe
+s not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.6.8.1.2} has been referenced but does
+ not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.6.8.1.1} has been referenced but does
+ not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.6.7.2.4} has been referenced but does
+ not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.6.7.2.3} has been referenced but does
+ not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.6.7.2.2} has been referenced but does
+ not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.6.7.1.1} has been referenced but does
+ not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.6.6.1.3} has been referenced but does
+ not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.6.6.1.2} has been referenced but does
+ not exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{subsubsection.6.6.1.1} has been referenced but does
+ not exist, replaced by a fixed one
+
+{/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmmi12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+mi7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/s
+hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr
+8a.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrro8a.pfb></usr/share/t
+exmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texmf-dist/fonts/type
+1/urw/helvetic/uhvb8ac.pfb></usr/share/texmf-dist/fonts/type1/urw/helvetic/uhvr
+8a.pfb></usr/share/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
+Output written on refman.pdf (64 pages, 586787 bytes).
 PDF statistics:
- 1553 PDF objects out of 1728 (max. 8388607)
- 1316 compressed objects within 14 object streams
- 438 named destinations out of 1000 (max. 500000)
- 226 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 2197 PDF objects out of 2487 (max. 8388607)
+ 1959 compressed objects within 20 object streams
+ 451 named destinations out of 1000 (max. 500000)
+ 1411 words of extra memory for PDF output out of 10000 (max. 10000000)
 

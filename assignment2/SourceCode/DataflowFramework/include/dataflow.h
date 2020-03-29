@@ -28,14 +28,24 @@
 // Debug
 //#define DEBUG_TYPE "dataflow_framework"
 
-enum MeetOperator { UNION, INTERSECTION };
 enum FlowDirection { FORWARD, BACKWARD };
 enum BoundaryCondition { EMPTY, UNIVERSAL };
 
 namespace llvm {
 
+/**
+ * @brief Holds the bitsets for each basic block's IN and OUT. Owner of the
+ * memory.
+ */
 class BBInOutBits {
       public:
+        /**
+         * @brief Overload ctor takes inval/outval as ZEROS or ONES and
+         * initializes the IN/OUT with the corresponding value.
+         *
+         * @param inval
+         * @param outval
+         */
         BBInOutBits(BitsVal inval, BitsVal outval) {
                 if (inval == ZEROS)
                         m_IN.reset();
@@ -53,6 +63,14 @@ class BBInOutBits {
 
 // Add definitions (and code, depending on your strategy) for your dataflow
 // abstraction here.
+/**
+ * @brief Primary Dataflow Framework template class. Performs the generalized
+ * steps of initializing the IN and OUT, calling the Gen and Kill functions and
+ * then passing the results to the Transfer Function. Result of which gets
+ * set/cleared in the IN/OUT of the correct BB
+ *
+ * @tparam D Domain we operate on. (Values, Expressions, etc.)
+ */
 template <typename D> class DataflowFramework {
       protected:
         IMeetOp &m_meetOp;
@@ -113,6 +131,13 @@ DataflowFramework<D>::DataflowFramework(
       m_boundary(boundary), m_domainSet(domainset), m_KG(KillGenImp),
       m_transferFunc(transfer) {}
 
+/**
+ * @brief Primary run function of the Dataflow Framework
+ *
+ * @tparam D
+ *
+ * @return
+ */
 template <typename D> std::vector<D> &DataflowFramework<D>::run() {
         llvm::DenseMap<BasicBlock *, BBInOutBits *> currentInOutMap;
         llvm::DenseMap<BasicBlock *, BBInOutBits *> previousInOutMap;
@@ -195,6 +220,14 @@ void DataflowFramework<D>::initializeBbBitMaps(
         }
 }
 
+/**
+ * @brief Creates copies the memory contents of IN and OUT from currentMap into
+ * previousMap
+ *
+ * @tparam D
+ * @param currentMap
+ * @param previousMap
+ */
 template <typename D>
 void DataflowFramework<D>::deepCopyDenseMaps(
     llvm::DenseMap<BasicBlock *, BBInOutBits *> &currentMap,
@@ -304,6 +337,14 @@ bool DataflowFramework<D>::hasInChanged(
         return retval;
 }
 
+/**
+ * @brief Primary function for forward traversal. Iterates through basic blocks
+ * in an Inverse Post Order direction.
+ *
+ * @tparam D
+ * @param currentInOutMap
+ * @param previousInOutMap
+ */
 template <typename D>
 void DataflowFramework<D>::doForwardTraversal(
     llvm::DenseMap<BasicBlock *, BBInOutBits *> &currentInOutMap,
@@ -394,6 +435,14 @@ void DataflowFramework<D>::doForwardTraversal(
         } while (hasOutChanged(currentInOutMap, previousInOutMap));
 }
 
+/**
+ * @brief Primary function for backward traversal. Iterates through basic blocks
+ * in a Post Order direction.
+ *
+ * @tparam D
+ * @param currentInOutMap
+ * @param previousInOutMap
+ */
 template <typename D>
 void DataflowFramework<D>::doBackwardTraversal(
     llvm::DenseMap<BasicBlock *, BBInOutBits *> &currentInOutMap,

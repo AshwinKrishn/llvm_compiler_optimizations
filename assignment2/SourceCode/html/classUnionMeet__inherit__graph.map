@@ -1,4 +1,4 @@
 <map id="UnionMeet" name="UnionMeet">
-<area shape="rect" id="node1" title=" " alt="" coords="5,160,128,296"/>
-<area shape="rect" id="node2" href="$classIMeetOp.html" title=" " alt="" coords="5,5,128,112"/>
+<area shape="rect" id="node1" title="Union meet, implements the meet operation, and is able to set and get the top element." alt="" coords="5,160,128,296"/>
+<area shape="rect" id="node2" href="$classIMeetOp.html" title="MeetOperator pure virtual class. Any new meet operator to be added must inherit this class and implem..." alt="" coords="5,5,128,112"/>
 </map>

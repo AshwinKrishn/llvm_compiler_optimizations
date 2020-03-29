@@ -139,8 +139,10 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classllvm_1_1BBInOutBits.html">llvm::BBInOutBits</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the bitsets for each basic block's IN and OUT. Owner of the memory.  <a href="classllvm_1_1BBInOutBits.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classllvm_1_1DataflowFramework.html">llvm::DataflowFramework&lt; D &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Primary Dataflow Framework template class. Performs the generalized steps of initializing the IN and OUT, calling the Gen and Kill functions and then passing the results to the Transfer Function. Result of which gets set/cleared in the IN/OUT of the correct BB.  <a href="classllvm_1_1DataflowFramework.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -150,10 +152,6 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a5f1b371cb3d7fad1722033bf6ddd5a63"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dataflow_8h.html#a5f1b371cb3d7fad1722033bf6ddd5a63">MeetOperator</a> { <a class="el" href="dataflow_8h.html#a5f1b371cb3d7fad1722033bf6ddd5a63a4cf5e96eb7880eb38df303a6e5759afd">UNION</a>, 
-<a class="el" href="dataflow_8h.html#a5f1b371cb3d7fad1722033bf6ddd5a63a692d8cc6fd4ce2a345352edb276644d2">INTERSECTION</a>
- }</td></tr>
-<tr class="separator:a5f1b371cb3d7fad1722033bf6ddd5a63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8be8588dd6cb232bc3726ac59f45e3c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dataflow_8h.html#ab8be8588dd6cb232bc3726ac59f45e3c">FlowDirection</a> { <a class="el" href="dataflow_8h.html#ab8be8588dd6cb232bc3726ac59f45e3caa26736999186daf8146f809e863712a1">FORWARD</a>, 
 <a class="el" href="dataflow_8h.html#ab8be8588dd6cb232bc3726ac59f45e3cafed2fca77e454294d6b8bda1bf2c9fd6">BACKWARD</a>
  }</td></tr>
@@ -196,24 +194,6 @@ Enumerations</h2></td></tr>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab8be8588dd6cb232bc3726ac59f45e3caa26736999186daf8146f809e863712a1"></a>FORWARD&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ab8be8588dd6cb232bc3726ac59f45e3cafed2fca77e454294d6b8bda1bf2c9fd6"></a>BACKWARD&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-</div>
-</div>
-<a id="a5f1b371cb3d7fad1722033bf6ddd5a63"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f1b371cb3d7fad1722033bf6ddd5a63">&#9670;&nbsp;</a></span>MeetOperator</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="dataflow_8h.html#a5f1b371cb3d7fad1722033bf6ddd5a63">MeetOperator</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5f1b371cb3d7fad1722033bf6ddd5a63a4cf5e96eb7880eb38df303a6e5759afd"></a>UNION&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a5f1b371cb3d7fad1722033bf6ddd5a63a692d8cc6fd4ce2a345352edb276644d2"></a>INTERSECTION&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>

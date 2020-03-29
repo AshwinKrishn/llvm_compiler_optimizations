@@ -2,7 +2,7 @@
 \label{classllvm_1_1BaseTransferFunction}\index{llvm::BaseTransferFunction@{llvm::BaseTransferFunction}}
 
 
-Holds the base implementation of a transfer function, to be extended later if we require additional steps to be added to the transfer function.  
+Holds the base implementation of a transfer function, to be extended later if we require additional steps to be added to the transfer function. Currently the only method, which is called run takes in the input, genset, and killset, and returns the result of \mbox{[}Gen U (In -\/ Kill)\mbox{]}.  
 
 
 
@@ -11,8 +11,7 @@ Holds the base implementation of a transfer function, to be extended later if we
 
 
 
-Collaboration diagram for llvm\+::Base\+Transfer\+Function\+:
-\nopagebreak
+Collaboration diagram for llvm\+::Base\+Transfer\+Function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -27,7 +26,7 @@ virtual std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18
 
 
 \doxysubsection{Detailed Description}
-Holds the base implementation of a transfer function, to be extended later if we require additional steps to be added to the transfer function. 
+Holds the base implementation of a transfer function, to be extended later if we require additional steps to be added to the transfer function. Currently the only method, which is called run takes in the input, genset, and killset, and returns the result of \mbox{[}Gen U (In -\/ Kill)\mbox{]}. 
 
 \doxysubsection{Member Function Documentation}
 \mbox{\Hypertarget{classllvm_1_1BaseTransferFunction_a5f645deed48d13ba99745033b4aec1c9}\label{classllvm_1_1BaseTransferFunction_a5f645deed48d13ba99745033b4aec1c9}} 

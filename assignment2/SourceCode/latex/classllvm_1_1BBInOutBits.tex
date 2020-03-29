@@ -2,12 +2,16 @@
 \label{classllvm_1_1BBInOutBits}\index{llvm::BBInOutBits@{llvm::BBInOutBits}}
 
 
+Holds the bitsets for each basic block\textquotesingle{}s IN and O\+UT. Owner of the memory.  
+
+
+
+
 {\ttfamily \#include $<$dataflow.\+h$>$}
 
 
 
-Collaboration diagram for llvm\+::B\+B\+In\+Out\+Bits\+:
-\nopagebreak
+Collaboration diagram for llvm\+::B\+B\+In\+Out\+Bits\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -18,7 +22,7 @@ Collaboration diagram for llvm\+::B\+B\+In\+Out\+Bits\+:
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{classllvm_1_1BBInOutBits_a99b5251fcb527d6d180410fcb26069c0}{B\+B\+In\+Out\+Bits}} (\mbox{\hyperlink{MeetOpInterface_8h_a8c26048c0abbaaf0f016e2117e5826e1}{Bits\+Val}} inval, \mbox{\hyperlink{MeetOpInterface_8h_a8c26048c0abbaaf0f016e2117e5826e1}{Bits\+Val}} outval)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Overload ctor takes inval/outval as Z\+E\+R\+OS or O\+N\+ES and initializes the I\+N/\+O\+UT with the corresponding value. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -28,6 +32,9 @@ std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc
 \end{DoxyCompactItemize}
 
 
+\doxysubsection{Detailed Description}
+Holds the bitsets for each basic block\textquotesingle{}s IN and O\+UT. Owner of the memory. 
+
 \doxysubsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{classllvm_1_1BBInOutBits_a99b5251fcb527d6d180410fcb26069c0}\label{classllvm_1_1BBInOutBits_a99b5251fcb527d6d180410fcb26069c0}} 
 \index{llvm::BBInOutBits@{llvm::BBInOutBits}!BBInOutBits@{BBInOutBits}}
@@ -35,6 +42,17 @@ std\+::bitset$<$ \mbox{\hyperlink{MeetOpInterface_8h_ab3ca5db4ffc01f4b18548718fc
 \doxysubsubsection{\texorpdfstring{BBInOutBits()}{BBInOutBits()}}
 {\footnotesize\ttfamily llvm\+::\+B\+B\+In\+Out\+Bits\+::\+B\+B\+In\+Out\+Bits (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{MeetOpInterface_8h_a8c26048c0abbaaf0f016e2117e5826e1}{Bits\+Val}}}]{inval,  }\item[{\mbox{\hyperlink{MeetOpInterface_8h_a8c26048c0abbaaf0f016e2117e5826e1}{Bits\+Val}}}]{outval }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
+
+
+Overload ctor takes inval/outval as Z\+E\+R\+OS or O\+N\+ES and initializes the I\+N/\+O\+UT with the corresponding value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em inval} & \\
+\hline
+{\em outval} & \\
+\hline
+\end{DoxyParams}
 
 
 \doxysubsection{Member Data Documentation}

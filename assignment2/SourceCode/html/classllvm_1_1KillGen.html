@@ -73,18 +73,21 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Interface class for the Kill and Gen functionality. Any new data flow framework must implement their own killEval and genEval functions as they each operate on their domain in their own ways.  
+ <a href="classllvm_1_1KillGen.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="KillGen_8h_source.html">KillGen.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for llvm::KillGen&lt; D &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classllvm_1_1KillGen__inherit__graph.png" border="0" usemap="#llvm_1_1KillGen_3_01D_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="llvm_1_1KillGen_3_01D_01_4_inherit__map" id="llvm_1_1KillGen_3_01D_01_4_inherit__map">
-<area shape="rect" title=" " alt="" coords="147,5,294,97"/>
+<area shape="rect" title="Interface class for the Kill and Gen functionality. Any new data flow framework must implement their ..." alt="" coords="147,5,294,97"/>
 <area shape="rect" href="classllvm_1_1KillGen.html" title=" " alt="" coords="19,160,203,252"/>
 <area shape="rect" href="classllvm_1_1KillGen.html" title=" " alt="" coords="231,160,437,252"/>
-<area shape="rect" href="classanonymous__namespace_02liveness_8cpp_03_1_1KillGenLive.html" title=" " alt="" coords="5,301,207,423"/>
+<area shape="rect" href="classanonymous__namespace_02liveness_8cpp_03_1_1KillGenLive.html" title="KillGenLive is a subclass of KillGen class, which is a template class. Main function of this class is..." alt="" coords="5,301,207,423"/>
 <area shape="rect" href="classanonymous__namespace_02liveness_8cpp_03_1_1Liveness.html" title=" " alt="" coords="14,472,198,608"/>
-<area shape="rect" href="classanonymous__namespace_02available_8cpp_03_1_1KillGenEval.html" title=" " alt="" coords="231,301,439,423"/>
+<area shape="rect" href="classanonymous__namespace_02available_8cpp_03_1_1KillGenEval.html" title="KillGenEval is a subclass of KillGen class, which is a template class. Main function of this class is..." alt="" coords="231,301,439,423"/>
 </map>
 </div>
 <div class="dynheader">
@@ -92,7 +95,7 @@ Collaboration diagram for llvm::KillGen&lt; D &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classllvm_1_1KillGen__coll__graph.png" border="0" usemap="#llvm_1_1KillGen_3_01D_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="llvm_1_1KillGen_3_01D_01_4_coll__map" id="llvm_1_1KillGen_3_01D_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="5,5,152,97"/>
+<area shape="rect" title="Interface class for the Kill and Gen functionality. Any new data flow framework must implement their ..." alt="" coords="5,5,152,97"/>
 </map>
 </div>
 <table class="memberdecls">
@@ -103,7 +106,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad6977444c7846538e488b3efd9ecd363"><td class="memItemLeft" align="right" valign="top">virtual std::bitset&lt; <a class="el" href="MeetOpInterface_8h.html#ab3ca5db4ffc01f4b18548718fc2f079b">MAX_BITS_SIZE</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classllvm_1_1KillGen.html#ad6977444c7846538e488b3efd9ecd363">genEval</a> (llvm::BasicBlock *BB, std::bitset&lt; <a class="el" href="MeetOpInterface_8h.html#ab3ca5db4ffc01f4b18548718fc2f079b">MAX_BITS_SIZE</a> &gt; &amp;meet_res, std::vector&lt; D &gt; &amp;domainset)=0</td></tr>
 <tr class="separator:ad6977444c7846538e488b3efd9ecd363"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename D&gt;<br />
+class llvm::KillGen&lt; D &gt;</h3>
+
+<p>Interface class for the Kill and Gen functionality. Any new data flow framework must implement their own killEval and genEval functions as they each operate on their domain in their own ways. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">D</td><td>Domain we operate on (variables/values or expressions) </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ad6977444c7846538e488b3efd9ecd363"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad6977444c7846538e488b3efd9ecd363">&#9670;&nbsp;</a></span>genEval()</h2>
 

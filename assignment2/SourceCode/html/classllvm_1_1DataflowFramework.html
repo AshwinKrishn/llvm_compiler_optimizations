@@ -75,14 +75,17 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Primary Dataflow Framework template class. Performs the generalized steps of initializing the IN and OUT, calling the Gen and Kill functions and then passing the results to the Transfer Function. Result of which gets set/cleared in the IN/OUT of the correct BB.  
+ <a href="classllvm_1_1DataflowFramework.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="dataflow_8h_source.html">dataflow.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for llvm::DataflowFramework&lt; D &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classllvm_1_1DataflowFramework__coll__graph.png" border="0" usemap="#llvm_1_1DataflowFramework_3_01D_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="llvm_1_1DataflowFramework_3_01D_01_4_coll__map" id="llvm_1_1DataflowFramework_3_01D_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="43,175,274,413"/>
-<area shape="rect" href="classIMeetOp.html" title=" " alt="" coords="5,5,128,112"/>
+<area shape="rect" title="Primary Dataflow Framework template class. Performs the generalized steps of initializing the IN and ..." alt="" coords="43,175,274,413"/>
+<area shape="rect" href="classIMeetOp.html" title="MeetOperator pure virtual class. Any new meet operator to be added must inherit this class and implem..." alt="" coords="5,5,128,112"/>
 <area shape="rect" href="classllvm_1_1BaseTransferFunction.html" title="Holds the base implementation of a transfer function, to be extended later if we require additional s..." alt="" coords="153,20,351,97"/>
 </map>
 </div>
@@ -92,13 +95,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4d0da3d723ee16d45af7b46b26e1ff7a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classllvm_1_1DataflowFramework.html#a4d0da3d723ee16d45af7b46b26e1ff7a">DataflowFramework</a> (<a class="el" href="classIMeetOp.html">IMeetOp</a> &amp;meetOp, <a class="el" href="dataflow_8h.html#ab8be8588dd6cb232bc3726ac59f45e3c">FlowDirection</a> direction, <a class="el" href="dataflow_8h.html#af3393571fa8a8daa4ee5c06613b26555">BoundaryCondition</a> boundary, Function &amp;function, std::vector&lt; D &gt; &amp;domainset, <a class="el" href="classllvm_1_1KillGen.html">KillGen</a>&lt; D &gt; &amp;KillGenImp, <a class="el" href="classllvm_1_1BaseTransferFunction.html">BaseTransferFunction</a> &amp;transfer)</td></tr>
 <tr class="separator:a4d0da3d723ee16d45af7b46b26e1ff7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ffdb0ac79f476b2d4fd7eddbde8072a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; D &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classllvm_1_1DataflowFramework.html#a0ffdb0ac79f476b2d4fd7eddbde8072a">run</a> ()</td></tr>
+<tr class="memdesc:a0ffdb0ac79f476b2d4fd7eddbde8072a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Primary run function of the Dataflow Framework.  <a href="classllvm_1_1DataflowFramework.html#a0ffdb0ac79f476b2d4fd7eddbde8072a">More...</a><br /></td></tr>
 <tr class="separator:a0ffdb0ac79f476b2d4fd7eddbde8072a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a24bfa9b2cc1bdd54a27a5c3714d5add5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classllvm_1_1DataflowFramework.html#a24bfa9b2cc1bdd54a27a5c3714d5add5">doForwardTraversal</a> (llvm::DenseMap&lt; BasicBlock *, <a class="el" href="classllvm_1_1BBInOutBits.html">BBInOutBits</a> * &gt; &amp;currentInOutMap, llvm::DenseMap&lt; BasicBlock *, <a class="el" href="classllvm_1_1BBInOutBits.html">BBInOutBits</a> * &gt; &amp;previousInOutMap)</td></tr>
+<tr class="memdesc:a24bfa9b2cc1bdd54a27a5c3714d5add5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Primary function for forward traversal. Iterates through basic blocks in an Inverse Post Order direction.  <a href="classllvm_1_1DataflowFramework.html#a24bfa9b2cc1bdd54a27a5c3714d5add5">More...</a><br /></td></tr>
 <tr class="separator:a24bfa9b2cc1bdd54a27a5c3714d5add5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b0a730cc535951f871860c4937db6a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classllvm_1_1DataflowFramework.html#a4b0a730cc535951f871860c4937db6a4">doBackwardTraversal</a> (llvm::DenseMap&lt; BasicBlock *, <a class="el" href="classllvm_1_1BBInOutBits.html">BBInOutBits</a> * &gt; &amp;currentInOutMap, llvm::DenseMap&lt; BasicBlock *, <a class="el" href="classllvm_1_1BBInOutBits.html">BBInOutBits</a> * &gt; &amp;previousInOutMap)</td></tr>
+<tr class="memdesc:a4b0a730cc535951f871860c4937db6a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Primary function for backward traversal. Iterates through basic blocks in a Post Order direction.  <a href="classllvm_1_1DataflowFramework.html#a4b0a730cc535951f871860c4937db6a4">More...</a><br /></td></tr>
 <tr class="separator:a4b0a730cc535951f871860c4937db6a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa329bbad55a93a657327399b8a745200"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classllvm_1_1DataflowFramework.html#aa329bbad55a93a657327399b8a745200">initializeBbBitMaps</a> (Function &amp;F, llvm::DenseMap&lt; BasicBlock *, <a class="el" href="classllvm_1_1BBInOutBits.html">BBInOutBits</a> * &gt; &amp;map)</td></tr>
 <tr class="memdesc:aa329bbad55a93a657327399b8a745200"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the basic block bitmaps for in and out. In charge of creating the bit vectors and associating them with the basic blocks.  <a href="classllvm_1_1DataflowFramework.html#aa329bbad55a93a657327399b8a745200">More...</a><br /></td></tr>
@@ -110,6 +116,7 @@ Protected Member Functions</h2></td></tr>
 <tr class="memdesc:aa44490e7ccc5db53033fc3d4d7e93e43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if any of the IN's of any basic blocks has changed, if it has, return true, else return false.  <a href="classllvm_1_1DataflowFramework.html#aa44490e7ccc5db53033fc3d4d7e93e43">More...</a><br /></td></tr>
 <tr class="separator:aa44490e7ccc5db53033fc3d4d7e93e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b6d0208aff6f74796f517c0aec49e88"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classllvm_1_1DataflowFramework.html#a2b6d0208aff6f74796f517c0aec49e88">deepCopyDenseMaps</a> (llvm::DenseMap&lt; BasicBlock *, <a class="el" href="classllvm_1_1BBInOutBits.html">BBInOutBits</a> * &gt; &amp;currentMap, llvm::DenseMap&lt; BasicBlock *, <a class="el" href="classllvm_1_1BBInOutBits.html">BBInOutBits</a> * &gt; &amp;previousMap)</td></tr>
+<tr class="memdesc:a2b6d0208aff6f74796f517c0aec49e88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates copies the memory contents of IN and OUT from currentMap into previousMap.  <a href="classllvm_1_1DataflowFramework.html#a2b6d0208aff6f74796f517c0aec49e88">More...</a><br /></td></tr>
 <tr class="separator:a2b6d0208aff6f74796f517c0aec49e88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
@@ -129,7 +136,18 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a6a520bd7caf12ddaa8a9455c322966e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classllvm_1_1BaseTransferFunction.html">BaseTransferFunction</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classllvm_1_1DataflowFramework.html#a6a520bd7caf12ddaa8a9455c322966e1">m_transferFunc</a></td></tr>
 <tr class="separator:a6a520bd7caf12ddaa8a9455c322966e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename D&gt;<br />
+class llvm::DataflowFramework&lt; D &gt;</h3>
+
+<p>Primary Dataflow Framework template class. Performs the generalized steps of initializing the IN and OUT, calling the Gen and Kill functions and then passing the results to the Transfer Function. Result of which gets set/cleared in the IN/OUT of the correct BB. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">D</td><td>Domain we operate on. (Values, Expressions, etc.) </td></tr>
+  </table>
+  </dd>
+</dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4d0da3d723ee16d45af7b46b26e1ff7a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4d0da3d723ee16d45af7b46b26e1ff7a">&#9670;&nbsp;</a></span>DataflowFramework()</h2>
 
@@ -227,6 +245,21 @@ template&lt;typename D &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>Creates copies the memory contents of IN and OUT from currentMap into previousMap. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">D</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">currentMap</td><td></td></tr>
+    <tr><td class="paramname">previousMap</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a4b0a730cc535951f871860c4937db6a4"></a>
@@ -265,6 +298,21 @@ template&lt;typename D &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>Primary function for backward traversal. Iterates through basic blocks in a Post Order direction. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">D</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">currentInOutMap</td><td></td></tr>
+    <tr><td class="paramname">previousInOutMap</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a24bfa9b2cc1bdd54a27a5c3714d5add5"></a>
@@ -302,6 +350,21 @@ template&lt;typename D &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Primary function for forward traversal. Iterates through basic blocks in an Inverse Post Order direction. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">D</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">currentInOutMap</td><td></td></tr>
+    <tr><td class="paramname">previousInOutMap</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -479,6 +542,15 @@ template&lt;typename D &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Primary run function of the Dataflow Framework. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">D</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

@@ -1,5 +1,5 @@
 <map id="anonymous_namespace{available.cpp}::KillGenEval" name="anonymous_namespace{available.cpp}::KillGenEval">
-<area shape="rect" id="node1" title=" " alt="" coords="5,301,213,423"/>
+<area shape="rect" id="node1" title="KillGenEval is a subclass of KillGen class, which is a template class. Main function of this class is..." alt="" coords="5,301,213,423"/>
 <area shape="rect" id="node2" href="$classllvm_1_1KillGen.html" title=" " alt="" coords="6,160,213,252"/>
-<area shape="rect" id="node3" href="$classllvm_1_1KillGen.html" title=" " alt="" coords="36,5,183,97"/>
+<area shape="rect" id="node3" href="$classllvm_1_1KillGen.html" title="Interface class for the Kill and Gen functionality. Any new data flow framework must implement their ..." alt="" coords="36,5,183,97"/>
 </map>

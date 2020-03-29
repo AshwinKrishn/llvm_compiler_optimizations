@@ -1,7 +1,7 @@
 <map id="anonymous_namespace{liveness.cpp}::Liveness" name="anonymous_namespace{liveness.cpp}::Liveness">
 <area shape="rect" id="node1" title=" " alt="" coords="5,472,189,608"/>
 <area shape="rect" id="node2" title=" " alt="" coords="28,323,135,401"/>
-<area shape="rect" id="node3" href="$classanonymous__namespace_02liveness_8cpp_03_1_1KillGenLive.html" title=" " alt="" coords="159,301,361,423"/>
+<area shape="rect" id="node3" href="$classanonymous__namespace_02liveness_8cpp_03_1_1KillGenLive.html" title="KillGenLive is a subclass of KillGen class, which is a template class. Main function of this class is..." alt="" coords="159,301,361,423"/>
 <area shape="rect" id="node4" href="$classllvm_1_1KillGen.html" title=" " alt="" coords="168,160,352,252"/>
-<area shape="rect" id="node5" href="$classllvm_1_1KillGen.html" title=" " alt="" coords="187,5,333,97"/>
+<area shape="rect" id="node5" href="$classllvm_1_1KillGen.html" title="Interface class for the Kill and Gen functionality. Any new data flow framework must implement their ..." alt="" coords="187,5,333,97"/>
 </map>

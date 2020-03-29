@@ -15,16 +15,14 @@
 {\ttfamily \#include $<$Kill\+Gen.\+h$>$}\newline
 {\ttfamily \#include $<$Meet\+Op\+Interface.\+h$>$}\newline
 {\ttfamily \#include $<$available-\/support.\+h$>$}\newline
-Include dependency graph for dataflow.\+h\+:
-\nopagebreak
+Include dependency graph for dataflow.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{dataflow_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -35,9 +33,9 @@ This graph shows which files directly or indirectly include this file\+:
 \begin{DoxyCompactItemize}
 \item 
 class \mbox{\hyperlink{classllvm_1_1BBInOutBits}{llvm\+::\+B\+B\+In\+Out\+Bits}}
-\item 
+\begin{DoxyCompactList}\small\item\em Holds the bitsets for each basic block\textquotesingle{}s IN and O\+UT. Owner of the memory. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Framework$<$ D $>$}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Primary Dataflow Framework template class. Performs the generalized steps of initializing the IN and O\+UT, calling the Gen and Kill functions and then passing the results to the Transfer Function. Result of which gets set/cleared in the I\+N/\+O\+UT of the correct BB. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
@@ -45,10 +43,6 @@ class \mbox{\hyperlink{classllvm_1_1DataflowFramework}{llvm\+::\+Dataflow\+Frame
 \end{DoxyCompactItemize}
 \doxysubsection*{Enumerations}
 \begin{DoxyCompactItemize}
-\item 
-enum \mbox{\hyperlink{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63}{Meet\+Operator}} \{ \mbox{\hyperlink{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63a4cf5e96eb7880eb38df303a6e5759afd}{U\+N\+I\+ON}}, 
-\mbox{\hyperlink{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63a692d8cc6fd4ce2a345352edb276644d2}{I\+N\+T\+E\+R\+S\+E\+C\+T\+I\+ON}}
- \}
 \item 
 enum \mbox{\hyperlink{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3c}{Flow\+Direction}} \{ \mbox{\hyperlink{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3caa26736999186daf8146f809e863712a1}{F\+O\+R\+W\+A\+RD}}, 
 \mbox{\hyperlink{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3cafed2fca77e454294d6b8bda1bf2c9fd6}{B\+A\+C\+K\+W\+A\+RD}}
@@ -90,22 +84,6 @@ F\+O\+R\+W\+A\+RD&\\
 
 \raisebox{\heightof{T}}[0pt][0pt]{\index{BACKWARD@{BACKWARD}!dataflow.h@{dataflow.h}}\index{dataflow.h@{dataflow.h}!BACKWARD@{BACKWARD}}}\mbox{\Hypertarget{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3cafed2fca77e454294d6b8bda1bf2c9fd6}\label{dataflow_8h_ab8be8588dd6cb232bc3726ac59f45e3cafed2fca77e454294d6b8bda1bf2c9fd6}} 
 B\+A\+C\+K\+W\+A\+RD&\\
-\hline
-
-\end{DoxyEnumFields}
-\mbox{\Hypertarget{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63}\label{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63}} 
-\index{dataflow.h@{dataflow.h}!MeetOperator@{MeetOperator}}
-\index{MeetOperator@{MeetOperator}!dataflow.h@{dataflow.h}}
-\doxysubsubsection{\texorpdfstring{MeetOperator}{MeetOperator}}
-{\footnotesize\ttfamily enum \mbox{\hyperlink{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63}{Meet\+Operator}}}
-
-\begin{DoxyEnumFields}{Enumerator}
-\raisebox{\heightof{T}}[0pt][0pt]{\index{UNION@{UNION}!dataflow.h@{dataflow.h}}\index{dataflow.h@{dataflow.h}!UNION@{UNION}}}\mbox{\Hypertarget{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63a4cf5e96eb7880eb38df303a6e5759afd}\label{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63a4cf5e96eb7880eb38df303a6e5759afd}} 
-U\+N\+I\+ON&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{INTERSECTION@{INTERSECTION}!dataflow.h@{dataflow.h}}\index{dataflow.h@{dataflow.h}!INTERSECTION@{INTERSECTION}}}\mbox{\Hypertarget{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63a692d8cc6fd4ce2a345352edb276644d2}\label{dataflow_8h_a5f1b371cb3d7fad1722033bf6ddd5a63a692d8cc6fd4ce2a345352edb276644d2}} 
-I\+N\+T\+E\+R\+S\+E\+C\+T\+I\+ON&\\
 \hline
 
 \end{DoxyEnumFields}

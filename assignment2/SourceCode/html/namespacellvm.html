@@ -72,15 +72,18 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classllvm_1_1BaseTransferFunction.html">BaseTransferFunction</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the base implementation of a transfer function, to be extended later if we require additional steps to be added to the transfer function.  <a href="classllvm_1_1BaseTransferFunction.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the base implementation of a transfer function, to be extended later if we require additional steps to be added to the transfer function. Currently the only method, which is called run takes in the input, genset, and killset, and returns the result of [Gen U (In - Kill)].  <a href="classllvm_1_1BaseTransferFunction.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classllvm_1_1BBInOutBits.html">BBInOutBits</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the bitsets for each basic block's IN and OUT. Owner of the memory.  <a href="classllvm_1_1BBInOutBits.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classllvm_1_1DataflowFramework.html">DataflowFramework</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Primary Dataflow Framework template class. Performs the generalized steps of initializing the IN and OUT, calling the Gen and Kill functions and then passing the results to the Transfer Function. Result of which gets set/cleared in the IN/OUT of the correct BB.  <a href="classllvm_1_1DataflowFramework.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classllvm_1_1Expression.html">Expression</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classllvm_1_1KillGen.html">KillGen</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interface class for the Kill and Gen functionality. Any new data flow framework must implement their own killEval and genEval functions as they each operate on their domain in their own ways.  <a href="classllvm_1_1KillGen.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
