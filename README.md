@@ -29,3 +29,24 @@ General framework to break-down any unidirectional data-flow problem into well-d
 4) Meet Operator
 5) Boundary Condition
 6) Initial Interior Points (Initialization of IN and OUT sets)
+
+Dataflow framework and KillGen class diagrams:
+
+<div class="dfDocu">
+    <div class="imgContainer">
+        <img src="https://user-images.githubusercontent.com/18232502/78570355-dfdfd280-77f2-11ea-9e8d-2c86871e5ff0.png"         width="400">
+    </div>
+        <div class="imgContainer">
+        <img src="https://user-images.githubusercontent.com/18232502/78570595-30573000-77f3-11ea-94db-1e7ad850ddfe.png"         width="400">
+    </div>
+</div>
+
+DataflowFramework is a template class and can work on any domain. Each framework instantiation need only operate on one domain type at a time, hence the use of compile-time polymorphism. Currently two meet operators are supported - intersection and union meet. These implement the IMeetOp interface. The BaseTransferFunction is a basic implementation of Gen U (IN/OUT - Kill), subclass and override if more functionality is required. Each analysis pass will also need to implement their own versions of the KillGen class to generate and kill their respective domain sets.
+
+[Full Doxygen Documentation Here](assignment2/SourceCode/Documentation/refman.pdf)
+
+## Assignment 3:
+### Dead Code Elimination (DCE) and Loop Invariant Code Motion (LICM):
+We will need to utilize the DataflowFramework from the previous assignment to implement a DCE pass using Faint Analysis, a backwards dataflow analysis pass. This will require DepKill and DepGen, we need to figure out how to integrate this into the existing framework.
+
+For LICM, we also need to create a forwards pass for Dominators.
