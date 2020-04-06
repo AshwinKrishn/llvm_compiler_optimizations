@@ -34,10 +34,10 @@ Dataflow framework and KillGen class diagrams:
 
 <div class="dfDocu">
     <div class="imgContainer">
-        <img src="https://user-images.githubusercontent.com/18232502/78570355-dfdfd280-77f2-11ea-9e8d-2c86871e5ff0.png"         width="400">
+        <img src="https://user-images.githubusercontent.com/18232502/78570355-dfdfd280-77f2-11ea-9e8d-2c86871e5ff0.png"         width="300">
     </div>
         <div class="imgContainer">
-        <img src="https://user-images.githubusercontent.com/18232502/78570595-30573000-77f3-11ea-94db-1e7ad850ddfe.png"         width="400">
+        <img src="https://user-images.githubusercontent.com/18232502/78570595-30573000-77f3-11ea-94db-1e7ad850ddfe.png"         width="300">
     </div>
 </div>
 
