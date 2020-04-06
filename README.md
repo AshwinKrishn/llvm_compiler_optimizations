@@ -32,14 +32,10 @@ General framework to break-down any unidirectional data-flow problem into well-d
 
 Dataflow framework and KillGen class diagrams:
 
-<div class="dfDocu">
-    <div class="imgContainer">
+<p float="left">
         <img src="https://user-images.githubusercontent.com/18232502/78570355-dfdfd280-77f2-11ea-9e8d-2c86871e5ff0.png"         width="300">
-    </div>
-        <div class="imgContainer">
         <img src="https://user-images.githubusercontent.com/18232502/78570595-30573000-77f3-11ea-94db-1e7ad850ddfe.png"         width="300">
-    </div>
-</div>
+</p>
 
 DataflowFramework is a template class and can work on any domain. Each framework instantiation need only operate on one domain type at a time, hence the use of compile-time polymorphism. Currently two meet operators are supported - intersection and union meet. These implement the IMeetOp interface. The BaseTransferFunction is a basic implementation of Gen U (IN/OUT - Kill), subclass and override if more functionality is required. Each analysis pass will also need to implement their own versions of the KillGen class to generate and kill their respective domain sets.
 
