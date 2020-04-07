@@ -58,6 +58,10 @@ class BBInOutBits {
         }
         std::bitset<MAX_BITS_SIZE> m_IN;
         std::bitset<MAX_BITS_SIZE> m_OUT;
+        // New addition to store OUT of entry and IN of exit, since we don't
+        // actually have true empty entry and exit blocks
+        std::bitset<MAX_BITS_SIZE> m_entryOUT;
+        std::bitset<MAX_BITS_SIZE> m_exitIN;
 };
 
 // Add definitions (and code, depending on your strategy) for your dataflow
@@ -118,7 +122,7 @@ template <typename D> class DataflowFramework {
         // later, depending on how we want to return the results and what
         // results to return. Eg: vector<Expression>? or vector<Variable>? We
         // might use vector<T> to template it.
-        std::vector<D> &run();
+        llvm::DenseMap<BasicBlock *, BBInOutBits *> *run();
 };
 
 template <typename D>
@@ -137,20 +141,23 @@ DataflowFramework<D>::DataflowFramework(
  *
  * @return
  */
-template <typename D> std::vector<D> &DataflowFramework<D>::run() {
-        llvm::DenseMap<BasicBlock *, BBInOutBits *> currentInOutMap;
-        llvm::DenseMap<BasicBlock *, BBInOutBits *> previousInOutMap;
+template <typename D>
+llvm::DenseMap<BasicBlock *, BBInOutBits *> *DataflowFramework<D>::run() {
+        llvm::DenseMap<BasicBlock *, BBInOutBits *> *currentInOutMap =
+            new llvm::DenseMap<BasicBlock *, BBInOutBits *>();
+        llvm::DenseMap<BasicBlock *, BBInOutBits *> *previousInOutMap =
+            new llvm::DenseMap<BasicBlock *, BBInOutBits *>();
 
         // Initialize Maps
-        initializeBbBitMaps(m_func, currentInOutMap);
-        initializeBbBitMaps(m_func, previousInOutMap);
+        initializeBbBitMaps(m_func, *currentInOutMap);
+        initializeBbBitMaps(m_func, *previousInOutMap);
 
         if (m_dir == FORWARD) {
-                doForwardTraversal(currentInOutMap, previousInOutMap);
+                doForwardTraversal(*currentInOutMap, *previousInOutMap);
         } else {
-                doBackwardTraversal(currentInOutMap, previousInOutMap);
+                doBackwardTraversal(*currentInOutMap, *previousInOutMap);
         }
-        return m_domainSet;
+        return currentInOutMap;
 }
 
 /**
@@ -190,9 +197,9 @@ void DataflowFramework<D>::initializeBbBitMaps(
                 // This is the first block, which is effectively the first block
                 // after entry:
                 if (m_boundary == UNIVERSAL) {
-                        map.find(&entry)->second->m_IN.set();
+                        map.find(&entry)->second->m_entryOUT.set();
                 } else if (m_boundary == EMPTY) {
-                        map.find(&entry)->second->m_IN.reset();
+                        map.find(&entry)->second->m_entryOUT.reset();
                 }
         } else {
                 for (BasicBlock &BB : F) {
@@ -212,9 +219,9 @@ void DataflowFramework<D>::initializeBbBitMaps(
                 // block of the function, containing the return instruction,
                 // thus, we set the OUT of the "exit" block:
                 if (m_boundary == UNIVERSAL) {
-                        map.find(&exit)->second->m_OUT.set();
+                        map.find(&exit)->second->m_exitIN.set();
                 } else if (m_boundary == EMPTY) {
-                        map.find(&exit)->second->m_OUT.reset();
+                        map.find(&exit)->second->m_exitIN.reset();
                 }
         }
 }
@@ -237,6 +244,8 @@ void DataflowFramework<D>::deepCopyDenseMaps(
                 if (previous != previousMap.end()) {
                         previous->second->m_OUT = it->second->m_OUT;
                         previous->second->m_IN = it->second->m_IN;
+                        previous->second->m_entryOUT = it->second->m_entryOUT;
+                        previous->second->m_exitIN = it->second->m_exitIN;
                 } else {
                         // Error, BB entry in current not found in previous,
                         // should be impossible
@@ -386,7 +395,7 @@ void DataflowFramework<D>::doForwardTraversal(
                         // any of the predecessors and make the meet_res equal
                         // to that.
                         if (BB == &m_func.getEntryBlock()) {
-                                meet_res = currentInOutBits->m_IN;
+                                meet_res = currentInOutBits->m_entryOUT;
                         } else {
                                 auto pred = pred_begin(BB);
                                 meet_res = currentInOutMap[*pred]->m_OUT;
@@ -396,6 +405,9 @@ void DataflowFramework<D>::doForwardTraversal(
                                 BBInOutBits *ip1 = currentInOutMap[Pred];
                                 meet_res = m_meetOp.meet(ip1->m_OUT, meet_res);
                         }
+
+                        // Store meet_res
+                        currentInOutBits->m_IN = meet_res;
 
                         outs() << "Current IN bits: "
                                << meet_res.to_string().substr(
@@ -478,7 +490,7 @@ void DataflowFramework<D>::doBackwardTraversal(
                         // any of the successors and make the meet_res equal
                         // to that.
                         if (BB == &m_func.back()) {
-                                meet_res = currentInOutBits->m_OUT;
+                                meet_res = currentInOutBits->m_exitIN;
                         } else {
                                 auto succ = succ_begin(BB);
                                 meet_res = currentInOutMap[*succ]->m_IN;
@@ -488,6 +500,9 @@ void DataflowFramework<D>::doBackwardTraversal(
                                 BBInOutBits *ip1 = currentInOutMap[Succ];
                                 meet_res = m_meetOp.meet(ip1->m_IN, meet_res);
                         }
+
+                        // Store meet_res
+                        currentInOutBits->m_OUT = meet_res;
 
                         outs() << "Current OUT bits: "
                                << meet_res.to_string().substr(
