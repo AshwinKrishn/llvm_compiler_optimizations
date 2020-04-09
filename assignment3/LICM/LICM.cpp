@@ -19,7 +19,8 @@ namespace {
 
 /**
  * @brief Primary function pass to run LICM (Loop Invariant Code Motion) pass.
- * Prerequisite is dominators pass must have been run.
+ * Prerequisite is dominators pass and RD pass must have been run. This is just
+ * currently for testing, we will have to change this to a loop pass later
  */
 class LICM : public FunctionPass {
       public:

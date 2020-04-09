@@ -1,4 +1,4 @@
-INC=-I/usr/local/include/ -I ../DataflowFramework/include/ -I ./
+INC=-I/usr/local/include/ -I ../DataflowFramework/include/ -I ./include/
 SOURCES:= $(shell find ../DataflowFramework -type f -name '*.cpp')
 OBJECTS:= $(SOURCES:.cpp=.o)
 all: dce.so faintness.so
@@ -7,7 +7,10 @@ CXXFLAGS = -rdynamic $(shell llvm-config --cxxflags) $(INC) -g -O0 -fPIC
 
 ../DataflowFramework/%.o: ../DataflowFramework/%.cpp
 
-%.so: %.o $(OBJECTS)
+dce.so: DCE.o $(OBJECTS)
+	$(CXX) -dylib -shared $^ -o $@
+
+faintness.so: Faintness.o $(OBJECTS)
 	$(CXX) -dylib -shared $^ -o $@
 
 clean:
