@@ -20,19 +20,18 @@ namespace {
 class KillGenDoms : public KillGen<BasicBlock *> {
       public:
         KillGenDoms() : KillGen() {}
-        std::bitset<MAX_BITS_SIZE>
-        killEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &meet_res,
+        llvm::BitVector
+        killEval(llvm::BasicBlock *BB, llvm::BitVector &meet_res,
                  std::vector<BasicBlock *> &domainset) override {
-                std::bitset<MAX_BITS_SIZE> BBkill;
+                llvm::BitVector BBkill(MAX_BITS_SIZE);
                 // TODO: ADD IMPLEMENTATION
 
                 BBkill.reset();
                 return BBkill;
         }
-        std::bitset<MAX_BITS_SIZE>
-        genEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &meet_res,
-                std::vector<BasicBlock *> &domainset) override {
-                std::bitset<MAX_BITS_SIZE> BBgen;
+        llvm::BitVector genEval(llvm::BasicBlock *BB, llvm::BitVector &meet_res,
+                                std::vector<BasicBlock *> &domainset) override {
+                llvm::BitVector BBgen(MAX_BITS_SIZE);
                 // TODO: ADD IMPLEMENTATION
 
                 return BBgen;

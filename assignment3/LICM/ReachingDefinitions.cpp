@@ -11,20 +11,20 @@
 
 using namespace llvm;
 
-std::bitset<MAX_BITS_SIZE>
-KillGenRD::killEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &meet_res,
-                    std::vector<Value *> &domainset) {
-        std::bitset<MAX_BITS_SIZE> BBkill;
+llvm::BitVector KillGenRD::killEval(llvm::BasicBlock *BB,
+                                    llvm::BitVector &meet_res,
+                                    std::vector<Value *> &domainset) {
+        llvm::BitVector BBkill(MAX_BITS_SIZE);
         // In SSA, no definitions will get killed because there is never
         // a redefinition
         BBkill.reset();
         return BBkill;
 }
 
-std::bitset<MAX_BITS_SIZE>
-KillGenRD::genEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &meet_res,
-                   std::vector<Value *> &domainset) {
-        std::bitset<MAX_BITS_SIZE> BBgen;
+llvm::BitVector KillGenRD::genEval(llvm::BasicBlock *BB,
+                                   llvm::BitVector &meet_res,
+                                   std::vector<Value *> &domainset) {
+        llvm::BitVector BBgen(MAX_BITS_SIZE);
         // We generate a definition when we see it
         for (Instruction &I : *BB) {
                 if (isa<BinaryOperator>(I) || isa<PHINode>(I)) {

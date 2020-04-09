@@ -13,12 +13,11 @@ using namespace llvm;
  */
 class KillGenRD : public KillGen<Value *> {
       public:
-        std::bitset<MAX_BITS_SIZE>
-        killEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &meet_res,
-                 std::vector<Value *> &domainset) override;
-        std::bitset<MAX_BITS_SIZE>
-        genEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &meet_res,
-                std::vector<Value *> &domainset) override;
+        llvm::BitVector killEval(llvm::BasicBlock *BB,
+                                 llvm::BitVector &meet_res,
+                                 std::vector<Value *> &domainset) override;
+        llvm::BitVector genEval(llvm::BasicBlock *BB, llvm::BitVector &meet_res,
+                                std::vector<Value *> &domainset) override;
 };
 
 /**

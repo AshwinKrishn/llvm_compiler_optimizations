@@ -32,9 +32,8 @@ class LICM : public FunctionPass {
                 for (DenseMap<BasicBlock *, BBInOutBits *>::iterator rdbegin =
                          reachingDefs->begin();
                      rdbegin != reachingDefs->end(); ++rdbegin) {
-                        outs() << rdbegin->second->m_OUT.to_string().substr(
-                                      MAX_BITS_SIZE - MAX_PRINT_SIZE)
-                               << "\n";
+                        BBInOutBits::printBitVector(rdbegin->second->m_OUT,
+                                                    MAX_PRINT_SIZE);
                 }
                 return true;
         }

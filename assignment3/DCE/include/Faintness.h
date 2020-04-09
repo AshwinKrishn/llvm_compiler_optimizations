@@ -14,26 +14,23 @@ using namespace llvm;
  */
 class KillGenFaint : public KillGen<Value *> {
       protected:
-        std::bitset<MAX_BITS_SIZE>
-        constKillHelper(llvm::BasicBlock *BB,
-                        std::bitset<MAX_BITS_SIZE> &meet_res,
-                        std::vector<Value *> &domainset);
+        llvm::BitVector constKillHelper(llvm::BasicBlock *BB,
+                                        llvm::BitVector &meet_res,
+                                        std::vector<Value *> &domainset);
 
-        std::bitset<MAX_BITS_SIZE>
-        depKillHelper(llvm::BasicBlock *BB,
-                      std::bitset<MAX_BITS_SIZE> &meet_res,
-                      std::vector<Value *> &domainset);
+        llvm::BitVector depKillHelper(llvm::BasicBlock *BB,
+                                      llvm::BitVector &meet_res,
+                                      std::vector<Value *> &domainset);
 
-        void setBitsIfInDomain(Value *V, std::bitset<MAX_BITS_SIZE> &bits,
+        void setBitsIfInDomain(Value *V, llvm::BitVector &bits,
                                std::vector<Value *> &domainset);
 
       public:
-        std::bitset<MAX_BITS_SIZE>
-        killEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &meet_res,
-                 std::vector<Value *> &domainset) override;
-        std::bitset<MAX_BITS_SIZE>
-        genEval(llvm::BasicBlock *BB, std::bitset<MAX_BITS_SIZE> &meet_res,
-                std::vector<Value *> &domainset) override;
+        llvm::BitVector killEval(llvm::BasicBlock *BB,
+                                 llvm::BitVector &meet_res,
+                                 std::vector<Value *> &domainset) override;
+        llvm::BitVector genEval(llvm::BasicBlock *BB, llvm::BitVector &meet_res,
+                                std::vector<Value *> &domainset) override;
 };
 
 /**

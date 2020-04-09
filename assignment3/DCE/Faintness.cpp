@@ -4,27 +4,25 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include <Faintness.h>
 
-std::bitset<MAX_BITS_SIZE>
-KillGenFaint::killEval(llvm::BasicBlock *BB,
-                       std::bitset<MAX_BITS_SIZE> &meet_res,
-                       std::vector<Value *> &domainset) {
-        std::bitset<MAX_BITS_SIZE> BBkill;
+llvm::BitVector KillGenFaint::killEval(llvm::BasicBlock *BB,
+                                       llvm::BitVector &meet_res,
+                                       std::vector<Value *> &domainset) {
+        llvm::BitVector BBkill(MAX_BITS_SIZE);
 
         BBkill.reset();
         return BBkill;
 }
 
-std::bitset<MAX_BITS_SIZE>
-KillGenFaint::genEval(llvm::BasicBlock *BB,
-                      std::bitset<MAX_BITS_SIZE> &meet_res,
-                      std::vector<Value *> &domainset) {
-        std::bitset<MAX_BITS_SIZE> BBgen;
+llvm::BitVector KillGenFaint::genEval(llvm::BasicBlock *BB,
+                                      llvm::BitVector &meet_res,
+                                      std::vector<Value *> &domainset) {
+        llvm::BitVector BBgen(MAX_BITS_SIZE);
         // TODO: ADD IMPLEMENTATION
         // We only need a constgen, so no need for helpers, calculate in here
         return BBgen;
 }
 
-void KillGenFaint::setBitsIfInDomain(Value *V, std::bitset<MAX_BITS_SIZE> &bits,
+void KillGenFaint::setBitsIfInDomain(Value *V, llvm::BitVector &bits,
                                      std::vector<Value *> &domainset) {
         std::vector<Value *>::iterator it =
             std::find(domainset.begin(), domainset.end(), V);
@@ -34,15 +32,14 @@ void KillGenFaint::setBitsIfInDomain(Value *V, std::bitset<MAX_BITS_SIZE> &bits,
         }
 }
 
-std::bitset<MAX_BITS_SIZE>
-KillGenFaint::constKillHelper(llvm::BasicBlock *BB,
-                              std::bitset<MAX_BITS_SIZE> &meet_res,
-                              std::vector<Value *> &domainset) {
+llvm::BitVector KillGenFaint::constKillHelper(llvm::BasicBlock *BB,
+                                              llvm::BitVector &meet_res,
+                                              std::vector<Value *> &domainset) {
         // Iterate through instructions, if they are users of of a value in the
         // domainset AND they are non assignment statements, then kill. If they
         // are br instructions for instance (which are terminator instructions),
         // if they are debug info, or landingpad instructions
-        std::bitset<MAX_BITS_SIZE> constKillSet;
+        llvm::BitVector constKillSet(MAX_BITS_SIZE);
         constKillSet.reset();
         for (Instruction &I : *BB) {
                 if (isa<TerminatorInst>(I) || isa<LandingPadInst>(I) ||
@@ -57,11 +54,10 @@ KillGenFaint::constKillHelper(llvm::BasicBlock *BB,
         return constKillSet;
 }
 
-std::bitset<MAX_BITS_SIZE> depKillHelper(llvm::BasicBlock *BB,
-                                         std::bitset<MAX_BITS_SIZE> &meet_res,
-                                         std::vector<Value *> &domainset) {
+llvm::BitVector depKillHelper(llvm::BasicBlock *BB, llvm::BitVector &meet_res,
+                              std::vector<Value *> &domainset) {
 
-        std::bitset<MAX_BITS_SIZE> depKillSet;
+        llvm::BitVector depKillSet(MAX_BITS_SIZE);
         depKillSet.reset();
         // If we are an assignment statement (either binary op or phi node) AND
         // x not in OUT meet_res holds the bits that are entering, so they are
