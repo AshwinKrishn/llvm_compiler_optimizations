@@ -7,22 +7,30 @@
 llvm::BitVector KillGenFaint::killEval(llvm::BasicBlock *BB,
                                        llvm::BitVector &meet_res,
                                        std::vector<Value *> &domainset) {
-        llvm::BitVector BBkill(MAX_BITS_SIZE);
-
-        BBkill.reset();
-        return BBkill;
+        // constkill U depKill is the kill
+        llvm::BitVector BBKill = constKillHelper(BB, meet_res, domainset);
+        BBKill |= depKillHelper(BB, meet_res, domainset);
+        return BBKill;
 }
 
 llvm::BitVector KillGenFaint::genEval(llvm::BasicBlock *BB,
                                       llvm::BitVector &meet_res,
                                       std::vector<Value *> &domainset) {
         llvm::BitVector BBgen(MAX_BITS_SIZE);
-        // TODO: ADD IMPLEMENTATION
         // We only need a constgen, so no need for helpers, calculate in here
+        for (Instruction &I : *BB) {
+                if (isa<BinaryOperator>(I) || isa<PHINode>(I)) {
+                        // If A is of the form x = e and x!= oper(e), gen it.
+                        // In SSA, we will never be in our own operand list,
+                        // single definition, so, just gen if you see
+                        setBitsIfInDomain(&I, BBgen, domainset);
+                }
+        }
+
         return BBgen;
 }
 
-void KillGenFaint::setBitsIfInDomain(Value *V, llvm::BitVector &bits,
+void KillGenFaint::setBitsIfInDomain(const Value *V, llvm::BitVector &bits,
                                      std::vector<Value *> &domainset) {
         std::vector<Value *>::iterator it =
             std::find(domainset.begin(), domainset.end(), V);
@@ -42,28 +50,48 @@ llvm::BitVector KillGenFaint::constKillHelper(llvm::BasicBlock *BB,
         llvm::BitVector constKillSet(MAX_BITS_SIZE);
         constKillSet.reset();
         for (Instruction &I : *BB) {
+                // TODO: Check if correct, we assume first operand for br,
+                // indbr, switch, etc. is the target
                 if (isa<TerminatorInst>(I) || isa<LandingPadInst>(I) ||
                     I.mayHaveSideEffects()) {
-                        for (auto OP = I.op_begin(); OP != I.op_end(); ++OP) {
-                                setBitsIfInDomain(OP->get(), constKillSet,
-                                                  domainset);
-                        }
+                        setBitsIfInDomain(I.getOperand(0), constKillSet,
+                                          domainset);
                 }
         }
 
         return constKillSet;
 }
 
-llvm::BitVector depKillHelper(llvm::BasicBlock *BB, llvm::BitVector &meet_res,
-                              std::vector<Value *> &domainset) {
+bool KillGenFaint::isValueInOUT(const Value *V, const llvm::BitVector &OUT,
+                                const std::vector<Value *> &domainset) {
+        bool retVal = false;
+        for (int bitIndex : OUT.set_bits()) {
+                if (V == domainset[bitIndex])
+                        retVal = true;
+        }
+        return retVal;
+}
+
+llvm::BitVector KillGenFaint::depKillHelper(llvm::BasicBlock *BB,
+                                            llvm::BitVector &meet_res,
+                                            std::vector<Value *> &domainset) {
 
         llvm::BitVector depKillSet(MAX_BITS_SIZE);
         depKillSet.reset();
         // If we are an assignment statement (either binary op or phi node) AND
-        // x not in OUT meet_res holds the bits that are entering, so they are
+        // x not in OUT. meet_res holds the bits that are entering, so they are
         // OUT.
         for (Instruction &I : *BB) {
                 if (isa<BinaryOperator>(I) || isa<PHINode>(I)) {
+                        // If the LHS is not in OUT, then that e's faintness was
+                        // killed in the BB. Thus, add operands of e as killed.
+                        if (isValueInOUT(&I, meet_res, domainset)) {
+                                for (auto OP = I.op_begin(); OP != I.op_end();
+                                     ++OP) {
+                                        setBitsIfInDomain(OP->get(), depKillSet,
+                                                          domainset);
+                                }
+                        }
                 }
         }
 

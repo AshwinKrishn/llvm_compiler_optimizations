@@ -22,8 +22,11 @@ class KillGenFaint : public KillGen<Value *> {
                                       llvm::BitVector &meet_res,
                                       std::vector<Value *> &domainset);
 
-        void setBitsIfInDomain(Value *V, llvm::BitVector &bits,
+        void setBitsIfInDomain(const Value *V, llvm::BitVector &bits,
                                std::vector<Value *> &domainset);
+
+        bool isValueInOUT(const Value *V, const llvm::BitVector &OUT,
+                          const std::vector<Value *> &domainset);
 
       public:
         llvm::BitVector killEval(llvm::BasicBlock *BB,
