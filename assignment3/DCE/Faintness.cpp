@@ -103,6 +103,7 @@ FaintnessPass::FaintnessPass() : FunctionPass(ID) {}
 bool FaintnessPass::runOnFunction(Function &F) {
         // Start of our modifications
         std::vector<Value *> variables;
+        outs() << "Faintness for Function: " << F.getName() << "\n";
 
         // For now we only add binary op instructions and phi nodes as variables
         for (BasicBlock &BB : F) {

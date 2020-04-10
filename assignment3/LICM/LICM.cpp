@@ -37,6 +37,10 @@ class LICM : public FunctionPass {
                         BBInOutBits::printBitVector(rdbegin->second->m_OUT,
                                                     MAX_PRINT_SIZE);
                 }
+                // Compute loop invariant statements
+                // getLoopInvariantStatements();
+                // checkConditionForCodeMotion();
+
                 return true;
         }
 
