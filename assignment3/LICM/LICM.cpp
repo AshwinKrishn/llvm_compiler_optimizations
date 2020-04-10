@@ -8,11 +8,11 @@
 #include "llvm/Support/raw_ostream.h"
 
 // Framework and ours
+#include <DominatorPass.h>
 #include <IntersectionMeet.h>
 #include <KillGen.h>
 #include <ReachingDefinitions.h>
 #include <dataflow.h>
-
 using namespace llvm;
 
 namespace {
@@ -29,6 +29,8 @@ class LICM : public FunctionPass {
         virtual bool runOnFunction(Function &F) {
                 DenseMap<BasicBlock *, BBInOutBits *> *reachingDefs =
                     getAnalysis<ReachingDefsPass>().getRDResults();
+                DenseMap<BasicBlock *, BBInOutBits *> *DomResult =
+                    getAnalysis<DominatorsPass>().getDomResults();
                 for (DenseMap<BasicBlock *, BBInOutBits *>::iterator rdbegin =
                          reachingDefs->begin();
                      rdbegin != reachingDefs->end(); ++rdbegin) {
@@ -41,6 +43,7 @@ class LICM : public FunctionPass {
         virtual void getAnalysisUsage(AnalysisUsage &AU) const {
                 AU.setPreservesCFG();
                 AU.addRequired<ReachingDefsPass>();
+                AU.addRequired<DominatorsPass>();
         }
 };
 
