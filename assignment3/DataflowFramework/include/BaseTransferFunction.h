@@ -1,7 +1,7 @@
 #ifndef __BASE_TRANSFER_FUNCTION_H__
 #define __BASE_TRANSFER_FUNCTION_H__
-#include <MeetOpInterface.h>
 #include <bitset>
+#include <llvm/ADT/BitVector.h>
 #include <vector>
 
 namespace llvm {
@@ -14,10 +14,9 @@ namespace llvm {
 class BaseTransferFunction {
       public:
         // Generalized transfer function, add extra implementation if required
-        virtual std::bitset<MAX_BITS_SIZE>
-        run(const std::bitset<MAX_BITS_SIZE> &input,
-            const std::bitset<MAX_BITS_SIZE> &genSet,
-            const std::bitset<MAX_BITS_SIZE> &killSet);
+        virtual llvm::BitVector run(const llvm::BitVector &input,
+                                    const llvm::BitVector &genSet,
+                                    const llvm::BitVector &killSet);
 };
 
 } // namespace llvm

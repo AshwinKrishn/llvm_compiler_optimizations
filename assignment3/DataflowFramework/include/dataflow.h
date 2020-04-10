@@ -45,7 +45,9 @@ class BBInOutBits {
          * @param inval
          * @param outval
          */
-        BBInOutBits(BitsVal inval, BitsVal outval) {
+        BBInOutBits(BitsVal inval, BitsVal outval)
+            : m_IN(MAX_BITS_SIZE), m_OUT(MAX_BITS_SIZE),
+              m_entryOUT(MAX_BITS_SIZE), m_exitIN(MAX_BITS_SIZE) {
                 if (inval == ZEROS)
                         m_IN.reset();
                 else if (inval == ONES)
@@ -56,12 +58,23 @@ class BBInOutBits {
                 else if (outval == ONES)
                         m_OUT.set();
         }
-        std::bitset<MAX_BITS_SIZE> m_IN;
-        std::bitset<MAX_BITS_SIZE> m_OUT;
+
+        static void printBitVector(const llvm::BitVector &bitvector,
+                                   int numBits) {
+                if (numBits < MAX_BITS_SIZE) {
+                        for (int i = 0; i < numBits; ++i) {
+                                outs() << bitvector[i];
+                        }
+                }
+                outs() << "\n";
+        }
+
+        llvm::BitVector m_IN;
+        llvm::BitVector m_OUT;
         // New addition to store OUT of entry and IN of exit, since we don't
         // actually have true empty entry and exit blocks
-        std::bitset<MAX_BITS_SIZE> m_entryOUT;
-        std::bitset<MAX_BITS_SIZE> m_exitIN;
+        llvm::BitVector m_entryOUT;
+        llvm::BitVector m_exitIN;
 };
 
 // Add definitions (and code, depending on your strategy) for your dataflow
@@ -364,7 +377,8 @@ void DataflowFramework<D>::doForwardTraversal(
         // instantiation might not be 100% accurate. This also applies for
         // post_order.
         BasicBlock *BB;
-        std::bitset<MAX_BITS_SIZE> meet_res, BB_killset, BB_genset;
+        llvm::BitVector meet_res(MAX_BITS_SIZE), BB_killset(MAX_BITS_SIZE),
+            BB_genset(MAX_BITS_SIZE);
         int iteration_no = 1;
         do {
                 outs() << "ITERATION " << iteration_no << "\n";
@@ -409,35 +423,24 @@ void DataflowFramework<D>::doForwardTraversal(
                         // Store meet_res
                         currentInOutBits->m_IN = meet_res;
 
-                        outs() << "Current IN bits: "
-                               << meet_res.to_string().substr(
-                                      MAX_BITS_SIZE - MAX_PRINT_SIZE,
-                                      MAX_BITS_SIZE)
-                               << "\n";
+                        outs() << "Current IN bits: ";
+                        BBInOutBits::printBitVector(meet_res, MAX_PRINT_SIZE);
 
                         // Create genset and killset
                         BB_genset = m_KG.genEval(BB, meet_res, m_domainSet);
-                        outs() << "Current GEN Set: "
-                               << BB_genset.to_string().substr(
-                                      MAX_BITS_SIZE - MAX_PRINT_SIZE,
-                                      MAX_BITS_SIZE)
-                               << "\n";
+                        outs() << "Current GEN Set: ";
+                        BBInOutBits::printBitVector(BB_genset, MAX_PRINT_SIZE);
 
                         BB_killset = m_KG.killEval(BB, meet_res, m_domainSet);
-                        outs() << "Current KILL Set: "
-                               << BB_killset.to_string().substr(
-                                      MAX_BITS_SIZE - MAX_PRINT_SIZE,
-                                      MAX_BITS_SIZE)
-                               << "\n";
+                        outs() << "Current KILL Set: ";
+                        BBInOutBits::printBitVector(BB_killset, MAX_PRINT_SIZE);
 
                         // Run transfer function on our sets, store the bits:
                         currentInOutBits->m_OUT =
                             m_transferFunc.run(meet_res, BB_genset, BB_killset);
-                        outs() << "Current OUT bits: "
-                               << currentInOutBits->m_OUT.to_string().substr(
-                                      MAX_BITS_SIZE - MAX_PRINT_SIZE,
-                                      MAX_BITS_SIZE)
-                               << "\n";
+                        outs() << "Current OUT bits: ";
+                        BBInOutBits::printBitVector(currentInOutBits->m_OUT,
+                                                    MAX_PRINT_SIZE);
                         outs() << "======================================"
                                   "======================================"
                                << "\n";
@@ -459,7 +462,8 @@ void DataflowFramework<D>::doBackwardTraversal(
     llvm::DenseMap<BasicBlock *, BBInOutBits *> &currentInOutMap,
     llvm::DenseMap<BasicBlock *, BBInOutBits *> &previousInOutMap) {
         BasicBlock *BB;
-        std::bitset<MAX_BITS_SIZE> meet_res, BB_killset, BB_genset;
+        llvm::BitVector meet_res(MAX_BITS_SIZE), BB_killset(MAX_BITS_SIZE),
+            BB_genset(MAX_BITS_SIZE);
         int iteration_no = 1;
         do {
                 outs() << "ITERATION " << iteration_no << "\n";
@@ -504,35 +508,24 @@ void DataflowFramework<D>::doBackwardTraversal(
                         // Store meet_res
                         currentInOutBits->m_OUT = meet_res;
 
-                        outs() << "Current OUT bits: "
-                               << meet_res.to_string().substr(
-                                      MAX_BITS_SIZE - MAX_PRINT_SIZE,
-                                      MAX_BITS_SIZE)
-                               << "\n";
+                        outs() << "Current OUT bits: ";
+                        BBInOutBits::printBitVector(meet_res, MAX_PRINT_SIZE);
 
                         // Create genset and killset
                         BB_genset = m_KG.genEval(BB, meet_res, m_domainSet);
-                        outs() << "Current GEN Set: "
-                               << BB_genset.to_string().substr(
-                                      MAX_BITS_SIZE - MAX_PRINT_SIZE,
-                                      MAX_BITS_SIZE)
-                               << "\n";
+                        outs() << "Current GEN Set: ";
+                        BBInOutBits::printBitVector(BB_genset, MAX_PRINT_SIZE);
 
                         BB_killset = m_KG.killEval(BB, meet_res, m_domainSet);
-                        outs() << "Current KILL Set: "
-                               << BB_killset.to_string().substr(
-                                      MAX_BITS_SIZE - MAX_PRINT_SIZE,
-                                      MAX_BITS_SIZE)
-                               << "\n";
+                        outs() << "Current KILL Set: ";
+                        BBInOutBits::printBitVector(BB_killset, MAX_PRINT_SIZE);
 
                         // Run transfer function on our sets, store the bits:
                         currentInOutBits->m_IN =
                             m_transferFunc.run(meet_res, BB_genset, BB_killset);
-                        outs() << "Current IN bits: "
-                               << currentInOutBits->m_IN.to_string().substr(
-                                      MAX_BITS_SIZE - MAX_PRINT_SIZE,
-                                      MAX_BITS_SIZE)
-                               << "\n";
+                        outs() << "Current IN bits: ";
+                        BBInOutBits::printBitVector(currentInOutBits->m_IN,
+                                                    MAX_PRINT_SIZE);
                         outs() << "======================================"
                                   "======================================"
                                << "\n";

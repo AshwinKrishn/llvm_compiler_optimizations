@@ -1,17 +1,18 @@
 #include <IntersectionMeet.h>
 #include <MeetOpInterface.h>
+#include <llvm/ADT/BitVector.h>
 
 IntersectionMeet::IntersectionMeet() { setTopElem(ONES); }
 
-std::bitset<MAX_BITS_SIZE>
-IntersectionMeet::intersection_op(std::bitset<MAX_BITS_SIZE> ip1,
-                                  std::bitset<MAX_BITS_SIZE> ip2) {
-        return (ip2 & ip1);
+llvm::BitVector IntersectionMeet::intersection_op(llvm::BitVector ip1,
+                                                  llvm::BitVector ip2) {
+        llvm::BitVector retval = ip1;
+        retval &= ip2;
+        return retval;
 }
 
-std::bitset<MAX_BITS_SIZE>
-IntersectionMeet::meet(std::bitset<MAX_BITS_SIZE> input1,
-                       std::bitset<MAX_BITS_SIZE> input2) {
+llvm::BitVector IntersectionMeet::meet(llvm::BitVector input1,
+                                       llvm::BitVector input2) {
 
         return intersection_op(input1, input2);
 }
