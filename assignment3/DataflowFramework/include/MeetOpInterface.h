@@ -1,8 +1,8 @@
 #ifndef __MEET_OP_INTERFACE__
 #define __MEET_OP_INTERFACE__
 
-#include <bitset>
 #include <iostream>
+#include <llvm/ADT/BitVector.h>
 #include <queue>
 #include <stdio.h>
 #include <vector>
@@ -24,9 +24,8 @@ enum BitsVal { ZEROS, ONES };
 class IMeetOp {
       public:
         BitsVal m_topElem;
-        virtual std::bitset<MAX_BITS_SIZE>
-        meet(std::bitset<MAX_BITS_SIZE> input1,
-             std::bitset<MAX_BITS_SIZE> input2) = 0;
+        virtual llvm::BitVector meet(llvm::BitVector input1,
+                                     llvm::BitVector input2) = 0;
         virtual void setTopElem(BitsVal val) = 0;
         virtual BitsVal getTopElem() = 0;
 };

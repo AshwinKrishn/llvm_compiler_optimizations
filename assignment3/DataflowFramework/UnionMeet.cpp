@@ -2,13 +2,14 @@
 #include <UnionMeet.h>
 
 UnionMeet::UnionMeet() { setTopElem(ZEROS); }
-std::bitset<MAX_BITS_SIZE> UnionMeet::union_op(std::bitset<MAX_BITS_SIZE> ip1,
-                                               std::bitset<MAX_BITS_SIZE> ip2) {
-        return ip1 | ip2;
+llvm::BitVector UnionMeet::union_op(llvm::BitVector ip1, llvm::BitVector ip2) {
+        llvm::BitVector retval = ip1;
+        retval |= ip2;
+        return retval;
 }
 
-std::bitset<MAX_BITS_SIZE> UnionMeet::meet(std::bitset<MAX_BITS_SIZE> input1,
-                                           std::bitset<MAX_BITS_SIZE> input2) {
+llvm::BitVector UnionMeet::meet(llvm::BitVector input1,
+                                llvm::BitVector input2) {
 
         return union_op(input1, input2);
 }

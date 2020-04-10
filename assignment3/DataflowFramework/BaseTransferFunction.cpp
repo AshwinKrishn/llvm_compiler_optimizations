@@ -1,4 +1,5 @@
 #include <BaseTransferFunction.h>
+#include <llvm/ADT/BitVector.h>
 namespace llvm {
 /**
  * @brief General base transfer function main method. Takes in 3 const set
@@ -14,16 +15,17 @@ namespace llvm {
  *
  * @return Copy out the bitset.
  */
-std::bitset<MAX_BITS_SIZE>
-BaseTransferFunction::run(const std::bitset<MAX_BITS_SIZE> &input,
-                          const std::bitset<MAX_BITS_SIZE> &genSet,
-                          const std::bitset<MAX_BITS_SIZE> &killSet) {
-        std::bitset<MAX_BITS_SIZE> retval;
+llvm::BitVector BaseTransferFunction::run(const llvm::BitVector &input,
+                                          const llvm::BitVector &genSet,
+                                          const llvm::BitVector &killSet) {
+        llvm::BitVector retval = genSet;
         // Make a copy of killset so we can flip the bits
-        std::bitset<MAX_BITS_SIZE> killSetCopy = killSet;
-        std::bitset<MAX_BITS_SIZE> killed = input & killSetCopy.flip();
+        llvm::BitVector killSetCopy = killSet;
+        llvm::BitVector killed = input;
 
-        retval = genSet | killed;
+        killed &= killSetCopy.flip();
+
+        retval |= killed;
         return retval;
 }
 
