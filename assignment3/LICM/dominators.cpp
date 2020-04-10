@@ -25,7 +25,7 @@ class KillGenDoms : public KillGen<BasicBlock *> {
                  std::vector<BasicBlock *> &domainset) override {
                 std::bitset<MAX_BITS_SIZE> BBkill;
                 // TODO: ADD IMPLEMENTATION
-
+                // No Kill for Dominator pass
                 BBkill.reset();
                 return BBkill;
         }
@@ -34,7 +34,9 @@ class KillGenDoms : public KillGen<BasicBlock *> {
                 std::vector<BasicBlock *> &domainset) override {
                 std::bitset<MAX_BITS_SIZE> BBgen;
                 // TODO: ADD IMPLEMENTATION
-
+                std::vector<BasicBlock *>::iterator it =
+                    std::find(domainset.begin(), domainset.end(), BB);
+                BBgen.set((size_t)(it - domainset.begin()));
                 return BBgen;
         }
 };
@@ -46,18 +48,28 @@ class DominatorsPass : public FunctionPass {
       public:
         static char ID;
         DominatorsPass() : FunctionPass(ID) {}
+
         virtual bool runOnFunction(Function &F) {
                 // Start of our modifications
 
                 // Instantiate requirements
                 IntersectionMeet intersect;
-                KillGenDoms killGenDoms;
+                KillGenDoms killGenDom;
+                llvm::DenseMap<BasicBlock *, std::bitset<4096>> base_tree;
+                std::vector<BasicBlock *> bb_ids;
+                for (Function::iterator FI = F.begin(), FE = F.end(); FI != FE;
+                     ++FI) {
+                        BasicBlock *block = &*FI;
+                        bb_ids.push_back(block);
+                }
                 BaseTransferFunction transferFunc;
-                // DataflowFramework<Expression> DF(intersect, FORWARD, EMPTY,
-                // F,
-                //                                 expressions, KillGenAE,
-                //                                 transferFunc);
-                // DF.run();
+                DataflowFramework<BasicBlock *> DF(intersect, FORWARD, EMPTY, F,
+                                                   bb_ids, killGenDom,
+                                                   transferFunc);
+                llvm::DenseMap<BasicBlock *, BBInOutBits *> *DomTree = DF.run();
+                for (auto it = DomTree->begin(); it != DomTree->end(); ++it) {
+                        outs() << "Basic Block" << *(it->first) << "\n";
+                }
 
                 // Did not modify the incoming Function.
                 return false;
