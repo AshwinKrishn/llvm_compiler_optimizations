@@ -6,6 +6,7 @@
 #include <IntersectionMeet.h>
 #include <KillGen.h>
 #include <dataflow.h>
+#include <llvm/ADT/DenseMap.h>
 
 using namespace llvm;
 
@@ -40,9 +41,13 @@ class KillGenFaint : public KillGen<Value *> {
  * @brief Primary function pass to run Faint Analysis pass.
  */
 class FaintnessPass : public FunctionPass {
+      protected:
+        llvm::DenseMap<BasicBlock *, BBInOutBits *> *m_faintness;
+
       public:
         static char ID;
         FaintnessPass();
+        llvm::DenseMap<BasicBlock *, BBInOutBits *> *getFaintResults();
         virtual bool runOnFunction(Function &F);
 
         virtual void getAnalysisUsage(AnalysisUsage &AU) const;

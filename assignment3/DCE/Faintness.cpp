@@ -119,7 +119,7 @@ bool FaintnessPass::runOnFunction(Function &F) {
         BaseTransferFunction transferFunc;
         DataflowFramework<Value *> DF(intersect, BACKWARD, UNIVERSAL, F,
                                       variables, killGenFaint, transferFunc);
-        DF.run();
+        m_faintness = DF.run();
 
         // Did not modify the incoming Function.
         return false;
@@ -127,6 +127,10 @@ bool FaintnessPass::runOnFunction(Function &F) {
 
 void FaintnessPass::getAnalysisUsage(AnalysisUsage &AU) const {
         AU.setPreservesAll();
+}
+
+llvm::DenseMap<BasicBlock *, BBInOutBits *> *FaintnessPass::getFaintResults() {
+        return m_faintness;
 }
 
 char FaintnessPass::ID = 0;

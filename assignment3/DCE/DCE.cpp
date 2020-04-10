@@ -7,10 +7,12 @@
 #include "llvm/IR/Function.h"
 #include "llvm/Pass.h"
 #include "llvm/Support/raw_ostream.h"
+#include <Faintness.h>
 #include <IntersectionMeet.h>
 #include <KillGen.h>
 #include <dataflow.h>
 #include <vector>
+
 using namespace llvm;
 
 namespace {
@@ -23,15 +25,21 @@ class DCE : public FunctionPass {
         static char ID;
         DCE() : FunctionPass(ID) {}
 
-        virtual bool runOnFunction(Function &F) { return true; }
+        virtual bool runOnFunction(Function &F) {
+                DenseMap<BasicBlock *, BBInOutBits *> *faintMap =
+                    getAnalysis<FaintnessPass>().getFaintResults();
+
+                return true;
+        }
 
         virtual void getAnalysisUsage(AnalysisUsage &AU) const {
-                AU.setPreservesAll();
+                AU.setPreservesCFG();
+                AU.addRequired<FaintnessPass>();
         }
 
       private:
 };
 
-char DCE::ID = 0;
+char DCE::ID = 1;
 RegisterPass<DCE> X("dce", "ECE 5984 Dead Code Elimination");
 } // namespace
