@@ -10,7 +10,7 @@ CXXFLAGS = -rdynamic $(shell llvm-config --cxxflags) $(INC) -g -O0 -fPIC
 licm.so: LICM.o $(OBJECTS)
 	$(CXX) -dylib -shared $^ -o $@
 
-dominators.so: dominators.o $(OBJECTS)
+dominators.so: DominatorPass.o $(OBJECTS)
 	$(CXX) -dylib -shared $^ -o $@
 
 reachingdefs.so: ReachingDefinitions.o $(OBJECTS)
@@ -21,7 +21,7 @@ clean:
 
 # Run
 run_licm: ./tests/rdtest_m2r.bc all
-	opt -load=./reachingdefs.so -load=./licm.so -licm_pass $< -o /dev/zero 
+	opt -load=./reachingdefs.so -load=./dominators.so -load=./licm.so -licm_pass $< -o /dev/zero 
 
 #run_live: ./tests/liveness-test-m2r.bc all
 #	opt -load ./liveness.so -liveness $< -o /dev/zero
