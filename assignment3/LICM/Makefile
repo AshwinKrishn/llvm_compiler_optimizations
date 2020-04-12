@@ -20,7 +20,7 @@ clean:
 	rm -f *.o *~ *.so
 
 # Run
-run_licm: ./tests/rdtest_m2r.bc all
+run_licm: ./tests/loop_test.bc all
 	opt -load=./reachingdefs.so -load=./dominators.so -load=./licm.so -licm_pass $< -o /dev/zero 
 
 #run_live: ./tests/liveness-test-m2r.bc all
