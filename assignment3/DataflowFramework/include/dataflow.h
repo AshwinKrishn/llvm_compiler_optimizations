@@ -29,6 +29,7 @@
 
 enum FlowDirection { FORWARD, BACKWARD };
 enum BoundaryCondition { EMPTY, UNIVERSAL };
+enum AnalysisGranularity { BASIC_BLOCK, INSTRUCTION };
 
 namespace llvm {
 
@@ -96,6 +97,7 @@ template <typename D> class DataflowFramework {
         std::vector<D> &m_domainSet;
         KillGen<D> &m_KG;
         BaseTransferFunction &m_transferFunc;
+        AnalysisGranularity m_granularity;
 
         void doForwardTraversal(
             llvm::DenseMap<BasicBlock *, BBInOutBits *> &currentInOutMap,
@@ -130,7 +132,8 @@ template <typename D> class DataflowFramework {
         DataflowFramework(IMeetOp &meetOp, FlowDirection direction,
                           BoundaryCondition boundary, Function &function,
                           std::vector<D> &domainset, KillGen<D> &KillGenImp,
-                          BaseTransferFunction &transfer);
+                          BaseTransferFunction &transfer,
+                          AnalysisGranularity granularity = BASIC_BLOCK);
         // Placeholder function for entire computation, we may use template
         // later, depending on how we want to return the results and what
         // results to return. Eg: vector<Expression>? or vector<Variable>? We
@@ -142,10 +145,10 @@ template <typename D>
 DataflowFramework<D>::DataflowFramework(
     IMeetOp &meetOp, FlowDirection direction, BoundaryCondition boundary,
     Function &function, std::vector<D> &domainset, KillGen<D> &KillGenImp,
-    BaseTransferFunction &transfer)
+    BaseTransferFunction &transfer, AnalysisGranularity granularity)
     : m_meetOp(meetOp), m_func(function), m_dir(direction),
       m_boundary(boundary), m_domainSet(domainset), m_KG(KillGenImp),
-      m_transferFunc(transfer) {}
+      m_transferFunc(transfer), m_granularity(granularity) {}
 
 /**
  * @brief Primary run function of the Dataflow Framework
@@ -378,7 +381,7 @@ void DataflowFramework<D>::doForwardTraversal(
         // post_order.
         BasicBlock *BB;
         llvm::BitVector meet_res(MAX_BITS_SIZE), BB_killset(MAX_BITS_SIZE),
-            BB_genset(MAX_BITS_SIZE);
+            BB_genset(MAX_BITS_SIZE), transfer_set(MAX_BITS_SIZE);
         int iteration_no = 1;
         do {
                 outs() << "ITERATION " << iteration_no << "\n";
@@ -392,7 +395,7 @@ void DataflowFramework<D>::doForwardTraversal(
                          ipo_begin(&m_func.getBasicBlockList().back());
                      I != ipo_end(&m_func.getEntryBlock()); ++I) {
 
-                        if (BB = dyn_cast<BasicBlock>(*I))
+                        if ((BB = dyn_cast<BasicBlock>(*I)))
                                 outs() << *BB << "\n";
                         // Pre-define for convenience so we don't have to keep
                         // looking it up
@@ -426,18 +429,53 @@ void DataflowFramework<D>::doForwardTraversal(
                         outs() << "Current IN bits: ";
                         BBInOutBits::printBitVector(meet_res, MAX_PRINT_SIZE);
 
-                        // Create genset and killset
-                        BB_genset = m_KG.genEval(BB, meet_res, m_domainSet);
-                        outs() << "Current GEN Set: ";
-                        BBInOutBits::printBitVector(BB_genset, MAX_PRINT_SIZE);
+                        // if we're working on basic blocks
+                        if (m_granularity == BASIC_BLOCK) {
+                                // Create genset and killset
+                                BB_genset =
+                                    m_KG.genEval(BB, meet_res, m_domainSet);
+                                outs() << "Current GEN Set: ";
+                                BBInOutBits::printBitVector(BB_genset,
+                                                            MAX_PRINT_SIZE);
 
-                        BB_killset = m_KG.killEval(BB, meet_res, m_domainSet);
-                        outs() << "Current KILL Set: ";
-                        BBInOutBits::printBitVector(BB_killset, MAX_PRINT_SIZE);
+                                BB_killset =
+                                    m_KG.killEval(BB, meet_res, m_domainSet);
+                                outs() << "Current KILL Set: ";
+                                BBInOutBits::printBitVector(BB_killset,
+                                                            MAX_PRINT_SIZE);
 
-                        // Run transfer function on our sets, store the bits:
-                        currentInOutBits->m_OUT =
-                            m_transferFunc.run(meet_res, BB_genset, BB_killset);
+                                // Run transfer function on our sets, store the
+                                // bits:
+                                transfer_set = m_transferFunc.run(
+                                    meet_res, BB_genset, BB_killset, *BB);
+                        } else if (m_granularity == INSTRUCTION) {
+                                // If using instruction granularity, kill, gen,
+                                // and transfer function per-instruction
+                                transfer_set = meet_res;
+                                for (Instruction &I : *BB) {
+                                        // Create genset and killset
+                                        BB_genset = m_KG.genEval(
+                                            &I, transfer_set, m_domainSet);
+                                        outs() << "Current GEN Set: ";
+                                        BBInOutBits::printBitVector(
+                                            BB_genset, MAX_PRINT_SIZE);
+
+                                        BB_killset = m_KG.killEval(
+                                            &I, transfer_set, m_domainSet);
+                                        outs() << "Current KILL Set: ";
+                                        BBInOutBits::printBitVector(
+                                            BB_killset, MAX_PRINT_SIZE);
+
+                                        // Run transfer function on our sets,
+                                        // store the bits:
+                                        transfer_set = m_transferFunc.run(
+                                            transfer_set, BB_genset, BB_killset,
+                                            *BB);
+                                }
+                        }
+
+                        // Store the transfer set bits regardless of granularity
+                        currentInOutBits->m_OUT = transfer_set;
                         outs() << "Current OUT bits: ";
                         BBInOutBits::printBitVector(currentInOutBits->m_OUT,
                                                     MAX_PRINT_SIZE);
@@ -463,7 +501,7 @@ void DataflowFramework<D>::doBackwardTraversal(
     llvm::DenseMap<BasicBlock *, BBInOutBits *> &previousInOutMap) {
         BasicBlock *BB;
         llvm::BitVector meet_res(MAX_BITS_SIZE), BB_killset(MAX_BITS_SIZE),
-            BB_genset(MAX_BITS_SIZE);
+            BB_genset(MAX_BITS_SIZE), transfer_set(MAX_BITS_SIZE);
         int iteration_no = 1;
         do {
                 outs() << "ITERATION " << iteration_no << "\n";
@@ -477,7 +515,7 @@ void DataflowFramework<D>::doBackwardTraversal(
                          po_begin(&m_func.getEntryBlock());
                      I != po_end(&m_func.back()); ++I) {
 
-                        if (BB = dyn_cast<BasicBlock>(*I))
+                        if ((BB = dyn_cast<BasicBlock>(*I)))
                                 outs() << *BB << "\n";
                         // Pre-define for convenience so we don't have to keep
                         // looking it up
@@ -511,18 +549,57 @@ void DataflowFramework<D>::doBackwardTraversal(
                         outs() << "Current OUT bits: ";
                         BBInOutBits::printBitVector(meet_res, MAX_PRINT_SIZE);
 
-                        // Create genset and killset
-                        BB_genset = m_KG.genEval(BB, meet_res, m_domainSet);
-                        outs() << "Current GEN Set: ";
-                        BBInOutBits::printBitVector(BB_genset, MAX_PRINT_SIZE);
+                        if (m_granularity == BASIC_BLOCK) {
+                                // Create genset and killset
+                                BB_genset =
+                                    m_KG.genEval(BB, meet_res, m_domainSet);
+                                outs() << "Current GEN Set: ";
+                                BBInOutBits::printBitVector(BB_genset,
+                                                            MAX_PRINT_SIZE);
 
-                        BB_killset = m_KG.killEval(BB, meet_res, m_domainSet);
-                        outs() << "Current KILL Set: ";
-                        BBInOutBits::printBitVector(BB_killset, MAX_PRINT_SIZE);
+                                BB_killset =
+                                    m_KG.killEval(BB, meet_res, m_domainSet);
+                                outs() << "Current KILL Set: ";
+                                BBInOutBits::printBitVector(BB_killset,
+                                                            MAX_PRINT_SIZE);
 
-                        // Run transfer function on our sets, store the bits:
-                        currentInOutBits->m_IN =
-                            m_transferFunc.run(meet_res, BB_genset, BB_killset);
+                                // Run transfer function on our sets, store the
+                                // bits:
+                                transfer_set = m_transferFunc.run(
+                                    meet_res, BB_genset, BB_killset, *BB);
+
+                        } else if (m_granularity == INSTRUCTION) {
+                                // Backwards analysis instruction granularity
+                                // requires reverse instruction iterator
+                                // Copy values from meet_res to transfer set
+                                // using copy ctor
+                                transfer_set = meet_res;
+                                for (BasicBlock::reverse_iterator I =
+                                         BB->rbegin();
+                                     I != BB->rend(); ++I) {
+                                        // Create genset and killset
+                                        BB_genset = m_KG.genEval(
+                                            &*I, transfer_set, m_domainSet);
+                                        outs() << "Current GEN Set: ";
+                                        BBInOutBits::printBitVector(
+                                            BB_genset, MAX_PRINT_SIZE);
+
+                                        BB_killset = m_KG.killEval(
+                                            &*I, transfer_set, m_domainSet);
+                                        outs() << "Current KILL Set: ";
+                                        BBInOutBits::printBitVector(
+                                            BB_killset, MAX_PRINT_SIZE);
+
+                                        // Run transfer function on our sets,
+                                        // store the bits:
+                                        transfer_set = m_transferFunc.run(
+                                            transfer_set, BB_genset, BB_killset,
+                                            *BB);
+                                }
+                        }
+                        // Run transfer function on our sets, store the
+                        // bits:
+                        currentInOutBits->m_IN = transfer_set;
                         outs() << "Current IN bits: ";
                         BBInOutBits::printBitVector(currentInOutBits->m_IN,
                                                     MAX_PRINT_SIZE);
