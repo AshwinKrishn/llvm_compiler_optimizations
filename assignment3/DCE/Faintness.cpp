@@ -3,31 +3,90 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include <Faintness.h>
+#include <llvm/ADT/DenseMap.h>
+#include <llvm/IR/InstrTypes.h>
+#include <llvm/IR/Instructions.h>
+#include <vector>
 
-llvm::BitVector KillGenFaint::killEval(llvm::BasicBlock *BB,
+FaintTransferFunction::FaintTransferFunction(
+    llvm::DenseMap<BasicBlock *, std::vector<llvm::BitVector> *>
+        &bbToInstOUTMap)
+    : BaseTransferFunction(), m_bbToInstOUTMap(bbToInstOUTMap) {}
+
+llvm::BitVector FaintTransferFunction::run(const llvm::BitVector &input,
+                                           const llvm::BitVector &genSet,
+                                           const llvm::BitVector &killSet,
+                                           const llvm::BasicBlock &BB) {
+
+        unsigned long bbSize = BB.size();
+
+        // Run parent transfer function, this will be returned regardless:
+        llvm::BitVector retVal =
+            BaseTransferFunction::run(input, genSet, killSet, BB);
+        outs() << "FaintTransferFunction OUT: "
+               << "\n";
+        BBInOutBits::printBitVector(retVal, MAX_PRINT_SIZE);
+        // If vector's size == BB's num instructions, this is a second
+        // iteration, clear the vector.
+        std::vector<llvm::BitVector> *instOUTs =
+            m_bbToInstOUTMap.find(&BB)->second;
+
+        if (instOUTs->size() >= bbSize + 1) {
+                instOUTs->clear();
+        }
+
+        // If vector is empty, insert to front, input set.
+        if (instOUTs->empty()) {
+                instOUTs->insert(instOUTs->begin(), input);
+        }
+
+        // If vector is less than BB's num instructions, we
+        // aren't done with this bb yet, insert result of xfer function to it.
+        if (instOUTs->size() < bbSize) {
+                instOUTs->insert(instOUTs->begin(), retVal);
+        }
+
+        return retVal;
+}
+
+llvm::BitVector KillGenFaint::killEval(llvm::Instruction *I,
                                        llvm::BitVector &meet_res,
                                        std::vector<Value *> &domainset) {
         // constkill U depKill is the kill
-        llvm::BitVector BBKill = constKillHelper(BB, meet_res, domainset);
-        BBKill |= depKillHelper(BB, meet_res, domainset);
+        llvm::BitVector BBKill = constKillHelper(I, meet_res, domainset);
+        BBKill |= depKillHelper(I, meet_res, domainset);
         return BBKill;
 }
 
-llvm::BitVector KillGenFaint::genEval(llvm::BasicBlock *BB,
+llvm::BitVector KillGenFaint::genEval(llvm::Instruction *I,
                                       llvm::BitVector &meet_res,
                                       std::vector<Value *> &domainset) {
         llvm::BitVector BBgen(MAX_BITS_SIZE);
+        outs() << *I << "\n";
         // We only need a constgen, so no need for helpers, calculate in here
-        for (Instruction &I : *BB) {
-                if (isa<BinaryOperator>(I) || isa<PHINode>(I)) {
-                        // If A is of the form x = e and x!= oper(e), gen it.
-                        // In SSA, we will never be in our own operand list,
-                        // single definition, so, just gen if you see
-                        setBitsIfInDomain(&I, BBgen, domainset);
+        if (isa<BinaryOperator>(*I) || isa<PHINode>(*I) || isa<CastInst>(*I) ||
+            isa<CmpInst>(*I)) {
+                // If A is of the form x = e and x!= oper(e), gen it.
+                // In SSA, we will never be in our own operand list,
+                // single definition, so, just gen if you see
+                setBitsIfInDomain(I, BBgen, domainset);
+        }
+        // outs() << "Meet Result is: \n";
+        // printDomainBits(meet_res, domainset);
+        // outs() << "-------------------------------------------\n";
+        // outs() << "Gen Result is: \n";
+        // printDomainBits(BBgen, domainset);
+        // outs() << "-------------------------------------------\n";
+        return BBgen;
+}
+
+void KillGenFaint::printDomainBits(llvm::BitVector &bits,
+                                   std::vector<Value *> &domainset) {
+        for (int bitIndex : bits.set_bits()) {
+                if (bitIndex < (int)domainset.size()) {
+                        outs() << *domainset[bitIndex] << "\n";
                 }
         }
-
-        return BBgen;
 }
 
 void KillGenFaint::setBitsIfInDomain(const Value *V, llvm::BitVector &bits,
@@ -40,7 +99,7 @@ void KillGenFaint::setBitsIfInDomain(const Value *V, llvm::BitVector &bits,
         }
 }
 
-llvm::BitVector KillGenFaint::constKillHelper(llvm::BasicBlock *BB,
+llvm::BitVector KillGenFaint::constKillHelper(llvm::Instruction *I,
                                               llvm::BitVector &meet_res,
                                               std::vector<Value *> &domainset) {
         // Iterate through instructions, if they are users of of a value in the
@@ -48,16 +107,16 @@ llvm::BitVector KillGenFaint::constKillHelper(llvm::BasicBlock *BB,
         // are br instructions for instance (which are terminator instructions),
         // if they are debug info, or landingpad instructions
         llvm::BitVector constKillSet(MAX_BITS_SIZE);
-        constKillSet.reset();
-        for (Instruction &I : *BB) {
-                // TODO: Check if correct, we assume first operand for br,
-                // indbr, switch, etc. is the target
-                if (isa<TerminatorInst>(I) || isa<LandingPadInst>(I) ||
-                    I.mayHaveSideEffects()) {
-                        setBitsIfInDomain(I.getOperand(0), constKillSet,
-                                          domainset);
-                }
+        // TODO: Check if correct, we assume first operand for br,
+        // indbr, switch, etc. is the target
+        if (isa<TerminatorInst>(*I) || isa<LandingPadInst>(*I) ||
+            isa<llvm::CmpInst>(*I) || I->mayHaveSideEffects()) {
+                setBitsIfInDomain(I->getOperand(0), constKillSet, domainset);
         }
+
+        outs() << "ConstKills are: \n";
+        printDomainBits(constKillSet, domainset);
+        outs() << "-------------------------------------------\n";
 
         return constKillSet;
 }
@@ -66,34 +125,42 @@ bool KillGenFaint::isValueInOUT(const Value *V, const llvm::BitVector &OUT,
                                 const std::vector<Value *> &domainset) {
         bool retVal = false;
         for (int bitIndex : OUT.set_bits()) {
-                if (V == domainset[bitIndex])
-                        retVal = true;
+                if (bitIndex < (int)domainset.size()) {
+                        if (V == domainset[bitIndex])
+                                retVal = true;
+                }
         }
         return retVal;
 }
 
-llvm::BitVector KillGenFaint::depKillHelper(llvm::BasicBlock *BB,
+llvm::BitVector KillGenFaint::depKillHelper(llvm::Instruction *I,
                                             llvm::BitVector &meet_res,
                                             std::vector<Value *> &domainset) {
 
         llvm::BitVector depKillSet(MAX_BITS_SIZE);
-        depKillSet.reset();
         // If we are an assignment statement (either binary op or phi node) AND
         // x not in OUT. meet_res holds the bits that are entering, so they are
         // OUT.
-        for (Instruction &I : *BB) {
-                if (isa<BinaryOperator>(I) || isa<PHINode>(I)) {
-                        // If the LHS is not in OUT, then that e's faintness was
-                        // killed in the BB. Thus, add operands of e as killed.
-                        if (isValueInOUT(&I, meet_res, domainset)) {
-                                for (auto OP = I.op_begin(); OP != I.op_end();
-                                     ++OP) {
-                                        setBitsIfInDomain(OP->get(), depKillSet,
-                                                          domainset);
-                                }
+        outs() << "depKillHelper meet_res: "
+               << "\n\n";
+        BBInOutBits::printBitVector(meet_res, 2);
+        if (isa<BinaryOperator>(*I) || isa<PHINode>(*I) || isa<CastInst>(*I) ||
+            isa<CmpInst>(*I)) {
+                // If the LHS is not in OUT, then that e's
+                // faintness was killed in the BB. Thus, add
+                // operands of e as killed.
+                if (!isValueInOUT(I, meet_res, domainset)) {
+                        outs() << "Value is not in out \n";
+                        for (auto OP = I->op_begin(); OP != I->op_end(); ++OP) {
+                                setBitsIfInDomain(OP->get(), depKillSet,
+                                                  domainset);
                         }
                 }
         }
+
+        outs() << "DepKills are: \n";
+        printDomainBits(depKillSet, domainset);
+        outs() << "-------------------------------------------\n";
 
         return depKillSet;
 }
@@ -102,24 +169,38 @@ FaintnessPass::FaintnessPass() : FunctionPass(ID) {}
 
 bool FaintnessPass::runOnFunction(Function &F) {
         // Start of our modifications
-        std::vector<Value *> variables;
         outs() << "Faintness for Function: " << F.getName() << "\n";
 
-        // For now we only add binary op instructions and phi nodes as variables
+        // For now we only add binary op instructions, phi nodes, call inst,
+        // invoke inst, and cast inst which includes trunc operations
         for (BasicBlock &BB : F) {
                 for (Instruction &I : BB) {
-                        if (isa<BinaryOperator>(I) || isa<PHINode>(I)) {
-                                variables.push_back(&I);
+                        std::pair<BasicBlock *, std::vector<BitVector> *>
+                            mapvals;
+                        mapvals.first = &BB;
+                        mapvals.second = new std::vector<BitVector>();
+                        m_bbToInstOUTMap.insert(mapvals);
+
+                        if (isa<BinaryOperator>(I) || isa<PHINode>(I) ||
+                            isa<CastInst>(I) || isa<CmpInst>(I)) {
+                                m_domainSet.push_back(&I);
                         }
                 }
         }
 
+        outs() << "Domain is: \n";
+        for (Value *v : m_domainSet) {
+                outs() << *v << "\n";
+        }
+        outs() << "======================================================\n";
+
         // Instantiate requirements
         IntersectionMeet intersect;
         KillGenFaint killGenFaint;
-        BaseTransferFunction transferFunc;
+        FaintTransferFunction transferFunc(m_bbToInstOUTMap);
         DataflowFramework<Value *> DF(intersect, BACKWARD, UNIVERSAL, F,
-                                      variables, killGenFaint, transferFunc);
+                                      m_domainSet, killGenFaint, transferFunc,
+                                      INSTRUCTION);
         m_faintness = DF.run();
 
         // Did not modify the incoming Function.
@@ -130,9 +211,12 @@ void FaintnessPass::getAnalysisUsage(AnalysisUsage &AU) const {
         AU.setPreservesAll();
 }
 
-llvm::DenseMap<BasicBlock *, BBInOutBits *> *FaintnessPass::getFaintResults() {
-        return m_faintness;
+llvm::DenseMap<BasicBlock *, std::vector<BitVector> *> *
+FaintnessPass::getFaintResults() {
+        return &m_bbToInstOUTMap;
 }
+
+std::vector<Value *> FaintnessPass::getDomainSet() { return m_domainSet; }
 
 char FaintnessPass::ID = 0;
 RegisterPass<FaintnessPass> X("faintness", "ECE 5984 Faint Analysis Pass");

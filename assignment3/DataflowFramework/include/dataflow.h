@@ -99,6 +99,8 @@ template <typename D> class DataflowFramework {
         BaseTransferFunction &m_transferFunc;
         AnalysisGranularity m_granularity;
 
+        BasicBlock *m_exitBlock;
+
         void doForwardTraversal(
             llvm::DenseMap<BasicBlock *, BBInOutBits *> &currentInOutMap,
             llvm::DenseMap<BasicBlock *, BBInOutBits *> &previousInOutMap);
@@ -148,7 +150,13 @@ DataflowFramework<D>::DataflowFramework(
     BaseTransferFunction &transfer, AnalysisGranularity granularity)
     : m_meetOp(meetOp), m_func(function), m_dir(direction),
       m_boundary(boundary), m_domainSet(domainset), m_KG(KillGenImp),
-      m_transferFunc(transfer), m_granularity(granularity) {}
+      m_transferFunc(transfer), m_granularity(granularity) {
+        for (BasicBlock &BB : function) {
+                if (isa<llvm::ReturnInst>(BB.getTerminator())) {
+                        m_exitBlock = &BB;
+                }
+        }
+}
 
 /**
  * @brief Primary run function of the Dataflow Framework
@@ -190,7 +198,7 @@ template <typename D>
 void DataflowFramework<D>::initializeBbBitMaps(
     Function &F, llvm::DenseMap<BasicBlock *, BBInOutBits *> &map) {
         BasicBlock &entry = F.getEntryBlock();
-        BasicBlock &exit = F.getBasicBlockList().back();
+        BasicBlock &exit = *m_exitBlock;
         // Usually we prefer not to use pointers because owners
         // of the memory are not very obvious. In this case, we
         // have to use pointers because of the DenseMap. This is
@@ -391,8 +399,7 @@ void DataflowFramework<D>::doForwardTraversal(
                 // Make values of previous == current
                 deepCopyDenseMaps(currentInOutMap, previousInOutMap);
 
-                for (ipo_iterator<BasicBlock *> I =
-                         ipo_begin(&m_func.getBasicBlockList().back());
+                for (ipo_iterator<BasicBlock *> I = ipo_begin(m_exitBlock);
                      I != ipo_end(&m_func.getEntryBlock()); ++I) {
 
                         if ((BB = dyn_cast<BasicBlock>(*I)))
@@ -456,15 +463,9 @@ void DataflowFramework<D>::doForwardTraversal(
                                         // Create genset and killset
                                         BB_genset = m_KG.genEval(
                                             &I, transfer_set, m_domainSet);
-                                        outs() << "Current GEN Set: ";
-                                        BBInOutBits::printBitVector(
-                                            BB_genset, MAX_PRINT_SIZE);
 
                                         BB_killset = m_KG.killEval(
                                             &I, transfer_set, m_domainSet);
-                                        outs() << "Current KILL Set: ";
-                                        BBInOutBits::printBitVector(
-                                            BB_killset, MAX_PRINT_SIZE);
 
                                         // Run transfer function on our sets,
                                         // store the bits:
@@ -513,7 +514,7 @@ void DataflowFramework<D>::doBackwardTraversal(
 
                 for (po_iterator<BasicBlock *> I =
                          po_begin(&m_func.getEntryBlock());
-                     I != po_end(&m_func.back()); ++I) {
+                     I != po_end(m_exitBlock); ++I) {
 
                         if ((BB = dyn_cast<BasicBlock>(*I)))
                                 outs() << *BB << "\n";
@@ -531,7 +532,7 @@ void DataflowFramework<D>::doBackwardTraversal(
                         // entry block. Else, if we're any other block, we take
                         // any of the successors and make the meet_res equal
                         // to that.
-                        if (BB == &m_func.back()) {
+                        if (BB == m_exitBlock) {
                                 meet_res = currentInOutBits->m_exitIN;
                         } else {
                                 auto succ = succ_begin(BB);
@@ -580,15 +581,9 @@ void DataflowFramework<D>::doBackwardTraversal(
                                         // Create genset and killset
                                         BB_genset = m_KG.genEval(
                                             &*I, transfer_set, m_domainSet);
-                                        outs() << "Current GEN Set: ";
-                                        BBInOutBits::printBitVector(
-                                            BB_genset, MAX_PRINT_SIZE);
 
                                         BB_killset = m_KG.killEval(
                                             &*I, transfer_set, m_domainSet);
-                                        outs() << "Current KILL Set: ";
-                                        BBInOutBits::printBitVector(
-                                            BB_killset, MAX_PRINT_SIZE);
 
                                         // Run transfer function on our sets,
                                         // store the bits:

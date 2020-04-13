@@ -14,19 +14,12 @@ double pop(void);
 int global_var = 0;
 
 int main() {
-        int type;
-        double op2;
-        char s;
-
-        int a, b, c, d, e, f;
-        while ((type = getop(s)) != EOF) {
-                if (op2 > 1) {
-                        a = b + c;
-                } else {
-                        c = e + f;
-                }
-        }
-        return 0;
+        int a, b, c, d;
+        a = 1;
+        b = 2;
+        c = a + b;
+        d = c - b;
+        return a;
 }
 
 // int getop(char[]);

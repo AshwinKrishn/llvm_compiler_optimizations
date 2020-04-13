@@ -25,9 +25,69 @@ class DCE : public FunctionPass {
         static char ID;
         DCE() : FunctionPass(ID) {}
 
+        bool isValueInBits(const Value *V, const llvm::BitVector &bits,
+                           const std::vector<Value *> &domainset) {
+                bool retVal = false;
+                for (int bitIndex : bits.set_bits()) {
+                        if (bitIndex < (int)domainset.size()) {
+                                if (V == domainset[bitIndex])
+                                        retVal = true;
+                        }
+                }
+                return retVal;
+        }
+
         virtual bool runOnFunction(Function &F) {
-                DenseMap<BasicBlock *, BBInOutBits *> *faintMap =
+                DenseMap<BasicBlock *, std::vector<BitVector> *> *faintMap =
                     getAnalysis<FaintnessPass>().getFaintResults();
+
+                std::vector<Value *> domainSet =
+                    getAnalysis<FaintnessPass>().getDomainSet();
+                for (Value *V : domainSet) {
+                        outs() << *V << "\n";
+                }
+
+                outs() << "Running DCE on function: " << F.getName() << "\n";
+
+                std::vector<Instruction *> removeSet;
+
+                for (BasicBlock &BB : F) {
+                        outs() << BB << "\n";
+                        outs() << "Instructions: "
+                               << "\n";
+                        unsigned long instructionNo = 0;
+                        std::vector<BitVector> *outBits = (*faintMap)[&BB];
+
+                        for (Instruction &I : BB) {
+                                outs() << I << "\n";
+                                BBInOutBits::printBitVector(
+                                    (*outBits)[instructionNo], MAX_PRINT_SIZE);
+
+                                // If we're not a terminator instruction and if
+                                // we are faint right after definition, we can
+                                // be removed.
+                                if (!isa<TerminatorInst>(I) &&
+                                    isValueInBits(&I, (*outBits)[instructionNo],
+                                                  domainSet)) {
+                                        outs()
+                                            << "We can remove: " << I << "\n";
+                                        removeSet.push_back(&I);
+                                }
+
+                                ++instructionNo;
+                        }
+                        outs() << "--------------------------------"
+                               << "\n";
+                        // for (BitVector &bits : *(*faintMap)[&BB]) {
+                        //        BBInOutBits::printBitVector(bits, 12);
+                        //}
+                        // outs() << (*faintMap)[&BB]->size();
+                }
+
+                // Remove all faint Instructions:
+                for (Instruction *I : removeSet) {
+                        I->removeFromParent();
+                }
 
                 return true;
         }
@@ -41,5 +101,5 @@ class DCE : public FunctionPass {
 };
 
 char DCE::ID = 1;
-RegisterPass<DCE> X("dce", "ECE 5984 Dead Code Elimination");
+RegisterPass<DCE> X("dce_pass", "ECE 5984 Dead Code Elimination");
 } // namespace
