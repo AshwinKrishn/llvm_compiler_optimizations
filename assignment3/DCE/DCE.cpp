@@ -7,6 +7,7 @@
 #include "llvm/IR/Function.h"
 #include "llvm/Pass.h"
 #include "llvm/Support/raw_ostream.h"
+#include <llvm/IR/Constants.h>
 #include <llvm/Transforms/Utils/BasicBlockUtils.h>
 
 #include <Faintness.h>
@@ -66,16 +67,24 @@ class DCE : public FunctionPass {
                                 if (BranchInst *I =
                                         dyn_cast<BranchInst>(&BB.front())) {
                                         outs() << BB << "\n";
-
+                                        BasicBlock *pred =
+                                            BB.getSinglePredecessor();
                                         if (I->getNumSuccessors() == 1 &&
-                                            BB.getSinglePredecessor()) {
+                                            pred) {
                                                 // Replace downstream phi node
                                                 // successor uses with our
                                                 // predecessor
                                                 BB.replaceSuccessorsPhiUsesWith(
-                                                    BB.getSinglePredecessor());
-                                                // I->getSuccessor(0)
-                                                //    ->removePredecessor(&BB);
+                                                    pred);
+                                                BranchInst *prev_term =
+                                                    cast<BranchInst>(
+                                                        pred->getTerminator());
+                                                if (prev_term
+                                                        ->isUnconditional()) {
+                                                        prev_term->setOperand(
+                                                            0,
+                                                            BB.getSingleSuccessor());
+                                                }
                                                 removeList.push_back(&BB);
                                         }
                                 }
@@ -130,6 +139,8 @@ class DCE : public FunctionPass {
                 // Remove all faint Instructions:
                 for (Instruction *I : removeSet) {
                         outs() << "We can remove: " << *I << "\n";
+                        UndefValue *undef = UndefValue::get(I->getType());
+                        I->replaceAllUsesWith(undef);
                         I->eraseFromParent();
                 }
 
