@@ -27,6 +27,9 @@ run_licm: ./tests/rdtest_m2r.bc all
 #	opt -load ./liveness.so -liveness $< -o /dev/zero
 #
 
+run_rd: ./tests/rdtest_m2r.bc all
+	opt -load=./reachingdefs.so -rd $< -o /dev/zero 
+
 # Utils to view CFG, requires xdot and graphviz:
 cfg_rd: ./tests/rdtest_m2r.bc
 	opt -view-cfg $^
