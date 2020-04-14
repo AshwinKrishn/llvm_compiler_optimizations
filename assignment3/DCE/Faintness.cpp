@@ -23,9 +23,10 @@ llvm::BitVector FaintTransferFunction::run(const llvm::BitVector &input,
         // Run parent transfer function, this will be returned regardless:
         llvm::BitVector retVal =
             BaseTransferFunction::run(input, genSet, killSet, BB);
-        outs() << "FaintTransferFunction OUT: "
-               << "\n";
-        BBInOutBits::printBitVector(retVal, MAX_PRINT_SIZE);
+        DBUG(outs() << "FaintTransferFunction OUT: "
+                    << "\n";
+             BBInOutBits::printBitVector(retVal, MAX_PRINT_SIZE););
+
         // If vector's size == BB's num instructions, this is a second
         // iteration, clear the vector.
         std::vector<llvm::BitVector> *instOUTs =
@@ -62,7 +63,6 @@ llvm::BitVector KillGenFaint::genEval(llvm::Instruction *I,
                                       llvm::BitVector &meet_res,
                                       std::vector<Value *> &domainset) {
         llvm::BitVector BBgen(MAX_BITS_SIZE);
-        outs() << *I << "\n";
         // We only need a constgen, so no need for helpers, calculate in here
         if (isa<BinaryOperator>(*I) || isa<PHINode>(*I) || isa<CastInst>(*I) ||
             isa<CmpInst>(*I)) {
@@ -71,12 +71,13 @@ llvm::BitVector KillGenFaint::genEval(llvm::Instruction *I,
                 // single definition, so, just gen if you see
                 setBitsIfInDomain(I, BBgen, domainset);
         }
-        // outs() << "Meet Result is: \n";
-        // printDomainBits(meet_res, domainset);
-        // outs() << "-------------------------------------------\n";
-        // outs() << "Gen Result is: \n";
-        // printDomainBits(BBgen, domainset);
-        // outs() << "-------------------------------------------\n";
+
+        DBUG(outs() << "Meet Result is: \n";
+             printDomainBits(meet_res, domainset);
+             outs() << "-------------------------------------------\n";
+             outs() << "Gen Result is: \n"; printDomainBits(BBgen, domainset);
+             outs() << "-------------------------------------------\n";);
+
         return BBgen;
 }
 
@@ -113,10 +114,18 @@ llvm::BitVector KillGenFaint::constKillHelper(llvm::Instruction *I,
             isa<llvm::CmpInst>(*I) || I->mayHaveSideEffects()) {
                 setBitsIfInDomain(I->getOperand(0), constKillSet, domainset);
         }
+        // We won't generate faintness for any calls since we cannot guarantee
+        // that they don't change global state, however, we can kill faintness
+        // of any args going in
+        if (isa<CallInst>(*I)) {
+                for (auto OP = I->op_begin(); OP != I->op_end(); ++OP) {
+                        setBitsIfInDomain(OP->get(), constKillSet, domainset);
+                }
+        }
 
-        outs() << "ConstKills are: \n";
-        printDomainBits(constKillSet, domainset);
-        outs() << "-------------------------------------------\n";
+        DBUG(outs() << "ConstKills are: \n";
+             printDomainBits(constKillSet, domainset);
+             outs() << "-------------------------------------------\n";);
 
         return constKillSet;
 }
@@ -141,16 +150,12 @@ llvm::BitVector KillGenFaint::depKillHelper(llvm::Instruction *I,
         // If we are an assignment statement (either binary op or phi node) AND
         // x not in OUT. meet_res holds the bits that are entering, so they are
         // OUT.
-        outs() << "depKillHelper meet_res: "
-               << "\n\n";
-        BBInOutBits::printBitVector(meet_res, 2);
         if (isa<BinaryOperator>(*I) || isa<PHINode>(*I) || isa<CastInst>(*I) ||
             isa<CmpInst>(*I)) {
                 // If the LHS is not in OUT, then that e's
                 // faintness was killed in the BB. Thus, add
                 // operands of e as killed.
                 if (!isValueInOUT(I, meet_res, domainset)) {
-                        outs() << "Value is not in out \n";
                         for (auto OP = I->op_begin(); OP != I->op_end(); ++OP) {
                                 setBitsIfInDomain(OP->get(), depKillSet,
                                                   domainset);
@@ -158,9 +163,9 @@ llvm::BitVector KillGenFaint::depKillHelper(llvm::Instruction *I,
                 }
         }
 
-        outs() << "DepKills are: \n";
-        printDomainBits(depKillSet, domainset);
-        outs() << "-------------------------------------------\n";
+        DBUG(outs() << "DepKills are: \n";
+             printDomainBits(depKillSet, domainset);
+             outs() << "-------------------------------------------\n";);
 
         return depKillSet;
 }

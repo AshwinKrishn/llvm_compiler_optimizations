@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -7,19 +8,69 @@
 #define MAXVAL 100
 #define BUFSIZE 100
 
-int getop(char);
-void push(double);
-double pop(void);
+// int getop(char);
+// void push(double);
+// double pop(void);
 
-int global_var = 0;
+// int global_var = 0;
+//
+// int main() {
+//        int a, b, c, d;
+//        a = 1;
+//        b = 2;
+//        c = a + b;
+//        d = c - b;
+//        return a;
+//}
 
 int main() {
-        int a, b, c, d;
-        a = 1;
-        b = 2;
-        c = a + b;
-        d = c - b;
-        return a;
+        char type = '0';
+        double op2;
+        int a, b, c, d, e, f, g, h;
+        bool i, j, k = true;
+        char s[MAXOP];
+        d = 0;
+        b = 1;
+        c = b - d;
+        do {
+                switch (type) {
+                case NUMBER:
+                        a = 1;
+                        b = 2;
+                        c = 25;
+                        if (k) {
+                                c = a + b;
+                                e = c - a;
+                        } else {
+                                d = 8;
+                                h = 6;
+                                f = 24;
+                                e = f + h;
+                                if (e) {
+                                        e -= 1;
+                                }
+                        }
+                        break;
+                case '+':
+                        break;
+                case '*':
+                        f = c - d;
+
+                        break;
+                case '-':
+                        break;
+                case '/':
+                        break;
+                case '\n':
+                        break;
+                default:
+                        break;
+                }
+        } while (a);
+
+        e = d + f;
+
+        return 0;
 }
 
 // int getop(char[]);

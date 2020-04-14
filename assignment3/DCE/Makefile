@@ -1,9 +1,11 @@
 INC=-I/usr/local/include/ -I ../DataflowFramework/include/ -I ./include/
 SOURCES:= $(shell find ../DataflowFramework -type f -name '*.cpp')
 OBJECTS:= $(SOURCES:.cpp=.o)
-all: dce.so faintness.so
+#DEBUG:= -DDEBUG_BUILD
 
-CXXFLAGS = -rdynamic $(shell llvm-config --cxxflags) $(INC) -g -O0 -fPIC
+CXXFLAGS = -rdynamic $(shell llvm-config --cxxflags) $(INC) -g -O0 -fPIC $(DEBUG) 
+
+all: dce.so faintness.so
 
 ./tests/%_m2r.bc: ./tests/%.c
 	clang -Xclang -disable-O0-optnone -O0 -emit-llvm -c $^ -o $(^:.c=.bc)
@@ -18,7 +20,7 @@ faintness.so: Faintness.o $(OBJECTS)
 	$(CXX) -dylib -shared $^ -o $@
 
 clean:
-	rm -f *.o *~ *.so
+	rm -f *.o *~ *.so tests/*.bc
 
 # Uncomment and fix targets below after adding test cases
 # Run
@@ -30,6 +32,9 @@ run_dce: ./tests/calctest_m2r.bc all
 
 ## Utils to view CFG, requires xdot and graphviz:
 cfg_calctest: ./tests/calctest_m2r.bc
+	opt -view-cfg $^
+
+cfg_mod_calctest: ./tests/calctest_m2r_mod.bc
 	opt -view-cfg $^
 
 #cfg_live: ./tests/liveness-test-m2r.bc

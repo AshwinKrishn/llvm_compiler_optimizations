@@ -25,7 +25,16 @@
 #include <MeetOpInterface.h>
 
 // Debug
-//#define DEBUG_TYPE "dataflow_framework"
+#ifdef DEBUG_BUILD
+#define DBUG(x)                                                                \
+        do {                                                                   \
+                x                                                              \
+        } while (0)
+#else
+#define DBUG(x)                                                                \
+        do {                                                                   \
+        } while (0)
+#endif
 
 enum FlowDirection { FORWARD, BACKWARD };
 enum BoundaryCondition { EMPTY, UNIVERSAL };
