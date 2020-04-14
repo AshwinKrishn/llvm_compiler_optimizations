@@ -7,6 +7,8 @@
 #include "llvm/IR/Function.h"
 #include "llvm/Pass.h"
 #include "llvm/Support/raw_ostream.h"
+#include <llvm/Transforms/Utils/BasicBlockUtils.h>
+
 #include <Faintness.h>
 #include <IntersectionMeet.h>
 #include <KillGen.h>
@@ -25,6 +27,17 @@ class DCE : public FunctionPass {
         static char ID;
         DCE() : FunctionPass(ID) {}
 
+        /**
+         * @brief Checks if a given value is present in the bitvector. We need
+         * to know the domainset because the bitvector follows its ordering and
+         * it contains the values.
+         *
+         * @param V
+         * @param bits
+         * @param domainset
+         *
+         * @return
+         */
         bool isValueInBits(const Value *V, const llvm::BitVector &bits,
                            const std::vector<Value *> &domainset) {
                 bool retVal = false;
@@ -35,6 +48,43 @@ class DCE : public FunctionPass {
                         }
                 }
                 return retVal;
+        }
+
+        /**
+         * @brief Experimental function, attempt to fold direct unconditional
+         * branches and save br instructions
+         *
+         * @param F
+         */
+        void foldDirectBranches(Function &F) {
+                std::vector<BasicBlock *> removeList;
+                for (BasicBlock &BB : F) {
+                        // If the basic block has one instruction and that is an
+                        // unconditional branch with 1 successor and 1
+                        // predecessor
+                        if (BB.size() == 1) {
+                                if (BranchInst *I =
+                                        dyn_cast<BranchInst>(&BB.front())) {
+                                        outs() << BB << "\n";
+
+                                        if (I->getNumSuccessors() == 1 &&
+                                            BB.getSinglePredecessor()) {
+                                                // Replace downstream phi node
+                                                // successor uses with our
+                                                // predecessor
+                                                BB.replaceSuccessorsPhiUsesWith(
+                                                    BB.getSinglePredecessor());
+                                                // I->getSuccessor(0)
+                                                //    ->removePredecessor(&BB);
+                                                removeList.push_back(&BB);
+                                        }
+                                }
+                        }
+                }
+                for (BasicBlock *BB : removeList) {
+                        // BB->eraseFromParent();
+                        llvm::MergeBlockIntoPredecessor(BB);
+                }
         }
 
         virtual bool runOnFunction(Function &F) {
@@ -83,6 +133,9 @@ class DCE : public FunctionPass {
                         I->eraseFromParent();
                 }
 
+                // If we can fix this function in time, then add it, else keep
+                // commented.
+                // foldDirectBranches(F);
                 return true;
         }
 

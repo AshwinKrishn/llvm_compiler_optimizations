@@ -11,6 +11,10 @@
 
 using namespace llvm;
 
+/**
+ * @brief Override the base transfer function so we can get the instruction out
+ * maps.
+ */
 class FaintTransferFunction : public BaseTransferFunction {
       protected:
         DenseMap<BasicBlock *, std::vector<llvm::BitVector> *>
@@ -20,7 +24,7 @@ class FaintTransferFunction : public BaseTransferFunction {
         FaintTransferFunction(
             DenseMap<BasicBlock *, std::vector<llvm::BitVector> *>
                 &bbToInstOUTMap);
-        // Generalized transfer function, add extra implementation if required
+
         virtual llvm::BitVector run(const llvm::BitVector &input,
                                     const llvm::BitVector &genSet,
                                     const llvm::BitVector &killSet,

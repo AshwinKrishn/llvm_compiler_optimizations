@@ -8,11 +8,32 @@
 #include <llvm/IR/Instructions.h>
 #include <vector>
 
+/**
+ * @brief Overload ctor so we can give the base transfer function the map. For
+ * each basic block, the transfer function will build a map of BasicBlock to
+ * vector of bitvectors. We keep inserting at the head of the vector, in a FIFO
+ * manner. This allows us to access the OUT of each instruction by indexing into
+ * the vector using the index of the instruction in the BB.
+ *
+ * @param bbToInstOUTMap
+ */
 FaintTransferFunction::FaintTransferFunction(
     llvm::DenseMap<BasicBlock *, std::vector<llvm::BitVector> *>
         &bbToInstOUTMap)
     : BaseTransferFunction(), m_bbToInstOUTMap(bbToInstOUTMap) {}
 
+/**
+ * @brief Normally transfer function works on a BB level, but we have made this
+ * work on an instruction level, so this transfer function associates the
+ * bitvector to each instruction in a given BB.
+ *
+ * @param input
+ * @param genSet
+ * @param killSet
+ * @param BB
+ *
+ * @return
+ */
 llvm::BitVector FaintTransferFunction::run(const llvm::BitVector &input,
                                            const llvm::BitVector &genSet,
                                            const llvm::BitVector &killSet,
@@ -27,11 +48,10 @@ llvm::BitVector FaintTransferFunction::run(const llvm::BitVector &input,
                     << "\n";
              BBInOutBits::printBitVector(retVal, MAX_PRINT_SIZE););
 
-        // If vector's size == BB's num instructions, this is a second
-        // iteration, clear the vector.
+        // If vector's size == BB's num instructions, this is a second or
+        // third/fourth iteration, clear the vector.
         std::vector<llvm::BitVector> *instOUTs =
             m_bbToInstOUTMap.find(&BB)->second;
-
         if (instOUTs->size() >= bbSize + 1) {
                 instOUTs->clear();
         }
@@ -50,6 +70,15 @@ llvm::BitVector FaintTransferFunction::run(const llvm::BitVector &input,
         return retVal;
 }
 
+/**
+ * @brief Calls helper functions for const kill and dep kill
+ *
+ * @param I
+ * @param meet_res
+ * @param domainset
+ *
+ * @return
+ */
 llvm::BitVector KillGenFaint::killEval(llvm::Instruction *I,
                                        llvm::BitVector &meet_res,
                                        std::vector<Value *> &domainset) {
@@ -59,6 +88,18 @@ llvm::BitVector KillGenFaint::killEval(llvm::Instruction *I,
         return BBKill;
 }
 
+/**
+ * @brief Only constgen needed, so we can calculate that in this function. Set
+ * the bits if the expressions generate faintness. We only care about binary
+ * ops, phi nodes, cast instructions, or comparisons. This is the Instruction
+ * level Overload.
+ *
+ * @param I
+ * @param meet_res
+ * @param domainset
+ *
+ * @return
+ */
 llvm::BitVector KillGenFaint::genEval(llvm::Instruction *I,
                                       llvm::BitVector &meet_res,
                                       std::vector<Value *> &domainset) {
@@ -81,6 +122,12 @@ llvm::BitVector KillGenFaint::genEval(llvm::Instruction *I,
         return BBgen;
 }
 
+/**
+ * @brief Printing helper, to print the values.
+ *
+ * @param bits
+ * @param domainset
+ */
 void KillGenFaint::printDomainBits(llvm::BitVector &bits,
                                    std::vector<Value *> &domainset) {
         for (int bitIndex : bits.set_bits()) {
@@ -90,6 +137,14 @@ void KillGenFaint::printDomainBits(llvm::BitVector &bits,
         }
 }
 
+/**
+ * @brief Set the bits representing Value in the bitvector if they exist in the
+ * domainset
+ *
+ * @param V
+ * @param bits
+ * @param domainset
+ */
 void KillGenFaint::setBitsIfInDomain(const Value *V, llvm::BitVector &bits,
                                      std::vector<Value *> &domainset) {
         std::vector<Value *>::iterator it =
@@ -100,6 +155,17 @@ void KillGenFaint::setBitsIfInDomain(const Value *V, llvm::BitVector &bits,
         }
 }
 
+/**
+ * @brief Iterate through instructions, kill faintness if they're used for
+ * calling other functions, if they're used in branches/terminators, or if they
+ * are landing pads.
+ *
+ * @param I
+ * @param meet_res
+ * @param domainset
+ *
+ * @return
+ */
 llvm::BitVector KillGenFaint::constKillHelper(llvm::Instruction *I,
                                               llvm::BitVector &meet_res,
                                               std::vector<Value *> &domainset) {
@@ -108,10 +174,8 @@ llvm::BitVector KillGenFaint::constKillHelper(llvm::Instruction *I,
         // are br instructions for instance (which are terminator instructions),
         // if they are debug info, or landingpad instructions
         llvm::BitVector constKillSet(MAX_BITS_SIZE);
-        // TODO: Check if correct, we assume first operand for br,
-        // indbr, switch, etc. is the target
         if (isa<TerminatorInst>(*I) || isa<LandingPadInst>(*I) ||
-            isa<llvm::CmpInst>(*I) || I->mayHaveSideEffects()) {
+            I->mayHaveSideEffects()) {
                 setBitsIfInDomain(I->getOperand(0), constKillSet, domainset);
         }
         // We won't generate faintness for any calls since we cannot guarantee
@@ -130,6 +194,15 @@ llvm::BitVector KillGenFaint::constKillHelper(llvm::Instruction *I,
         return constKillSet;
 }
 
+/**
+ * @brief Helper to check if value is in the bitvector represented by OUT
+ *
+ * @param V
+ * @param OUT
+ * @param domainset
+ *
+ * @return
+ */
 bool KillGenFaint::isValueInOUT(const Value *V, const llvm::BitVector &OUT,
                                 const std::vector<Value *> &domainset) {
         bool retVal = false;
@@ -142,6 +215,17 @@ bool KillGenFaint::isValueInOUT(const Value *V, const llvm::BitVector &OUT,
         return retVal;
 }
 
+/**
+ * @brief Handles depkill. For faintness we're killed if we're an operand of an
+ * expression that's not faint in the OUT of the block. This also applies for
+ * instructions.
+ *
+ * @param I
+ * @param meet_res
+ * @param domainset
+ *
+ * @return
+ */
 llvm::BitVector KillGenFaint::depKillHelper(llvm::Instruction *I,
                                             llvm::BitVector &meet_res,
                                             std::vector<Value *> &domainset) {
