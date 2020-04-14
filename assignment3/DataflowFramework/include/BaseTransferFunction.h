@@ -2,6 +2,7 @@
 #define __BASE_TRANSFER_FUNCTION_H__
 #include <bitset>
 #include <llvm/ADT/BitVector.h>
+#include <llvm/IR/BasicBlock.h>
 #include <vector>
 
 namespace llvm {
@@ -16,7 +17,8 @@ class BaseTransferFunction {
         // Generalized transfer function, add extra implementation if required
         virtual llvm::BitVector run(const llvm::BitVector &input,
                                     const llvm::BitVector &genSet,
-                                    const llvm::BitVector &killSet);
+                                    const llvm::BitVector &killSet,
+                                    const llvm::BasicBlock &BB);
 };
 
 } // namespace llvm

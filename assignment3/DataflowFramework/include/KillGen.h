@@ -5,6 +5,7 @@
 #include "llvm/IR/CFG.h"
 #include "llvm/IR/Instructions.h"
 #include "llvm/IR/ValueMap.h"
+#include "llvm/Support/raw_ostream.h"
 #include <MeetOpInterface.h>
 #include <UnionMeet.h>
 #include <map>
@@ -20,14 +21,39 @@ namespace llvm {
  */
 template <typename D> class KillGen {
       public:
-        virtual llvm::BitVector
-        //	KillEval(llvm::BasicBlock *BB, std::vector<llvm::Expression>
-        // list) { clean up
-        killEval(llvm::BasicBlock *BB, llvm::BitVector &meet_res,
-                 std::vector<D> &domainset) = 0;
+        virtual llvm::BitVector killEval(llvm::BasicBlock *BB,
+                                         llvm::BitVector &meet_res,
+                                         std::vector<D> &domainset) {
+                llvm::BitVector bits(MAX_BITS_SIZE);
+                outs() << "Base version of basic block level killEval used, "
+                          "doesn't do anything.\n";
+                return bits;
+        }
         virtual llvm::BitVector genEval(llvm::BasicBlock *BB,
                                         llvm::BitVector &meet_res,
-                                        std::vector<D> &domainset) = 0;
+                                        std::vector<D> &domainset) {
+                llvm::BitVector bits(MAX_BITS_SIZE);
+                outs() << "Base version of basic block level genEval used, "
+                          "doesn't do anything. \n";
+                return bits;
+        }
+        virtual llvm::BitVector killEval(llvm::Instruction *I,
+                                         llvm::BitVector &meet_res,
+                                         std::vector<D> &domainset) {
+                llvm::BitVector bits(MAX_BITS_SIZE);
+                outs() << "Base version of instruction level killEval used, "
+                          "doesn't do anything. \n";
+                return bits;
+        }
+        virtual llvm::BitVector genEval(llvm::Instruction *I,
+                                        llvm::BitVector &meet_res,
+                                        std::vector<D> &domainset) {
+                llvm::BitVector bits(MAX_BITS_SIZE);
+                outs() << "Base version of instruction genEval used, doesn't "
+                          "do anything. \n";
+
+                return bits;
+        }
 };
 
 } // namespace llvm

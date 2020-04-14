@@ -17,7 +17,8 @@ namespace llvm {
  */
 llvm::BitVector BaseTransferFunction::run(const llvm::BitVector &input,
                                           const llvm::BitVector &genSet,
-                                          const llvm::BitVector &killSet) {
+                                          const llvm::BitVector &killSet,
+                                          const llvm::BasicBlock &BB) {
         llvm::BitVector retval = genSet;
         // Make a copy of killset so we can flip the bits
         llvm::BitVector killSetCopy = killSet;
