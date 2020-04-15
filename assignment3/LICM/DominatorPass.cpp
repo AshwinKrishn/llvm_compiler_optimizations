@@ -58,20 +58,20 @@ bool DominatorsPass::runOnFunction(Function &F) {
         BaseTransferFunction transferFunc;
         DataflowFramework<BasicBlock *> DF(intersect, FORWARD, EMPTY, F, bb_ids,
                                            killGenDom, transferFunc);
+        outs() << "Dominator Pass : \n\n";
         DomTree = DF.run();
-        /*        for (auto it = DomTree->begin(); it != DomTree->end(); ++it) {
-                        outs() << "Basic Block" << *(it->first) << "\n"
-                               << "Dominators are << "
-                               << "\n";
-                        llvm::BitVector doms = (it->second->m_OUT);
-                        for (int bitIndex : doms.set_bits()) {
-                                //                        outs() <<
-                                // (bb_ids[bitIndex])->getName()
-                                //                        << "\t here ";
-                                outs() << *(bb_ids[bitIndex]) << "\n\n ";
-                        }
+        for (auto it = DomTree->begin(); it != DomTree->end(); ++it) {
+                outs() << "Basic Block" << *(it->first) << "\n"
+                       << "Dominators are << "
+                       << "\n";
+                llvm::BitVector doms = (it->second->m_OUT);
+                for (int bitIndex : doms.set_bits()) {
+                        //                        outs() <<
+                        // (bb_ids[bitIndex])->getName()
+                        //                        << "\t here ";
+                        outs() << *(bb_ids[bitIndex]) << "\n\n ";
                 }
-                        */
+        }
 
         // Did not modify the incoming Function.
         return false;
