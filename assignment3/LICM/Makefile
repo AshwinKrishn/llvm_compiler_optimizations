@@ -21,7 +21,7 @@ clean:
 
 # Run
 run_licm: ./tests/loop_test.bc all
-	opt -load=./reachingdefs.so -load=./dominators.so -load=./licm.so -licm_pass $< -o /dev/zero 
+	opt -load=./reachingdefs.so -load=./dominators.so -load=./licm.so -licm_pass $< -o tests/loop_invarients.bc
 
 #run_live: ./tests/liveness-test-m2r.bc all
 #	opt -load ./liveness.so -liveness $< -o /dev/zero

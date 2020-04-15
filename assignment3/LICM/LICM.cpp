@@ -57,10 +57,14 @@ class LICM : public LoopPass {
                 DomResult = getAnalysis<DominatorsPass>().getDomResults();
                 std::vector<Value *> loop_vals, invarient_vals;
                 size_t old_size = 0;
+                BasicBlock *preHeader = L->getLoopPreheader();
                 for (int i = 0; i < 100; i++)
                         outs() << "=";
                 outs() << "\nLoop analysis pass :\n ";
+                outs() << "The Loop pre header is " << *(L->getLoopPreheader())
+                       << "\n";
                 outs() << "Basic Blocks in the loop \n\n";
+
                 if (L->getLoopPreheader() == NULL) {
                         outs() << "Loop pre header not present\n";
                 } else {
@@ -138,6 +142,15 @@ class LICM : public LoopPass {
                                 }
                         }
                 } while (old_size != invarient_vals.size());
+                for (auto it : invarient_vals) {
+
+                        outs() << *it << "\n";
+                        //((Instruction *)it)->removeFromParent();
+                        //   preHeader->moveBefore(
+                        //     (Instruction *)(it));
+                        ((Instruction *)it)
+                            ->moveBefore(preHeader->getTerminator());
+                }
                 // Compute loop invariant statements - done
                 // getLoopInvariantStatements();     - done
                 // checkConditionForCodeMotion();
