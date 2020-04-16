@@ -13,6 +13,10 @@ namespace llvm {
  * @brief Primary function pass to run Reaching Definitions pass.
  */
 class LandingPadTransform : public LoopPass {
+      protected:
+        BasicBlock *removePhiDependencies(BasicBlock *newtest,
+                                          BasicBlock *header);
+
       public:
         static char ID;
         LandingPadTransform();
