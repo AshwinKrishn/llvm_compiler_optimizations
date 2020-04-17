@@ -23,6 +23,63 @@ namespace llvm {
 
 LandingPadTransform::LandingPadTransform() : LoopPass(ID) {}
 
+void LandingPadTransform::unifyPhiAtExit(BasicBlock *newtest,
+                                         BasicBlock *unifiedExit,
+                                         BasicBlock *loopexit,
+                                         BasicBlock *header,
+                                         BasicBlock *lastBody, Loop *L) {
+        //
+        std::vector<BasicBlock *> &loopBlocks = L->getBlocksVector();
+        for (BasicBlock *BB : loopBlocks) {
+                outs() << *BB << "\n";
+        }
+
+        for (Instruction &I : *header) {
+                if (PHINode *phi = dyn_cast<PHINode>(&I)) {
+                        PHINode *exitphi = PHINode::Create(I.getType(), 0);
+                        exitphi->addIncoming(phi, lastBody);
+                        exitphi->addIncoming(phi->getIncomingValue(0), newtest);
+                        loopexit->getInstList().push_front(exitphi);
+                        outs() << "Phi Instruction: " << *phi << "\n";
+
+                        // Update all uses of phi not in loop set
+                        for (User *phi_user : phi->users()) {
+                                Instruction *userInstruction =
+                                    dyn_cast<Instruction>(phi_user);
+                                // Try to find the use's parent bb in our loop
+                                // blocks, if the use's parent isn't in our
+                                // loop's bb set, it's outside the loop
+
+                                if ((std::find(loopBlocks.begin(),
+                                               loopBlocks.end(),
+                                               userInstruction->getParent()) ==
+                                     loopBlocks.end()) &&
+                                    (userInstruction->getParent() !=
+                                     loopexit)) {
+                                        outs()
+                                            << "User Instruction not in loop: "
+                                            << *userInstruction << "\n";
+                                        // Replace with our new phi instruction
+                                        phi_user->replaceUsesOfWith(phi,
+                                                                    exitphi);
+                                } else {
+                                        if (userInstruction->getParent() ==
+                                            unifiedExit) {
+                                                phi_user->replaceUsesOfWith(
+                                                    phi, exitphi);
+                                        }
+                                        outs() << "Use Instruction in loop: "
+                                               << *userInstruction << "\n";
+                                }
+                        }
+                }
+        }
+        // for (BasicBlock *BB : L->getBlocks()) {
+        //        outs() << *BB << "\n";
+        //}
+        outs() << "----------------------\n";
+}
+
 BasicBlock *LandingPadTransform::removePhiDependencies(BasicBlock *newtest,
                                                        BasicBlock *header) {
         BasicBlock *backedgeBlock = nullptr;
@@ -59,11 +116,15 @@ BasicBlock *LandingPadTransform::removePhiDependencies(BasicBlock *newtest,
 bool LandingPadTransform::runOnLoop(Loop *L, LPPassManager &LPM) {
         BasicBlock *oldpreheader = L->getLoopPreheader();
         BasicBlock *header = L->getHeader();
+        LoopInfo &LI = getAnalysis<LoopInfoWrapperPass>().getLoopInfo();
         static int counter = 0;
         // If eligible for transform, add landing pad
         if (oldpreheader) {
                 BasicBlock *newpreheader = oldpreheader->splitBasicBlock(
                     oldpreheader->getTerminator(), ".newpreheader");
+                if (Loop *parent = L->getParentLoop()) {
+                        parent->addBasicBlockToLoop(newpreheader, LI);
+                }
                 //    1) Update Phi instructions in header, these
                 //    instructions will only have two sources, the loop
                 //    back edge and the edge from preheader. Replace
@@ -86,19 +147,8 @@ bool LandingPadTransform::runOnLoop(Loop *L, LPPassManager &LPM) {
 
                 // New Test block is technically the old preheader now
                 BasicBlock *newtest = oldpreheader;
-                // outs() << "Old Preheader Before:
-                // --------------------------\n"; outs() << *newtest << "\n";
-
-                // outs() << "Header Before: --------------------------\n";
-                // outs() << *header << "\n";
 
                 BasicBlock *lastBody = removePhiDependencies(newtest, header);
-
-                // outs() << "Old Preheader AFter:
-                // --------------------------\n"; outs() << *newtest << "\n";
-
-                // outs() << "Header AFter: --------------------------\n";
-                // outs() << *header << "\n";
 
                 BasicBlock *bodyBlock = cast<BasicBlock>(
                     cast<BranchInst>(newtest->getTerminator())->getOperand(2));
@@ -109,13 +159,9 @@ bool LandingPadTransform::runOnLoop(Loop *L, LPPassManager &LPM) {
                 // for it.
                 // BranchInst *headerTerminator =
                 BranchInst::Create(bodyBlock, header);
-                // outs() << "Old Preheader AAAFter:
-                // --------------------------\n"; outs() << *newtest << "\n";
-                // outs() << "Header AAAFter: --------------------------\n";
-                // outs() << *header << "\n";
 
-                //// Update last body block to check condition and point to exit
-                //// or header;
+                // Update last body block to check condition and point to exit
+                // or header;
                 lastBody->getTerminator()->eraseFromParent();
                 BranchInst *branchClone =
                     cast<BranchInst>(newtest->getTerminator()->clone());
@@ -127,9 +173,26 @@ bool LandingPadTransform::runOnLoop(Loop *L, LPPassManager &LPM) {
 
                 lastBody->getInstList().push_back(cmpClone);
                 lastBody->getInstList().push_back(branchClone);
+
+                // Create our unified loop exit block by splitting current loop
+                // exit
+                BasicBlock *loopexit = dyn_cast<BasicBlock>(
+                    newtest->getTerminator()->getOperand(1));
+                assert(loopexit);
+
+                BasicBlock *unifiedExit = loopexit->splitBasicBlock(
+                    loopexit->begin(), ".unifiedExit");
+                if (Loop *parent = L->getParentLoop()) {
+                        parent->addBasicBlockToLoop(unifiedExit, LI);
+                }
+
+                // oldpreheader->getParent()->viewCFG();
+                unifyPhiAtExit(newtest, unifiedExit, loopexit, header, lastBody,
+                               L);
+                // oldpreheader->getParent()->viewCFG();
         }
         counter++;
-        if (counter == 3)
+        if (counter == 2)
                 oldpreheader->getParent()->viewCFG();
 
         return true;
@@ -138,6 +201,7 @@ bool LandingPadTransform::runOnLoop(Loop *L, LPPassManager &LPM) {
 void LandingPadTransform::getAnalysisUsage(AnalysisUsage &AU) const {
         // AU.setPreservesAll();
         // AU.setPreservesCFG();
+        AU.addRequired<LoopInfoWrapperPass>();
 }
 
 char LandingPadTransform::ID = 2;

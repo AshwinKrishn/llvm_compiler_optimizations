@@ -17,16 +17,16 @@ int main() {
         for (i = 2; i < j; i++) {
 
                 for (j = 2; j <= (i / j); j++) {
-                        if (!(i % j))
-                                break; // if factor found, not prime
-                        k = k + 100;
-                        k = (long)j;
-                        for (k = 0; k < 100; k++) {
-                                int inv_c, inv_d;
-                                inv_c = inv_a * inv_b;
-                                inv_d = inv_c + 1;
-                                k = k + i;
-                        }
+                        // if (!(i % j))
+                        //        break; // if factor found, not prime
+                        // k = k + 100;
+                        // k = (long)j;
+                        // for (k = 0; k < 100; k++) {
+                        //        int inv_c, inv_d;
+                        //        inv_c = inv_a * inv_b;
+                        //        inv_d = inv_c + 1;
+                        //        k = k + i;
+                        //}
                 }
                 if (j > (i / j)) {
 

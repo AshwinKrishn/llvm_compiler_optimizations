@@ -16,6 +16,9 @@ class LandingPadTransform : public LoopPass {
       protected:
         BasicBlock *removePhiDependencies(BasicBlock *newtest,
                                           BasicBlock *header);
+        void unifyPhiAtExit(BasicBlock *newtest, BasicBlock *unifiedExit,
+                            BasicBlock *loopexit, BasicBlock *header,
+                            BasicBlock *lastBody, Loop *L);
 
       public:
         static char ID;
