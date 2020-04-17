@@ -1,7 +1,7 @@
 INC=-I/usr/local/include/ -I ../DataflowFramework/include/ -I ./include/
 SOURCES:= $(shell find ../DataflowFramework -type f -name '*.cpp')
 OBJECTS:= $(SOURCES:.cpp=.o)
-all: licm.so dominators.so reachingdefs.so
+all: licm.so dominators.so reachingdefs.so landingpad.so
 
 CXXFLAGS = -rdynamic $(shell llvm-config --cxxflags) $(INC) -g -O0 -fPIC
 
@@ -16,6 +16,9 @@ dominators.so: DominatorPass.o $(OBJECTS)
 reachingdefs.so: ReachingDefinitions.o $(OBJECTS)
 	$(CXX) -dylib -shared $^ -o $@
 
+landingpad.so: LandingPadTransform.o $(OBJECTS)
+	$(CXX) -dylib -shared $^ -o $@
+
 clean:
 	rm -f *.o *~ *.so
 
@@ -23,9 +26,8 @@ clean:
 run_licm: ./tests/loop_test.bc all
 	opt -load=./reachingdefs.so -load=./dominators.so -load=./licm.so -licm_pass $< -o tests/loop_invarients.bc
 
-#run_live: ./tests/liveness-test-m2r.bc all
-#	opt -load ./liveness.so -liveness $< -o /dev/zero
-#
+run_landing: ./tests/loop_test.bc all
+	opt -load=./landingpad.so -landing-pad $< -o tests/loop_test_mod.bc
 
 run_rd: ./tests/rdtest_m2r.bc all
 	opt -load=./reachingdefs.so -rd $< -o /dev/zero 
@@ -34,6 +36,9 @@ run_rd: ./tests/rdtest_m2r.bc all
 cfg_rd: ./tests/rdtest_m2r.bc
 	opt -view-cfg $^
 
-#cfg_live: ./tests/liveness-test-m2r.bc
-#	opt -view-cfg $^
+cfg_loop: ./tests/loop_test.bc
+	opt -view-cfg $^
+
+cfg_loop_mod: ./tests/loop_test_mod.bc
+	opt -view-cfg $^
 .PHONY: clean all
