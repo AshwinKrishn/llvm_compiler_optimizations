@@ -10,6 +10,7 @@
 #include "llvm/Transforms/Utils/BasicBlockUtils.h"
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/Analysis/CFGPrinter.h>
+#include <llvm/IR/InstIterator.h>
 #include <llvm/IR/Instruction.h>
 #include <llvm/Transforms/Utils/SSAUpdater.h>
 
@@ -89,7 +90,6 @@ BasicBlock *LandingPadTransform::removePhiDependencies(BasicBlock *newtest,
                         // any one of them
                         backedgeBlock = phi->getIncomingBlock(1);
                         Value *incomingValue = phi->getIncomingValue(0);
-                        // Hopefully this doesn't kill us later
                         for (Instruction &newtestI : *newtest) {
                                 for (auto OP = newtestI.op_begin();
                                      OP != newtestI.op_end(); ++OP) {
@@ -139,6 +139,22 @@ bool LandingPadTransform::runOnLoop(Loop *L, LPPassManager &LPM) {
                 //    with cloned cmp instruction, with one edge going
                 //    back to after_header and another going to exit.
 
+                // Duplicate conditionals and calculations to the loop latch
+                BasicBlock *loopLatch = L->getLoopLatch();
+                assert(loopLatch);
+                loopLatch->getTerminator()->eraseFromParent();
+
+                for (BasicBlock::iterator it = header->getFirstInsertionPt(),
+                                          end = header->end();
+                     it != end; it++) {
+                        Instruction *clone = it->clone();
+                        if (BranchInst *terminator =
+                                dyn_cast<BranchInst>(clone)) {
+                                terminator->setOperand(2, header);
+                        }
+                        loopLatch->getInstList().push_back(clone);
+                }
+
                 // Splice all instructions in previous header to this
                 // new split block
                 oldpreheader->getTerminator()->eraseFromParent();
@@ -149,7 +165,8 @@ bool LandingPadTransform::runOnLoop(Loop *L, LPPassManager &LPM) {
                 // New Test block is technically the old preheader now
                 BasicBlock *newtest = oldpreheader;
 
-                BasicBlock *lastBody = removePhiDependencies(newtest, header);
+                // Technically the last body is the loop latch
+                removePhiDependencies(newtest, header);
 
                 BasicBlock *bodyBlock = cast<BasicBlock>(
                     cast<BranchInst>(newtest->getTerminator())->getOperand(2));
@@ -160,23 +177,6 @@ bool LandingPadTransform::runOnLoop(Loop *L, LPPassManager &LPM) {
                 // for it.
                 // BranchInst *headerTerminator =
                 BranchInst::Create(bodyBlock, header);
-
-                // Update last body block to check condition and point
-                // to exit or header;
-                lastBody->getTerminator()->eraseFromParent();
-                BranchInst *branchClone =
-                    cast<BranchInst>(newtest->getTerminator()->clone());
-                Instruction *beforeBranch =
-                    &*(--newtest->getTerminator()->getIterator());
-                CmpInst *cmpClone = cast<CmpInst>((beforeBranch)->clone());
-
-                // We also want any instructions this cmp instruction
-                // (beforeBranch) might have relied on
-
-                branchClone->setOperand(2, header);
-
-                lastBody->getInstList().push_back(cmpClone);
-                lastBody->getInstList().push_back(branchClone);
 
                 // Create our unified loop exit block by splitting
                 // current loop exit
@@ -204,8 +204,8 @@ bool LandingPadTransform::runOnLoop(Loop *L, LPPassManager &LPM) {
                         parent->addBasicBlockToLoop(unifiedExit, LI);
                 }
 
-                unifyPhiAtExit(newtest, unifiedExit, loopexit, header, lastBody,
-                               L);
+                unifyPhiAtExit(newtest, unifiedExit, loopexit, header,
+                               loopLatch, L);
         }
         counter++;
         // if (counter == 2)
@@ -215,8 +215,6 @@ bool LandingPadTransform::runOnLoop(Loop *L, LPPassManager &LPM) {
 }
 
 void LandingPadTransform::getAnalysisUsage(AnalysisUsage &AU) const {
-        // AU.setPreservesAll();
-        // AU.setPreservesCFG();
         AU.addRequired<LoopInfoWrapperPass>();
 }
 
