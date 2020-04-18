@@ -8,8 +8,10 @@
 #include "llvm/Pass.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Transforms/Utils/BasicBlockUtils.h"
+#include <llvm/ADT/SmallVector.h>
 #include <llvm/Analysis/CFGPrinter.h>
 #include <llvm/IR/Instruction.h>
+#include <llvm/Transforms/Utils/SSAUpdater.h>
 
 // ours
 #include <IntersectionMeet.h>
@@ -23,61 +25,59 @@ namespace llvm {
 
 LandingPadTransform::LandingPadTransform() : LoopPass(ID) {}
 
+void LandingPadTransform::updatePhiNotInLoop(
+    Loop &loop, SmallVector<Instruction *, 10> &previousPhiUsers, PHINode *from,
+    PHINode *to) {
+        // Update all users of phi not in loop set
+        std::vector<BasicBlock *> &loopBlocks = loop.getBlocksVector();
+        for (Instruction *I : previousPhiUsers) {
+                BasicBlock *usersBlock = I->getParent();
+                DBUG(outs() << "Users: " << *I << "\n";);
+                if ((std::find(loopBlocks.begin(), loopBlocks.end(),
+                               usersBlock) == loopBlocks.end())) {
+                        // Replace with our new phi
+                        if (I != to) {
+                                I->replaceUsesOfWith(from, to);
+                        }
+                }
+        }
+}
+
 void LandingPadTransform::unifyPhiAtExit(BasicBlock *newtest,
                                          BasicBlock *unifiedExit,
                                          BasicBlock *loopexit,
                                          BasicBlock *header,
                                          BasicBlock *lastBody, Loop *L) {
-        //
-        std::vector<BasicBlock *> &loopBlocks = L->getBlocksVector();
-        for (BasicBlock *BB : loopBlocks) {
-                outs() << *BB << "\n";
-        }
+        DBUG(std::vector<BasicBlock *> &loopBlocks = L->getBlocksVector(););
+        SmallVector<PHINode *, 10> insertedPhi;
+        SmallVector<Instruction *, 10> previousPhiUsers;
+
+        DBUG(for (BasicBlock *BB : loopBlocks) { outs() << *BB << "\n"; });
 
         for (Instruction &I : *header) {
                 if (PHINode *phi = dyn_cast<PHINode>(&I)) {
+                        // Save previous users, for some reason after adding the
+                        // exitphi many users of our phi are invalidated
+
+                        for (User *U : phi->users()) {
+                                if (Instruction *UI =
+                                        dyn_cast<Instruction>(U)) {
+                                        previousPhiUsers.push_back(UI);
+                                }
+                        }
+
                         PHINode *exitphi = PHINode::Create(I.getType(), 0);
                         exitphi->addIncoming(phi, lastBody);
                         exitphi->addIncoming(phi->getIncomingValue(0), newtest);
                         loopexit->getInstList().push_front(exitphi);
-                        outs() << "Phi Instruction: " << *phi << "\n";
+                        insertedPhi.push_back(phi);
 
-                        // Update all uses of phi not in loop set
-                        for (User *phi_user : phi->users()) {
-                                Instruction *userInstruction =
-                                    dyn_cast<Instruction>(phi_user);
-                                // Try to find the use's parent bb in our loop
-                                // blocks, if the use's parent isn't in our
-                                // loop's bb set, it's outside the loop
+                        DBUG(outs() << "Phi Instruction: " << *phi << "\n";);
 
-                                if ((std::find(loopBlocks.begin(),
-                                               loopBlocks.end(),
-                                               userInstruction->getParent()) ==
-                                     loopBlocks.end()) &&
-                                    (userInstruction->getParent() !=
-                                     loopexit)) {
-                                        outs()
-                                            << "User Instruction not in loop: "
-                                            << *userInstruction << "\n";
-                                        // Replace with our new phi instruction
-                                        phi_user->replaceUsesOfWith(phi,
-                                                                    exitphi);
-                                } else {
-                                        if (userInstruction->getParent() ==
-                                            unifiedExit) {
-                                                phi_user->replaceUsesOfWith(
-                                                    phi, exitphi);
-                                        }
-                                        outs() << "Use Instruction in loop: "
-                                               << *userInstruction << "\n";
-                                }
-                        }
+                        updatePhiNotInLoop(*L, previousPhiUsers, phi, exitphi);
                 }
+                DBUG(outs() << "----------------------\n";);
         }
-        // for (BasicBlock *BB : L->getBlocks()) {
-        //        outs() << *BB << "\n";
-        //}
-        outs() << "----------------------\n";
 }
 
 BasicBlock *LandingPadTransform::removePhiDependencies(BasicBlock *newtest,
@@ -85,8 +85,8 @@ BasicBlock *LandingPadTransform::removePhiDependencies(BasicBlock *newtest,
         BasicBlock *backedgeBlock = nullptr;
         for (Instruction &I : *header) {
                 if (PHINode *phi = dyn_cast<PHINode>(&I)) {
-                        // All backedges should be same, we just need any one of
-                        // them
+                        // All backedges should be same, we just need
+                        // any one of them
                         backedgeBlock = phi->getIncomingBlock(1);
                         Value *incomingValue = phi->getIncomingValue(0);
                         // Hopefully this doesn't kill us later
@@ -104,7 +104,8 @@ BasicBlock *LandingPadTransform::removePhiDependencies(BasicBlock *newtest,
                         //            dyn_cast<Instruction>(phi_use);
                         //        outs() << "Phi uses: \n";
                         //        outs() << *phi_use.get() << "\n";
-                        //        if (firstval->getParent() == newtest) {
+                        //        if (firstval->getParent() == newtest)
+                        //        {
                         //                phi_use.set(incomingValue);
                         //        }
                         //}
@@ -160,8 +161,8 @@ bool LandingPadTransform::runOnLoop(Loop *L, LPPassManager &LPM) {
                 // BranchInst *headerTerminator =
                 BranchInst::Create(bodyBlock, header);
 
-                // Update last body block to check condition and point to exit
-                // or header;
+                // Update last body block to check condition and point
+                // to exit or header;
                 lastBody->getTerminator()->eraseFromParent();
                 BranchInst *branchClone =
                     cast<BranchInst>(newtest->getTerminator()->clone());
@@ -169,31 +170,46 @@ bool LandingPadTransform::runOnLoop(Loop *L, LPPassManager &LPM) {
                     &*(--newtest->getTerminator()->getIterator());
                 CmpInst *cmpClone = cast<CmpInst>((beforeBranch)->clone());
 
+                // We also want any instructions this cmp instruction
+                // (beforeBranch) might have relied on
+
                 branchClone->setOperand(2, header);
 
                 lastBody->getInstList().push_back(cmpClone);
                 lastBody->getInstList().push_back(branchClone);
 
-                // Create our unified loop exit block by splitting current loop
-                // exit
+                // Create our unified loop exit block by splitting
+                // current loop exit
                 BasicBlock *loopexit = dyn_cast<BasicBlock>(
                     newtest->getTerminator()->getOperand(1));
                 assert(loopexit);
 
                 BasicBlock *unifiedExit = loopexit->splitBasicBlock(
                     loopexit->begin(), ".unifiedExit");
+                // for (Instruction &I : *unifiedExit) {
+                //        for (auto OP = I.op_begin(); OP != I.op_end(); ++OP) {
+                //                if (Instruction *OI =
+                //                        dyn_cast<Instruction>(OP)) {
+                //                        outs() << "Op Inst: " << *OI << "\n";
+                //                        outs() << OI << "\n";
+                //                        for (User *U : OI->users()) {
+                //                                outs() << "Operand users: \n";
+                //                                outs() << *U << "\n";
+                //                        }
+                //                }
+                //        }
+                //}
+
                 if (Loop *parent = L->getParentLoop()) {
                         parent->addBasicBlockToLoop(unifiedExit, LI);
                 }
 
-                // oldpreheader->getParent()->viewCFG();
                 unifyPhiAtExit(newtest, unifiedExit, loopexit, header, lastBody,
                                L);
-                // oldpreheader->getParent()->viewCFG();
         }
         counter++;
-        if (counter == 2)
-                oldpreheader->getParent()->viewCFG();
+        // if (counter == 2)
+        //         oldpreheader->getParent()->viewCFG();
 
         return true;
 }
