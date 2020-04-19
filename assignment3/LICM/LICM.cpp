@@ -194,8 +194,21 @@ class LICM : public LoopPass {
                                 ((Instruction *)it)
                                     ->moveBefore(preHeader->getTerminator());
                         }
+                        bool constOper = true;
+                        for (auto op = I_invarient->op_begin(),
+                                  op_end = I_invarient->op_end();
+                             op != op_end; ++op) {
+                                if (!isa<Constant>(*op)) {
+                                        constOper = false;
+                                }
+                        }
+                        if (constOper == true) {
+                                ((Instruction *)it)
+                                    ->moveBefore(preHeader->getTerminator());
+                        }
                         for (int i = 0; i < 100; i++)
                                 outs() << "=";
+                        outs() << "\n";
                 }
                 // preHeader->getParent()->viewCFG();
                 // Compute loop invariant statements - done
