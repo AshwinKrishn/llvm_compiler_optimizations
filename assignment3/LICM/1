@@ -42,7 +42,7 @@ llvm::BitVector KillGenDoms::genEval(llvm::BasicBlock *BB,
 DenseMap<BasicBlock *, BBInOutBits *> *DominatorsPass::getDomResults() {
         return DomTree;
 }
-std::vector<BasicBlock *> DominatorsPass::getBBIds() { return bb_ids; }
+std::vector<BasicBlock *> *DominatorsPass::getBBIds() { return bb_ids; }
 DominatorsPass::DominatorsPass() : FunctionPass(ID) {}
 
 bool DominatorsPass::runOnFunction(Function &F) {

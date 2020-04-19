@@ -9,10 +9,12 @@
 #include "llvm/Support/raw_ostream.h"
 #include <llvm/Analysis/LoopPass.h>
 #include <llvm/Analysis/ValueTracking.h>
+#include <llvm/Support/ErrorHandling.h>
 // Framework and ours
 #include <DominatorPass.h>
 #include <IntersectionMeet.h>
 #include <KillGen.h>
+#include <LandingPadTransform.h>
 #include <ReachingDefinitions.h>
 #include <dataflow.h>
 #include <vector>
@@ -31,6 +33,7 @@ class LICM : public LoopPass {
         LoopInfo *LI;
         DenseMap<BasicBlock *, BBInOutBits *> *reachingDefs;
         DenseMap<BasicBlock *, BBInOutBits *> *DomResult;
+        std::vector<BasicBlock *> DomBB_Ids;
         LICM() : LoopPass(ID) {}
         bool isInvarient(Instruction *I, std::vector<Value *> l_ins) {
                 bool result = isSafeToSpeculativelyExecute(I) &&
@@ -55,6 +58,7 @@ class LICM : public LoopPass {
         virtual bool runOnLoop(Loop *L, LPPassManager &LPM) {
                 reachingDefs = getAnalysis<ReachingDefsPass>().getRDResults();
                 DomResult = getAnalysis<DominatorsPass>().getDomResults();
+                DomBB_Ids = getAnalysis<DominatorsPass>().getBBIds();
                 std::vector<Value *> loop_vals, invarient_vals;
                 size_t old_size = 0;
                 BasicBlock *preHeader = L->getLoopPreheader();
@@ -142,22 +146,79 @@ class LICM : public LoopPass {
                                 }
                         }
                 } while (old_size != invarient_vals.size());
+                DBUG(outs() << "INvarient instructions : \n";);
                 for (auto it : invarient_vals) {
-
-                        outs() << *it << "\n";
-                        //((Instruction *)it)->removeFromParent();
-                        //   preHeader->moveBefore(
-                        //     (Instruction *)(it));
-                        ((Instruction *)it)
-                            ->moveBefore(preHeader->getTerminator());
+                        Instruction *I_invarient = dyn_cast<Instruction>(it);
+                        int uses = (it)->getNumUses();
+                        BasicBlock *host_inv = I_invarient->getParent();
+                        DBUG(outs() << "Value " << *it << "has " << uses
+                                    << " uses.\n";);
+                        bool hasMinOneUse = false;
+                        for (Loop::block_iterator i = L->block_begin(),
+                                                  e = L->block_end();
+                             i != e; ++i) {
+                                BasicBlock *BBhasUses = *i;
+                                DBUG(outs() << "BB " << *BBhasUses
+                                            << "uses the value ?  "
+                                            << it->isUsedInBasicBlock(BBhasUses)
+                                            << "\n";);
+                                if (it->isUsedInBasicBlock(BBhasUses)) {
+                                        hasMinOneUse = true;
+                                        llvm::BitVector doms =
+                                            (*DomResult)[BBhasUses]->m_OUT;
+                                        auto iter = std::find(DomBB_Ids.begin(),
+                                                              DomBB_Ids.end(),
+                                                              host_inv);
+                                        if (iter != DomBB_Ids.end()) {
+                                                if (doms[iter -
+                                                         DomBB_Ids.begin()] ==
+                                                    1) {
+                                                        ((Instruction *)it)
+                                                            ->moveBefore(
+                                                                preHeader
+                                                                    ->getTerminator());
+                                                        DBUG(outs()
+                                                                 << "movable "
+                                                                    "instructio"
+                                                                    "n";);
+                                                }
+                                        } else {
+                                                llvm_unreachable("Some blunder "
+                                                                 "happened");
+                                        }
+                                }
+                        }
+                        if (hasMinOneUse == false) {
+                                // To ensure if there are no uses , it can be
+                                // freely moved to pre header
+                                ((Instruction *)it)
+                                    ->moveBefore(preHeader->getTerminator());
+                        }
+                        bool constOper = true;
+                        for (auto op = I_invarient->op_begin(),
+                                  op_end = I_invarient->op_end();
+                             op != op_end; ++op) {
+                                if (!isa<Constant>(*op)) {
+                                        constOper = false;
+                                }
+                        }
+                        if (constOper == true) {
+                                ((Instruction *)it)
+                                    ->moveBefore(preHeader->getTerminator());
+                        }
+                        for (int i = 0; i < 100; i++)
+                                outs() << "=";
+                        outs() << "\n";
                 }
+                // preHeader->getParent()->viewCFG();
                 // Compute loop invariant statements - done
                 // getLoopInvariantStatements();     - done
                 // checkConditionForCodeMotion();
-                return false;
+                return true;
         }
         virtual void getAnalysisUsage(AnalysisUsage &AU) const {
                 AU.setPreservesCFG();
+                // AU.addRequired<LandingPadTransform>();
                 AU.addRequired<ReachingDefsPass>();
                 AU.addRequired<DominatorsPass>();
                 AU.addRequired<LoopInfoWrapperPass>();

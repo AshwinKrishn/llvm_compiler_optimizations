@@ -19,7 +19,9 @@ class KillGenDoms : public KillGen<BasicBlock *> {
 class DominatorsPass : public FunctionPass {
       public:
         static char ID;
+        std::vector<BasicBlock *> bb_ids;
         DenseMap<BasicBlock *, BBInOutBits *> *DomTree;
+        std::vector<BasicBlock *> getBBIds();
         DenseMap<BasicBlock *, BBInOutBits *> *getDomResults();
         DominatorsPass();
         virtual bool runOnFunction(Function &F);
