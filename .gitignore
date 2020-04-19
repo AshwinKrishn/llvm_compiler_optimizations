@@ -38,3 +38,4 @@
 tags
 cscope.out
 *.clangd
+*.json
