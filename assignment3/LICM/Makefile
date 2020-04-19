@@ -1,8 +1,10 @@
 INC=-I/usr/local/include/ -I ../DataflowFramework/include/ -I ./include/
 SOURCES:= $(shell find ../DataflowFramework -type f -name '*.cpp')
 OBJECTS:= $(SOURCES:.cpp=.o)
-all: licm.so dominators.so reachingdefs.so landingpad.so
+all: licm.so dominators.so reachingdefs.so landingpad.so make_test
 
+make_test:
+	make -C tests/
 CXXFLAGS = -rdynamic $(shell llvm-config --cxxflags) $(INC) -g -O0 -fPIC
 
 ../DataflowFramework/%.o: ../DataflowFramework/%.cpp
@@ -20,11 +22,13 @@ landingpad.so: LandingPadTransform.o $(OBJECTS)
 	$(CXX) -dylib -shared $^ -o $@
 
 clean:
-	rm -f *.o *~ *.so
+	rm -f *.o *~ *.so tests/*.bc
 
 # Run
-run_licm: ./tests/loop_test_mod.bc all
-	opt -load=./landingpad.so -load=./reachingdefs.so -load=./dominators.so -load=./licm.so -licm_pass $< -o tests/loop_invarients.bc
+run_licm:  all
+	opt -load=./landingpad.so -landing-pad ./tests/loop_test.bc -o tests/loop_test_mod.bc
+	opt -load=./landingpad.so -load=./reachingdefs.so -load=./dominators.so -load=./licm.so -licm_pass tests/loop_test_mod.bc -o tests/loop_invarients.bc
+	opt -view-cfg tests/loop_invarients.bc 
 
 run_landing: ./tests/loop_test.bc all
 	opt -load=./landingpad.so -landing-pad $< -o tests/loop_test_mod.bc

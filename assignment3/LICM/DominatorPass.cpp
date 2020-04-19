@@ -42,6 +42,7 @@ llvm::BitVector KillGenDoms::genEval(llvm::BasicBlock *BB,
 DenseMap<BasicBlock *, BBInOutBits *> *DominatorsPass::getDomResults() {
         return DomTree;
 }
+std::vector<BasicBlock *> DominatorsPass::getBBIds() { return bb_ids; }
 DominatorsPass::DominatorsPass() : FunctionPass(ID) {}
 
 bool DominatorsPass::runOnFunction(Function &F) {
@@ -50,7 +51,6 @@ bool DominatorsPass::runOnFunction(Function &F) {
         // Instantiate requirements
         IntersectionMeet intersect;
         KillGenDoms killGenDom;
-        std::vector<BasicBlock *> bb_ids;
         for (Function::iterator FI = F.begin(), FE = F.end(); FI != FE; ++FI) {
                 BasicBlock *block = &*FI;
                 bb_ids.push_back(block);
