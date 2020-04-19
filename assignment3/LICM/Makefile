@@ -23,8 +23,8 @@ clean:
 	rm -f *.o *~ *.so
 
 # Run
-run_licm: ./tests/loop_test.bc all
-	opt -load=./reachingdefs.so -load=./dominators.so -load=./licm.so -licm_pass $< -o tests/loop_invarients.bc
+run_licm: ./tests/loop_test_mod.bc all
+	opt -load=./landingpad.so -load=./reachingdefs.so -load=./dominators.so -load=./licm.so -licm_pass $< -o tests/loop_invarients.bc
 
 run_landing: ./tests/loop_test.bc all
 	opt -load=./landingpad.so -landing-pad $< -o tests/loop_test_mod.bc

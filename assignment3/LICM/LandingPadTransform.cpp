@@ -144,15 +144,35 @@ bool LandingPadTransform::runOnLoop(Loop *L, LPPassManager &LPM) {
                 assert(loopLatch);
                 loopLatch->getTerminator()->eraseFromParent();
 
+                DenseMap<Value *, Value *> replacementMap;
                 for (BasicBlock::iterator it = header->getFirstInsertionPt(),
                                           end = header->end();
                      it != end; it++) {
                         Instruction *clone = it->clone();
+                        // Add original to clone mapping
+                        replacementMap[&*it] = clone;
+
                         if (BranchInst *terminator =
                                 dyn_cast<BranchInst>(clone)) {
                                 terminator->setOperand(2, header);
                         }
+
                         loopLatch->getInstList().push_back(clone);
+                }
+
+                for (Instruction &I : *loopLatch) {
+                        for (auto op = I.op_begin(), end = I.op_end();
+                             op != end; ++op) {
+                                // auto toReplace =
+                                //    std::find(replacementMap.begin(),
+                                //              replacementMap.end(), &*op);
+                                auto toReplace = replacementMap.find(*op);
+                                // Found value
+                                if (toReplace != replacementMap.end()) {
+                                        I.setOperand(op - I.op_begin(),
+                                                     toReplace->second);
+                                }
+                        }
                 }
 
                 // Splice all instructions in previous header to this
