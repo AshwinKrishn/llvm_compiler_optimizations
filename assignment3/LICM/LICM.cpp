@@ -9,10 +9,12 @@
 #include "llvm/Support/raw_ostream.h"
 #include <llvm/Analysis/LoopPass.h>
 #include <llvm/Analysis/ValueTracking.h>
+
 // Framework and ours
 #include <DominatorPass.h>
 #include <IntersectionMeet.h>
 #include <KillGen.h>
+#include <LandingPadTransform.h>
 #include <ReachingDefinitions.h>
 #include <dataflow.h>
 #include <vector>
@@ -141,6 +143,10 @@ class LICM : public LoopPass {
                                         }
                                 }
                         }
+                        outs()
+                            << "old_size : " << old_size
+                            << " invarient_vals size: " << invarient_vals.size()
+                            << "\n";
                 } while (old_size != invarient_vals.size());
                 for (auto it : invarient_vals) {
 
@@ -151,6 +157,7 @@ class LICM : public LoopPass {
                         ((Instruction *)it)
                             ->moveBefore(preHeader->getTerminator());
                 }
+                preHeader->getParent()->viewCFG();
                 // Compute loop invariant statements - done
                 // getLoopInvariantStatements();     - done
                 // checkConditionForCodeMotion();
@@ -158,6 +165,7 @@ class LICM : public LoopPass {
         }
         virtual void getAnalysisUsage(AnalysisUsage &AU) const {
                 AU.setPreservesCFG();
+                // AU.addRequired<LandingPadTransform>();
                 AU.addRequired<ReachingDefsPass>();
                 AU.addRequired<DominatorsPass>();
                 AU.addRequired<LoopInfoWrapperPass>();

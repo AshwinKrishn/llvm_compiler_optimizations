@@ -16,6 +16,10 @@ class LandingPadTransform : public LoopPass {
       protected:
         BasicBlock *removePhiDependencies(BasicBlock *newtest,
                                           BasicBlock *header);
+        void
+        updatePhiNotInLoop(Loop &loop,
+                           SmallVector<Instruction *, 10> &previousPhiUsers,
+                           PHINode *from, PHINode *to);
         void unifyPhiAtExit(BasicBlock *newtest, BasicBlock *unifiedExit,
                             BasicBlock *loopexit, BasicBlock *header,
                             BasicBlock *lastBody, Loop *L);
