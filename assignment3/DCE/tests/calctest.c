@@ -29,6 +29,7 @@ int main() {
         int a, b, c, d, e, f, g, h;
         bool i, j, k = true;
         char s[MAXOP];
+	static int loop_exit = 0;
         d = 0;
         b = 1;
         c = b - d;
@@ -66,7 +67,8 @@ int main() {
                 default:
                         break;
                 }
-        } while (a);
+		loop_exit++;
+        } while (a && (loop_exit < 100));
 
         e = d + f;
 
