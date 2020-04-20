@@ -31,8 +31,8 @@ run_licm:  all
 	opt -view-cfg tests/loop_invarients.bc 
 
 run_licm_sefat:  all
-	opt -load=./landingpad.so -landing-pad ./tests/sefat_test.bc -o tests/sefat_test_mod.bc
-	opt -load=./landingpad.so -load=./reachingdefs.so -load=./dominators.so -load=./licm.so -licm_pass tests/sefat_test_mod.bc -o tests/sefat_invarients.bc
+	opt -load=./landingpad.so -landing-pad ./tests/sefat_test_m2r.bc -o tests/sefat_test_lp.bc
+	opt -load=./landingpad.so -load=./reachingdefs.so -load=./dominators.so -load=./licm.so -licm_pass tests/sefat_test_lp.bc -o tests/sefat_invarients.bc
 	opt -view-cfg tests/sefat_invarients.bc
 
 run_landing: ./tests/loop_test.bc all
